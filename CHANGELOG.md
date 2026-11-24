@@ -2,6 +2,13 @@
 
 All notable changes for users of Holodeck Portal. Versions follow [semantic versioning](https://semver.org/).
 
+## 1.0.1
+
+Source-only release: no change to the portal, and no new downloads (use 1.0.0's).
+
+- Tests: the network-slot tests no longer depend on the network of the machine they run on (they failed on build
+  machines whose own subnet overlaps the test lab pool).
+
 ## 1.0.0
 
 First public release, under the Apache License 2.0.

@@ -1,8 +1,14 @@
-import { test } from 'node:test';
+import { mock, test } from 'node:test';
 import assert from 'node:assert/strict';
 import fs from 'node:fs';
 import os from 'node:os';
 import path from 'node:path';
+
+// The portal treats its host's eth0 subnet as a management network that lab slots must not overlap. Pin it to a
+// documentation range so these tests don't depend on the machine they run on (CI runners use 10.x networks).
+mock.method(os, 'networkInterfaces', () => ({
+  eth0: [{ address: '198.51.100.10', netmask: '255.255.255.0', family: 'IPv4', mac: '00:00:00:00:00:00', internal: false, cidr: process.env.HP_TEST_ETH0 ?? '198.51.100.10/24' }],
+}));
 
 // Isolated data dir, a fake Holodeck root with one config, and fake runners that never touch Holodeck.
 const tmp = fs.mkdtempSync(path.join(os.tmpdir(), 'hp-routers-'));
