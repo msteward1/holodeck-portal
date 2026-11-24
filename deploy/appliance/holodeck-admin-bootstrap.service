@@ -1,0 +1,13 @@
+[Unit]
+Description=Holodeck Portal first administrator (from the OVF property)
+After=holodeck-portal.service
+Requires=holodeck-portal.service
+ConditionPathExists=/etc/holodeck-appliance/admin-password
+
+[Service]
+Type=oneshot
+ExecStart=/opt/holodeck-appliance/bootstrap-admin.sh
+StandardOutput=journal+console
+
+[Install]
+WantedBy=multi-user.target

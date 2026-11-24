@@ -1,0 +1,20 @@
+# Holodeck Portal as a container: docker compose up -d
+# Set HP_HOSTNAME (and optionally HP_PORTAL_IMAGE) in .env next to this file.
+services:
+  portal:
+    image: ${HP_PORTAL_IMAGE:-holodeck-portal:latest}
+    build: .
+    container_name: holodeck-portal
+    restart: unless-stopped
+    environment:
+      HP_HOSTNAME: ${HP_HOSTNAME:?set HP_HOSTNAME in .env}
+    ports:
+      - "80:80"
+      - "443:443"
+      - "8441-8472:8441-8472"   # optional webtop gateway (one port per network slot)
+    volumes:
+      - portal-data:/var/lib/holodeck-portal
+      - portal-etc:/etc/holodeck-portal
+volumes:
+  portal-data:
+  portal-etc:

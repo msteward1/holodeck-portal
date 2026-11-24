@@ -1,0 +1,10 @@
+[Unit]
+Description=Holodeck Portal update requests
+
+[Path]
+# The portal writes request.json after it has downloaded and verified a release (About -> Updates).
+PathExists=/data/portal/lib/updates/request.json
+Unit=holodeck-updater.service
+
+[Install]
+WantedBy=multi-user.target

@@ -1,0 +1,958 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="hp-doc-guide" content="admin">
+<meta name="hp-doc-version" content="2.0 · 2026-11-23">
+<title>Holodeck Portal — Administrator Guide</title>
+<style id="hp-doc-content">
+/* Holodeck Portal documentation — content styles. Scoped to .hp-doc so the portal can embed them. */
+.hp-doc{
+  --hd-ink-950:#080b13; --hd-ink-900:#0d1220; --hd-ink-850:#111827; --hd-ink-800:#151c2c;
+  --hd-ink-700:#1e2738; --hd-ink-600:#2a3548; --hd-ink-500:#3b475d;
+  --hd-text:#cbd5e1; --hd-strong:#ffffff; --hd-muted:#94a3b8; --hd-dim:#64748b;
+  --hd-accent:#3b82f6; --hd-accent-text:#93c5fd; --hd-accent-weak:rgba(59,130,246,.12);
+  --hd-ok:#34d399; --hd-ok-weak:rgba(16,185,129,.10); --hd-ok-line:rgba(16,185,129,.30);
+  --hd-warn:#fcd34d; --hd-warn-weak:rgba(245,158,11,.10); --hd-warn-line:rgba(245,158,11,.30);
+  --hd-err:#fca5a5; --hd-err-weak:rgba(239,68,68,.10); --hd-err-line:rgba(239,68,68,.35);
+  --hd-info:#7dd3fc; --hd-info-weak:rgba(14,165,233,.10); --hd-info-line:rgba(14,165,233,.30);
+  --hd-violet:#c4b5fd; --hd-violet-weak:rgba(139,92,246,.10); --hd-violet-line:rgba(139,92,246,.30);
+  --hd-font:'Inter',ui-sans-serif,system-ui,-apple-system,'Segoe UI',Roboto,sans-serif;
+  --hd-mono:'JetBrains Mono',ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;
+  color:var(--hd-text); font-family:var(--hd-font); font-size:14.5px; line-height:1.65;
+}
+.hp-doc *{box-sizing:border-box}
+.hp-doc .sec-head{margin:0 0 22px;padding-bottom:18px;border-bottom:1px solid var(--hd-ink-700)}
+.hp-doc .eyebrow{font-size:11px;font-weight:600;letter-spacing:.14em;text-transform:uppercase;color:var(--hd-muted);margin-bottom:6px}
+.hp-doc h1{font-size:26px;line-height:1.25;font-weight:600;letter-spacing:-.01em;color:var(--hd-strong);margin:0 0 6px}
+.hp-doc .lead{font-size:15px;color:var(--hd-muted);margin:0;max-width:78ch}
+.hp-doc h2{font-size:17px;font-weight:600;color:var(--hd-strong);margin:30px 0 8px}
+.hp-doc h3{font-size:14.5px;font-weight:600;color:#e2e8f0;margin:22px 0 6px}
+.hp-doc p{margin:8px 0;max-width:80ch}
+.hp-doc ul,.hp-doc ol{margin:8px 0;padding-left:22px;max-width:80ch}
+.hp-doc ul{list-style:disc}
+.hp-doc ol{list-style:decimal}
+.hp-doc li{margin:4px 0}
+.hp-doc li::marker{color:var(--hd-dim)}
+.hp-doc strong{color:#e2e8f0;font-weight:600}
+.hp-doc a{color:var(--hd-accent-text);text-decoration:none}
+.hp-doc a:hover{text-decoration:underline}
+.hp-doc hr{border:0;border-top:1px solid var(--hd-ink-700);margin:26px 0}
+.hp-doc code{font-family:var(--hd-mono);font-size:12.5px;color:#e2e8f0;background:var(--hd-ink-900);border:1px solid var(--hd-ink-700);border-radius:6px;padding:1px 5px;word-break:break-word}
+.hp-doc kbd{font-family:var(--hd-mono);font-size:12px;color:#e2e8f0;background:var(--hd-ink-800);border:1px solid var(--hd-ink-600);border-bottom-width:2px;border-radius:5px;padding:0 5px}
+/* Names of buttons, tabs and menu items as they appear in the portal */
+.hp-doc .ui{display:inline-block;white-space:nowrap;font-size:13px;font-weight:500;color:#dbeafe;background:var(--hd-accent-weak);border:1px solid rgba(59,130,246,.25);border-radius:6px;padding:0 6px;line-height:1.55}
+.hp-doc .path{font-family:var(--hd-mono);font-size:12.5px;color:#e2e8f0}
+/* Panels and cards */
+.hp-doc .box{border:1px solid var(--hd-ink-700);background:var(--hd-ink-850);border-radius:16px;padding:16px 20px;margin:14px 0;box-shadow:0 1px 0 0 rgba(255,255,255,.03) inset}
+.hp-doc .cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:14px;margin:14px 0}
+.hp-doc .card{border:1px solid var(--hd-ink-700);background:var(--hd-ink-850);border-radius:16px;padding:14px 16px}
+.hp-doc .card h3{margin:0 0 4px;font-size:14px}
+.hp-doc .card p{margin:0;font-size:13.5px;color:var(--hd-muted)}
+.hp-doc .card .ico{display:inline-grid;place-items:center;width:30px;height:30px;border-radius:9px;background:var(--hd-accent-weak);color:var(--hd-accent-text);margin-bottom:8px}
+.hp-doc .card .ico svg{width:16px;height:16px}
+/* Key figures */
+.hp-doc .tiles{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:14px;margin:18px 0}
+.hp-doc .tile{border:1px solid var(--hd-ink-700);background:var(--hd-ink-850);border-radius:16px;padding:14px 16px}
+.hp-doc .tile .k{font-size:11px;font-weight:600;letter-spacing:.14em;text-transform:uppercase;color:var(--hd-muted)}
+.hp-doc .tile .v{font-size:26px;font-weight:700;color:var(--hd-strong);letter-spacing:-.01em;line-height:1.3;margin-top:4px}
+.hp-doc .tile .s{font-size:12.5px;color:var(--hd-dim)}
+/* Callouts */
+.hp-doc .callout{border:1px solid var(--hd-info-line);background:var(--hd-info-weak);color:#e0f2fe;border-radius:10px;padding:10px 14px;margin:14px 0;font-size:14px;max-width:84ch}
+.hp-doc .callout p{margin:4px 0}
+.hp-doc .callout .t{display:block;font-weight:600;margin-bottom:2px}
+.hp-doc .callout.info .t{color:var(--hd-info)}
+.hp-doc .callout.ok{border-color:var(--hd-ok-line);background:var(--hd-ok-weak);color:#d1fae5}
+.hp-doc .callout.ok .t{color:var(--hd-ok)}
+.hp-doc .callout.warn{border-color:var(--hd-warn-line);background:var(--hd-warn-weak);color:#fef3c7}
+.hp-doc .callout.warn .t{color:var(--hd-warn)}
+.hp-doc .callout.danger{border-color:var(--hd-err-line);background:var(--hd-err-weak);color:#fee2e2}
+.hp-doc .callout.danger .t{color:var(--hd-err)}
+.hp-doc .callout code{background:rgba(8,11,19,.5)}
+/* Code */
+.hp-doc .code{position:relative;margin:12px 0;border:1px solid var(--hd-ink-700);background:var(--hd-ink-950);border-radius:12px;max-width:100%}
+.hp-doc .code pre{margin:0;padding:13px 16px;overflow-x:auto;font-family:var(--hd-mono);font-size:12.5px;line-height:1.6;color:#cbd5e1;white-space:pre}
+.hp-doc .code .copy{position:absolute;top:8px;right:8px;font:500 11.5px var(--hd-font);color:var(--hd-muted);background:var(--hd-ink-800);border:1px solid var(--hd-ink-600);border-radius:7px;padding:2px 9px;cursor:pointer}
+.hp-doc .code .copy:hover{color:var(--hd-strong);border-color:var(--hd-ink-500)}
+.hp-doc .code .copy.done{color:var(--hd-ok);border-color:var(--hd-ok-line)}
+.hp-doc .code .c{color:var(--hd-dim)}
+.hp-doc .diagram pre{color:#a5b4c8}
+/* Tables */
+.hp-doc .tablewrap{overflow-x:auto;margin:12px 0;border:1px solid var(--hd-ink-700);border-radius:12px;background:var(--hd-ink-850)}
+.hp-doc table{width:100%;border-collapse:collapse;font-size:13.5px}
+.hp-doc th{text-align:left;font-size:11px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--hd-muted);background:var(--hd-ink-800);border-bottom:1px solid var(--hd-ink-700);padding:8px 12px;white-space:nowrap}
+.hp-doc td{border-bottom:1px solid rgba(30,39,56,.7);padding:8px 12px;vertical-align:top}
+.hp-doc tr:last-child td{border-bottom:0}
+.hp-doc td.mono,.hp-doc .mono{font-family:var(--hd-mono);font-size:12.5px}
+.hp-doc td.nowrap{white-space:nowrap}
+/* Status pills */
+.hp-doc .pill{display:inline-flex;align-items:center;gap:5px;white-space:nowrap;border:1px solid var(--hd-ink-600);border-radius:6px;padding:0 7px;font-size:12px;line-height:1.7;color:#cbd5e1;background:rgba(100,116,139,.10)}
+.hp-doc .pill::before{content:"";width:6px;height:6px;border-radius:50%;background:currentColor;opacity:.9}
+.hp-doc .pill.ok{color:var(--hd-ok);border-color:var(--hd-ok-line);background:var(--hd-ok-weak)}
+.hp-doc .pill.warn{color:var(--hd-warn);border-color:var(--hd-warn-line);background:var(--hd-warn-weak)}
+.hp-doc .pill.err{color:var(--hd-err);border-color:var(--hd-err-line);background:var(--hd-err-weak)}
+.hp-doc .pill.info{color:var(--hd-info);border-color:var(--hd-info-line);background:var(--hd-info-weak)}
+.hp-doc .pill.violet{color:var(--hd-violet);border-color:var(--hd-violet-line);background:var(--hd-violet-weak)}
+.hp-doc .pill.muted{color:var(--hd-muted)}
+/* Numbered procedures */
+.hp-doc ol.steps{list-style:none;counter-reset:step;padding-left:0}
+.hp-doc ol.steps>li{counter-increment:step;position:relative;padding-left:38px;margin:10px 0}
+.hp-doc ol.steps>li::before{content:counter(step);position:absolute;left:0;top:1px;width:24px;height:24px;border-radius:50%;display:grid;place-items:center;font-size:12px;font-weight:600;color:#dbeafe;background:var(--hd-accent-weak);border:1px solid rgba(59,130,246,.35)}
+/* Definition lists */
+.hp-doc dl.kv{display:grid;grid-template-columns:minmax(150px,max-content) 1fr;gap:6px 18px;margin:12px 0}
+.hp-doc dl.kv dt{color:var(--hd-muted)}
+.hp-doc dl.kv dd{margin:0}
+.hp-doc .muted{color:var(--hd-muted)}
+.hp-doc .small{font-size:13px}
+.hp-doc .meta{margin-top:40px;padding-top:14px;border-top:1px solid var(--hd-ink-700);font-size:12.5px;color:var(--hd-dim)}
+</style>
+<style>
+/* Standalone page layout (not used when the portal embeds the guide). */
+*{box-sizing:border-box}
+html,body{margin:0;background:#080b13;color:#cbd5e1;font-family:'Inter',ui-sans-serif,system-ui,-apple-system,'Segoe UI',Roboto,sans-serif;-webkit-font-smoothing:antialiased}
+::selection{background:rgba(59,130,246,.4)}
+*{scrollbar-width:thin;scrollbar-color:#2a3548 transparent}
+.app{display:grid;grid-template-columns:272px minmax(0,1fr);min-height:100vh}
+.rail{position:sticky;top:0;height:100vh;display:flex;flex-direction:column;background:#0d1220;border-right:1px solid #1e2738}
+.brand{display:flex;align-items:center;gap:12px;padding:20px 18px 14px}
+.brand svg{width:34px;height:34px;flex:none}
+.brand .n{font-size:16px;font-weight:700;color:#fff;letter-spacing:-.01em;line-height:1.2}
+.brand .g{font-size:12px;color:#94a3b8}
+.search{padding:4px 14px 8px}
+.search input{width:100%;border:1px solid #2a3548;background:#080b13;color:#f1f5f9;border-radius:8px;padding:7px 10px;font:inherit;font-size:13px;outline:none}
+.search input:focus{border-color:#3b82f6;box-shadow:0 0 0 3px rgba(59,130,246,.25)}
+.rail-scroll{flex:1;overflow-y:auto;padding:0 10px 16px}
+.navgroup-title{font-size:11px;font-weight:600;letter-spacing:.14em;text-transform:uppercase;color:#94a3b8;margin:18px 10px 6px}
+.navgroup ul{list-style:none;margin:0;padding:0}
+.navlink{display:flex;align-items:center;gap:10px;width:100%;border:0;background:none;text-align:left;cursor:pointer;color:#cbd5e1;font:inherit;font-size:13.5px;padding:7px 10px;border-radius:8px;margin:1px 0}
+.navlink svg{width:16px;height:16px;flex:none;color:#94a3b8}
+.navlink:hover{background:#1e2738;color:#fff}
+.navlink.active{background:rgba(29,58,107,.6);color:#93c5fd;box-shadow:inset 0 0 0 1px rgba(59,130,246,.3)}
+.navlink.active svg{color:#93c5fd}
+.rail-foot{border-top:1px solid #1e2738;padding:12px 18px;font-size:12px;color:#64748b}
+.main{min-width:0}
+.topbar{position:sticky;top:0;z-index:20;display:flex;align-items:center;gap:12px;padding:12px 40px;background:rgba(8,11,19,.85);backdrop-filter:blur(8px);border-bottom:1px solid #1e2738;font-size:13px;color:#94a3b8}
+.topbar .sep{color:#3b475d}
+.topbar #crumb-sec{color:#e2e8f0}
+.menutoggle{display:none;border:1px solid #2a3548;background:#151c2c;color:#e2e8f0;border-radius:8px;padding:5px 9px;cursor:pointer;font:inherit}
+.content{max-width:1040px;padding:32px 40px 80px}
+.section{display:none}
+.section.is-active{display:block}
+.scrim{position:fixed;inset:0;background:rgba(0,0,0,.55);display:none;z-index:40}
+.scrim.show{display:block}
+@media (max-width:900px){
+  .app{grid-template-columns:minmax(0,1fr)}
+  .rail{position:fixed;left:0;top:0;width:280px;z-index:50;transform:translateX(-100%);transition:transform .2s}
+  .rail.open{transform:none}
+  .menutoggle{display:inline-flex}
+  .topbar,.content{padding-left:18px;padding-right:18px}
+}
+</style>
+</head>
+<body>
+<div class="app">
+  <aside class="rail" id="rail">
+    <div class="brand"><svg viewBox="0 0 32 32" aria-hidden="true"><defs><linearGradient id="hpg" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#60a5fa"/><stop offset="1" stop-color="#a78bfa"/></linearGradient></defs><rect width="32" height="32" rx="8" fill="#0f172a"/><path d="M8 22V10l8-4 8 4v12l-8 4z" fill="none" stroke="url(#hpg)" stroke-width="2"/><path d="M8 10l8 4 8-4M16 14v12" fill="none" stroke="url(#hpg)" stroke-width="2"/></svg><div><div class="n">Holodeck Portal</div><div class="g">Administrator guide</div></div></div>
+    <div class="search"><input id="search" type="search" placeholder="Search this guide…" aria-label="Search this guide"></div>
+    <nav class="rail-scroll" aria-label="Guide sections">
+<div class="navgroup"><div class="navgroup-title">Getting started</div><ul><li><button class="navlink active" type="button" data-target="admin-overview"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 10.5 12 3l9 7.5V20a1 1 0 0 1-1 1h-5v-6H9v6H4a1 1 0 0 1-1-1z"/></svg>Overview</button></li><li><button class="navlink" type="button" data-target="first-setup"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg>First-time setup</button></li></ul></div>
+<div class="navgroup"><div class="navgroup-title">Labs and users</div><ul><li><button class="navlink" type="button" data-target="configurations"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="2" y="3" width="20" height="8" rx="2"/><rect x="2" y="13" width="20" height="8" rx="2"/><path d="M6 7h.01M6 17h.01"/></svg>Configurations</button></li><li><button class="navlink" type="button" data-target="users"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.9M16 3.1a4 4 0 0 1 0 7.8"/></svg>Users and quotas</button></li><li><button class="navlink" type="button" data-target="sso"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><path d="M9 12l2 2 4-4"/></svg>Single sign-on</button></li><li><button class="navlink" type="button" data-target="admin-labs"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 3h6M10 3v6L4.5 19a1.5 1.5 0 0 0 1.3 2h12.4a1.5 1.5 0 0 0 1.3-2L14 9V3"/><path d="M7 15h10"/></svg>Managing labs</button></li></ul></div>
+<div class="navgroup"><div class="navgroup-title">Platform</div><ul><li><button class="navlink" type="button" data-target="settings"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.7 1.7 0 0 0 .3 1.8l.1.1a2 2 0 1 1-2.8 2.8l-.1-.1a1.7 1.7 0 0 0-1.8-.3 1.7 1.7 0 0 0-1 1.5V21a2 2 0 1 1-4 0v-.1a1.7 1.7 0 0 0-1.1-1.5 1.7 1.7 0 0 0-1.8.3l-.1.1a2 2 0 1 1-2.8-2.8l.1-.1a1.7 1.7 0 0 0 .3-1.8 1.7 1.7 0 0 0-1.5-1H3a2 2 0 1 1 0-4h.1a1.7 1.7 0 0 0 1.5-1.1 1.7 1.7 0 0 0-.3-1.8l-.1-.1a2 2 0 1 1 2.8-2.8l.1.1a1.7 1.7 0 0 0 1.8.3H9a1.7 1.7 0 0 0 1-1.5V3a2 2 0 1 1 4 0v.1a1.7 1.7 0 0 0 1 1.5 1.7 1.7 0 0 0 1.8-.3l.1-.1a2 2 0 1 1 2.8 2.8l-.1.1a1.7 1.7 0 0 0-.3 1.8V9a1.7 1.7 0 0 0 1.5 1H21a2 2 0 1 1 0 4h-.1a1.7 1.7 0 0 0-1.5 1z"/></svg>Settings</button></li><li><button class="navlink" type="button" data-target="network"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="2" width="6" height="6" rx="1"/><rect x="2" y="16" width="6" height="6" rx="1"/><rect x="16" y="16" width="6" height="6" rx="1"/><path d="M12 8v4M5 16v-2h14v2"/></svg>Network pool and VLANs</button></li><li><button class="navlink" type="button" data-target="profiles"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 2 2 7l10 5 10-5z"/><path d="M2 17l10 5 10-5M2 12l10 5 10-5"/></svg>Capacity profiles</button></li><li><button class="navlink" type="button" data-target="holorouters"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="2" y="14" width="20" height="8" rx="2"/><path d="M6 18h.01M10 18h.01M15 10v4M17.8 7.2a4 4 0 0 0-5.6 0M20.7 4.3a8 8 0 0 0-11.4 0"/></svg>Holorouters</button></li><li><button class="navlink" type="button" data-target="staging"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2 9V5a2 2 0 0 1 2-2h3.9a2 2 0 0 1 1.7.9l.8 1.2a2 2 0 0 0 1.7.9H20a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2v-1"/><path d="M2 13h10M9 16l3-3-3-3"/></svg>Installation files</button></li></ul></div>
+<div class="navgroup"><div class="navgroup-title">Operations</div><ul><li><button class="navlink" type="button" data-target="leases-admin"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18 8a6 6 0 0 0-12 0c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.7 21a2 2 0 0 1-3.4 0"/></svg>Leases and idle labs</button></li><li><button class="navlink" type="button" data-target="jobs-admin"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 17l6-6-6-6M12 19h8"/></svg>Jobs and Holodeck</button></li><li><button class="navlink" type="button" data-target="security"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>Security</button></li></ul></div>
+<div class="navgroup"><div class="navgroup-title">Reference</div><ul><li><button class="navlink" type="button" data-target="admin-troubleshooting"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="4"/><path d="M4.9 4.9l4.3 4.3M14.8 14.8l4.3 4.3M14.8 9.2l4.3-4.3M4.9 19.1l4.3-4.3"/></svg>Troubleshooting</button></li><li><button class="navlink" type="button" data-target="reference"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M8 6h13M8 12h13M8 18h13M3 6h.01M3 12h.01M3 18h.01"/></svg>Reference</button></li></ul></div>
+    </nav>
+    <div class="rail-foot">Documentation v2.0 · 2026-11-23</div>
+  </aside>
+  <div class="scrim" id="scrim"></div>
+  <div class="main">
+    <header class="topbar"><button class="menutoggle" id="menutoggle" type="button" aria-label="Open menu">☰</button><span>Administrator guide</span><span class="sep">/</span><span id="crumb-sec"></span></header>
+    <main class="content hp-doc">
+<section class="section is-active" id="admin-overview" data-title="Overview" data-group="Getting started">
+<header class="sec-head"><div class="eyebrow">Getting started</div><h1>Overview</h1><p class="lead">What administrators look after, how the pieces fit, and where to start.</p></header>
+<p>The Holodeck Portal drives the Holodeck PowerShell module on a fleet of Holodeck 9.x <strong>Holorouters</strong> so users can deploy and manage nested VCF and VVF labs without a shell. Each Holorouter hosts one lab; capacity grows by adding routers. The portal never modifies Holodeck itself and never resets a Holorouter.</p>
+
+<div class="tiles">
+  <div class="tile"><div class="k">Labs per Holorouter</div><div class="v">1</div><div class="s">Capacity grows by adding routers</div></div>
+  <div class="tile"><div class="k">Network slots</div><div class="v">5</div><div class="s">With the default 10.1–10.10 pool</div></div>
+  <div class="tile"><div class="k">Sign-in</div><div class="v">3</div><div class="s">Local, OpenID Connect, SAML 2.0</div></div>
+  <div class="tile"><div class="k">Lab jobs</div><div class="v">On the router</div><div class="s">They survive portal restarts and updates</div></div>
+</div>
+
+<h2>Architecture</h2>
+<div class="code diagram"><pre>  Users (browser) ──HTTPS 443──► Holodeck Portal (appliance or container: nginx, Node.js, SQLite, PowerCLI)
+                                      │                                  │
+                 SSH (portal key, pinned host keys)                  HTTPS (PowerCLI)
+                                      ▼                                  ▼
+        Holorouter slot 1    Holorouter slot 2    …            vCenter or ESXi host
+        Holodeck · webtop    Holodeck · webtop                 router VMs, nested lab hosts
+        DNS · DHCP · lab 1   DNS · DHCP · lab 2</pre></div>
+<ul>
+  <li>Every long operation is a <strong>job</strong>: a list of Holodeck commands with its output streamed to the browser. Lab jobs run on the lab's Holorouter, in their own systemd unit there; the portal copies its runner and the Holodeck configuration over SSH first.</li>
+  <li>The portal holds the <strong>master copy of every Holodeck configuration</strong> (encrypted, since it contains the target's credentials). Configuration work (creating one, changing settings, prechecks) runs on a free Holorouter, and the result comes back to the portal.</li>
+  <li>Tasks that only talk to vCenter (reading inventory, deploying and onboarding a Holorouter) run inside the portal with PowerCLI.</li>
+  <li>Installing, updating and backing up the portal itself are in the <a href="HOLODECK_PORTAL_OPERATIONS_GUIDE.html#ops-overview" data-guide="ops" data-goto="ops-overview">Installation and operations guide</a>.</li>
+</ul>
+
+<h2>Administrator responsibilities</h2>
+<div class="cards">
+  <div class="card"><h3>Configurations</h3><p>Holodeck configurations, entitlements, deploy defaults, depot access.</p></div>
+  <div class="card"><h3>People</h3><p>Users, roles, quotas, single sign-on.</p></div>
+  <div class="card"><h3>Capacity</h3><p>Holorouters, capacity profiles, installation files, the network pool.</p></div>
+  <div class="card"><h3>Policy</h3><p>Leases and warnings, idle labs, maximum labs.</p></div>
+  <div class="card"><h3>Operations</h3><p>Expired and failed labs, router health, the audit log.</p></div>
+</div>
+
+<h2>Administration menu</h2>
+<div class="tablewrap"><table>
+<thead><tr><th>Item</th><th>Purpose</th></tr></thead>
+<tbody>
+<tr><td><span class="ui">All labs</span></td><td>Every lab in the portal, including other users'.</td></tr>
+<tr><td><span class="ui">Configurations</span></td><td>Holodeck configurations users deploy from.</td></tr>
+<tr><td><span class="ui">Users</span></td><td>Local accounts and single sign-on users.</td></tr>
+<tr><td><span class="ui">Holorouters</span></td><td>The router fleet, installation files, router tools.</td></tr>
+<tr><td><span class="ui">Capacity profiles</span></td><td>Which configuration a router serves, and where routers and their labs' hosts go in vCenter.</td></tr>
+<tr><td><span class="ui">Settings</span></td><td>Limits, leases, idle labs, networking, Holorouter defaults, certificate, updates and sign-in.</td></tr>
+<tr><td><span class="ui">Audit log</span></td><td>Sign-ins, lab operations, credential views and administrative changes.</td></tr>
+</tbody></table></div>
+<p>The user menu's <span class="ui">About</span> shows the portal's version and, for administrators, its build, the Holodeck versions on the routers and <a href="HOLODECK_PORTAL_OPERATIONS_GUIDE.html#updates" data-guide="ops" data-goto="updates">updates</a>. Start a new installation with the <a href="#first-setup" data-goto="first-setup">first-time setup</a> checklist.</p>
+</section>
+
+<section class="section" id="first-setup" data-title="First-time setup" data-group="Getting started">
+<header class="sec-head"><div class="eyebrow">Getting started</div><h1>First-time setup</h1><p class="lead">A checklist that takes a freshly installed portal to its first user lab.</p></header>
+<ol class="steps">
+  <li><strong>Certificate</strong>: replace the temporary self-signed certificate under <span class="ui">Settings</span> → <strong>Certificate</strong> (<a href="HOLODECK_PORTAL_OPERATIONS_GUIDE.html#certificate" data-guide="ops" data-goto="certificate">how</a>).</li>
+  <li><strong>Network pool</strong>: under <span class="ui">Settings</span> → <strong>Network pool</strong>, list the VLANs and networks your site already uses (blocked lists) and check the slots shown. Do this before the first router (<a href="#network" data-goto="network">Network pool and VLANs</a>).</li>
+  <li><strong>Webtop password</strong>: <span class="ui">Settings</span> → <strong>Holorouters</strong>; and the <strong>Holorouter OVA URL</strong> and its SHA-256 if the portal will deploy routers.</li>
+  <li><strong>First Holorouter</strong>: deploy the Holorouter OVA in vCenter yourself, then <span class="ui">Holorouters</span> → <span class="ui">Import existing</span> with <strong>Capacity profile</strong> set to <em>None</em> (<a href="#holorouters" data-goto="holorouters">Holorouters</a>). Configurations are created on a Holorouter, so the portal needs this one before anything else.</li>
+  <li><strong>Configuration</strong>: <span class="ui">Configurations</span> → <span class="ui">New configuration</span> (target vCenter or ESXi host and its credentials); set entitlements, deploy defaults and depot access; optionally run a precheck (<a href="#configurations" data-goto="configurations">Configurations</a>).</li>
+  <li><strong>Installation files</strong>: put each VCF version's files on one router, then stage them to the others (<a href="#staging" data-goto="staging">Installation files</a>).</li>
+  <li><strong>Settings</strong>: portal name, maximum labs and quotas, leases, idle labs (<a href="#settings" data-goto="settings">Settings</a>).</li>
+  <li><strong>Sign-in</strong>: create local users or configure OpenID Connect / SAML (<a href="#users" data-goto="users">Users</a>, <a href="#sso" data-goto="sso">Single sign-on</a>).</li>
+  <li><strong>Test</strong>: deploy a small VVF lab yourself, open its webtop and credentials, shut it down, power it on and remove it.</li>
+  <li><strong>More capacity</strong>: create a <a href="#profiles" data-goto="profiles">capacity profile</a> for the configuration, <span class="ui">Deploy new</span> routers with it (or import more), stage versions on them, and raise <strong>Maximum labs</strong>.</li>
+</ol>
+</section>
+
+<section class="section" id="configurations" data-title="Configurations" data-group="Labs and users">
+<header class="sec-head"><div class="eyebrow">Labs and users</div><h1>Configurations</h1><p class="lead">A configuration wraps one Holodeck configuration (target vCenter or ESXi host, placement, depot) and decides who may deploy from it and with which defaults.</p></header>
+<h2>The Configurations page</h2>
+<p>Cards show each configuration: name, Holodeck config ID, target, cluster, datastore and trunk port group, a <span class="pill info">vCenter</span> or <span class="pill info">ESXi host</span> badge for the target type (<em>Target unknown</em> until the portal has connected to it), <span class="pill ok">Published</span> or <span class="pill muted">Disabled</span>, who may use it, how many labs use it, and an amber "unmanaged instance on &lt;router&gt;" tag when a router has a Holodeck instance bound to it that no portal lab owns. Below is a table of <strong>Holodeck configurations not yet in the portal</strong>: configurations the portal holds but that aren't registered.</p>
+
+<h2>Adding a configuration</h2>
+<ul>
+  <li><span class="ui">New configuration</span>: name, description, target host (vCenter or ESXi FQDN/IP), username and password. The portal runs <code>New-HoloDeckConfig</code> on a free Holorouter, keeps the result and registers it. The password goes to Holodeck and the portal's encrypted store only, and is masked in the job output. Set placement and depot details afterwards.</li>
+  <li><strong>Register</strong> a configuration from the table: give it a display name and description.</li>
+</ul>
+<p>Configuration jobs (new, Holodeck settings, precheck) run on a router that is ready and idle, preferring the lowest slot; they need at least one Holorouter. Before every job on a router, the portal copies the configuration there, keeping that router's own instance binding and network status.</p>
+
+<h2>Configuration tabs</h2>
+<div class="tablewrap"><table>
+<thead><tr><th>Tab</th><th>What you set</th></tr></thead>
+<tbody>
+<tr><td><span class="ui">General</span></td><td>Display name, description, <strong>Published</strong> toggle (disabled configurations are hidden from users), a summary of the Holodeck config (target, placement, version, vSAN mode, DNS domain, precheck), and <span class="ui">Unregister</span>. A configuration with lab history is disabled instead of removed.</td></tr>
+<tr><td><span class="ui">Entitlements</span></td><td>"All users may deploy from this configuration", or a list of users. Administrators can always deploy from every configuration.</td></tr>
+<tr><td><span class="ui">Deploy defaults</span></td><td>Pre-selected type, version and Holodeck options on the deploy form. Users can still change them.</td></tr>
+<tr><td><span class="ui">Depot &amp; placement</span></td><td><strong>Placement for unattended prechecks</strong> (cluster, datastore, resource pool, trunk port group; blank uses the Holodeck config's values) and <strong>Depot access</strong>: Broadcom download token (used for VCF 9.0 and earlier; VCF 9.1 asks for an activation code during the deployment), proxy (protocol, address, port, user, password) and offline depot. Stored encrypted; leave secret fields blank to keep the saved value.</td></tr>
+<tr><td><span class="ui">Holodeck settings</span></td><td>Every <code>Set-HoloDeckConfig</code> parameter set as a form, grouped Target, Deployment, Depot and Advanced. Each runs as a job and reads the configuration back. Also <strong>Precheck</strong>: runs <code>Start-HoloDeckPrecheck</code> for a version (with VVF, vSAN mode and VCF Automation sizing options) to validate the target's CPU, memory, storage and networking.</td></tr>
+<tr><td><span class="ui">Maintenance</span></td><td><strong>Unmanaged instances</strong>, per router: if Holodeck on a router has an instance bound to this configuration that no portal lab owns (for example a manual test), remove it here. All its VMs are deleted; the router keeps its services and network configuration.</td></tr>
+</tbody></table></div>
+<div class="callout warn"><span class="t">Unmanaged instances block their router</span>A router with a Holodeck instance the portal doesn't manage shows <span class="pill warn">Needs attention</span> and takes no labs until the instance is removed (Configuration → <span class="ui">Maintenance</span>).</div>
+
+<h2>Configurations and Holorouters</h2>
+<ul>
+  <li>A Holorouter with a <a href="#profiles" data-goto="profiles">capacity profile</a> serves only the profile's configuration: its networks and placement belong to that target. Its labs use the profile's cluster, datastore, resource pool and site A trunk port group.</li>
+  <li>A Holorouter without a profile serves any configuration, and its labs use the configuration's placement.</li>
+  <li>On the deploy page, a configuration whose routers are all in use is greyed out ("all Holorouters in use"); one that no router serves is hidden from users and shown greyed to administrators.</li>
+</ul>
+</section>
+<section class="section" id="users" data-title="Users and quotas" data-group="Labs and users">
+<header class="sec-head"><div class="eyebrow">Labs and users</div><h1>Users and quotas</h1><p class="lead">Create local accounts, pre-register single sign-on users, set roles and lab quotas.</p></header>
+<p>The <span class="ui">Users</span> page lists everyone: name and username, email, role, sign-in type (LOCAL, OIDC, SAML), labs in use out of their quota, and last sign-in. Disabled users are dimmed.</p>
+
+<h2>Creating and editing</h2>
+<div class="tablewrap"><table>
+<thead><tr><th>Field</th><th>Notes</th></tr></thead>
+<tbody>
+<tr><td>Username</td><td>2–64 letters, digits and <code>. _ @ -</code>; can't be changed later; case-insensitive.</td></tr>
+<tr><td>First and last name</td><td>Required.</td></tr>
+<tr><td>Email</td><td>Optional; for information only.</td></tr>
+<tr><td>Role</td><td>User or Administrator.</td></tr>
+<tr><td>Sign-in</td><td>Local password, OIDC or SAML. Choosing OIDC/SAML pre-registers the user; the account is linked to their identity-provider identity on their first single sign-on.</td></tr>
+<tr><td><span class="ui">Unlink SSO identity</span></td><td>SSO accounts that are linked. Forgets the identity-provider identity and signs the user out; the next sign-in with that username links again. Use it after a provider change or when the directory account was re-created.</td></tr>
+<tr><td>Password / Reset password</td><td>Local accounts; at least 10 characters. Resetting signs the user out everywhere.</td></tr>
+<tr><td>Use the default lab quota / Lab quota</td><td>Default from Settings, or 0–10 labs for this user.</td></tr>
+<tr><td>Account enabled</td><td>Disabling signs the user out immediately.</td></tr>
+</tbody></table></div>
+
+<h2>Rules</h2>
+<ul>
+  <li>You can't disable, demote or delete your own account.</li>
+  <li>Users who have ever owned a lab can't be deleted (the lab history keeps the owner). Disable them, or reassign their labs first.</li>
+  <li>Administrators aren't limited by the maximum lease and can deploy from any configuration, on behalf of other users and on a chosen Holorouter.</li>
+</ul>
+
+<h2>Recovering access from the shell</h2>
+<p>As root on the appliance (or on the Docker host):</p>
+<div class="code"><button class="copy" type="button">Copy</button><pre>docker exec -it holodeck-portal sh -c 'cd /opt/holodeck-portal/server &amp;&amp; node dist/cli.js reset-password admin'
+docker exec -it holodeck-portal sh -c 'cd /opt/holodeck-portal/server &amp;&amp; node dist/cli.js create-admin admin2 First Last'</pre></div>
+<p>Both commands ask for the password twice without showing it.</p>
+</section>
+<section class="section" id="sso" data-title="Single sign-on" data-group="Labs and users">
+<header class="sec-head"><div class="eyebrow">Labs and users</div><h1>Single sign-on</h1><p class="lead">Let users sign in with OpenID Connect or SAML 2.0, map their groups to portal roles and create their accounts automatically.</p></header>
+<p>Configure sign-in under <span class="ui">Settings</span>, in the <strong>Local accounts</strong>, <strong>OpenID Connect</strong> and <strong>SAML 2.0</strong> sections. The redirect and metadata URLs to give your identity provider are shown there; they are built from <code>HP_PUBLIC_URL</code>.</p>
+
+<h2>Role mapping (both protocols)</h2>
+<ul>
+  <li>Member of an <strong>admin group</strong> → Administrator.</li>
+  <li>Member of a <strong>user group</strong>, or no user groups configured → User.</li>
+  <li>Otherwise the sign-in is refused: "Your account is not in a group that is allowed to use this portal."</li>
+</ul>
+<p>Role, email and names are updated from the identity provider at every sign-in. With <strong>Create portal accounts on first sign-in</strong> off, only pre-registered users can sign in. A username that already belongs to an account of another sign-in type is refused rather than merged.</p>
+
+<h2>Account linking</h2>
+<p>An SSO account is tied to the identity provider's permanent identifier for the person (the OIDC <code>sub</code>, or the SAML NameID), not to the username. The first sign-in links a pre-registered or new account. After that, a sign-in that presents the same username with a <em>different</em> identifier is refused ("linked to a different identity") and recorded in the audit log as <code>auth.sso.identity-conflict</code>, because usernames can be renamed or reused at the identity provider. If the change is legitimate (a new provider, a re-created directory account), use <span class="ui">Unlink SSO identity</span> on the user.</p>
+
+<h2>OpenID Connect</h2>
+<div class="tablewrap"><table>
+<thead><tr><th>Setting</th><th>Default / notes</th></tr></thead>
+<tbody>
+<tr><td>Button label</td><td>Single Sign-On</td></tr>
+<tr><td>Issuer URL</td><td>Discovery is read from <code>/.well-known/openid-configuration</code></td></tr>
+<tr><td>Client ID, Client secret</td><td>The secret is stored encrypted; leave blank to keep it</td></tr>
+<tr><td>Redirect URI (give to the IdP)</td><td><code>https://holodeck.example.com/api/auth/oidc/callback</code></td></tr>
+<tr><td>Scopes</td><td><code>openid profile email groups</code></td></tr>
+<tr><td>Username claim / Groups claim</td><td><code>preferred_username</code> / <code>groups</code></td></tr>
+<tr><td>Admin groups, User groups</td><td>Comma-separated</td></tr>
+</tbody></table></div>
+<p>The portal uses the authorization code flow with PKCE, state and nonce.</p>
+
+<h2>SAML 2.0</h2>
+<div class="tablewrap"><table>
+<thead><tr><th>Setting</th><th>Default / notes</th></tr></thead>
+<tbody>
+<tr><td>IdP SSO URL (redirect binding)</td><td>From your IdP</td></tr>
+<tr><td>IdP entity ID / issuer</td><td>Optional; checked when set</td></tr>
+<tr><td>SP entity ID</td><td>Blank = the metadata URL <code>https://holodeck.example.com/api/auth/saml/metadata</code></td></tr>
+<tr><td>ACS URL (give to the IdP)</td><td><code>https://holodeck.example.com/api/auth/saml/acs</code></td></tr>
+<tr><td>IdP signing certificate (PEM)</td><td>Assertions must be signed</td></tr>
+<tr><td>Username / email / first name / last name / groups attributes</td><td>Defaults suit Authentik: <code>http://schemas.goauthentik.io/2021/02/saml/username</code>, <code>…/claims/emailaddress</code>, <code>http://schemas.xmlsoap.org/claims/Group</code></td></tr>
+</tbody></table></div>
+<p>SAML sign-in must start at the portal (SP-initiated). The portal remembers each request it sends, accepts only a response to a request from the same browser within 10 minutes, accepts it once, and refuses an assertion it has already seen. Responses the identity provider sends unprompted (IdP-initiated) are refused. For an app-launcher tile in the identity provider, set its launch URL to <code>https://holodeck.example.com/api/auth/saml/login</code>; it then starts a normal SP-initiated sign-in.</p>
+
+<h2>Local accounts and break-glass access</h2>
+<p><strong>Allow local username/password sign-in</strong> can be turned off for users once SSO works. Local administrators can still sign in through the <span class="ui">Administrator sign-in</span> link on the login page, so a broken identity provider can't lock you out.</p>
+<div class="callout info"><span class="t">Identity providers with a private CA</span>If your identity provider's certificate comes from a private certificate authority, put that CA (PEM) in the portal's <span class="path">extra-ca.pem</span> and restart the portal (see the operations guide's <a href="HOLODECK_PORTAL_OPERATIONS_GUIDE.html#ops-reference" data-guide="ops" data-goto="ops-reference">Reference</a>).</div>
+</section>
+<section class="section" id="admin-labs" data-title="Managing labs" data-group="Labs and users">
+<header class="sec-head"><div class="eyebrow">Labs and users</div><h1>Managing labs</h1><p class="lead">Everything users can do with their own labs, administrators can do with all labs, plus a few extra actions.</p></header>
+<h2>All labs</h2>
+<p><span class="ui">All labs</span> (also the <span class="ui">All Labs</span> tab on the dashboard) shows every lab with its owner. Toggle <strong>Show removed labs</strong> to see history.</p>
+
+<h2>Administrator-only actions</h2>
+<div class="tablewrap"><table>
+<thead><tr><th>Action</th><th>Where</th><th>Notes</th></tr></thead>
+<tbody>
+<tr><td>Deploy on behalf of a user</td><td>Deploy page → <strong>Owner</strong></td><td>Counts against that user's quota</td></tr>
+<tr><td>Pin a lab to a Holorouter</td><td>Deploy page → <strong>Holorouter</strong></td><td>Lists the free routers that serve the chosen configuration; Automatic = lowest free slot</td></tr>
+<tr><td>Override the DNS domain</td><td>Deploy page → DNS domain option</td><td>Blank uses the per-lab template</td></tr>
+<tr><td>Lease beyond the maximum</td><td>Deploy page, lease dialog</td><td></td></tr>
+<tr><td>Renew an expired lease</td><td>Lease dialog → <span class="ui">Renew</span></td><td>Optionally <strong>Power the lab back on</strong></td></tr>
+<tr><td>Power on an expired lab</td><td>Lab page</td><td></td></tr>
+<tr><td><span class="ui">Force off</span></td><td>Lab page</td><td>Hard power-off of every lab VM on vCenter, including suspended ones (their saved state is discarded). vSAN or appliances may need recovery afterwards.</td></tr>
+<tr><td>Change owner</td><td>Lab page → <span class="ui">Settings</span></td><td>Not while the lab has a job queued, running or waiting for an answer. The lab's jobs (history, logs, prompts, cancel) follow the new owner; the previous owner no longer sees them.</td></tr>
+<tr><td>Exempt from the idle policy</td><td>Lab page → <span class="ui">Settings</span> → <strong>Idle policy</strong></td><td>The lab is never suspended or shut down for inactivity. Ending the exemption starts a fresh idle period.</td></tr>
+<tr><td><span class="ui">Keep running</span></td><td>Lab page, idle notice</td><td>Restarts the lab's idle clock (owners can too)</td></tr>
+<tr><td><span class="ui">Forget lab</span></td><td>Lab page → <span class="ui">Settings</span></td><td>Marks the lab removed and frees its router without running Holodeck. Only when nothing of the lab exists (it was removed outside the portal, or its deployment failed before creating anything).</td></tr>
+</tbody></table></div>
+
+<h2>Expired and failed labs</h2>
+<ul>
+  <li><strong>Expired</strong>: the lab is powered off and stays until you renew or remove it. The dashboard's <strong>Leases expiring</strong> tile counts expired labs.</li>
+  <li><strong>Failed</strong>: read the job log; fix the cause; <span class="ui">Retry deployment</span> (Holodeck resumes) or remove. <span class="ui">Export diagnostics</span> collects Holodeck's error stack.</li>
+</ul>
+
+<h2>How deployments are placed</h2>
+<p>A lab goes to a Holorouter that is <span class="pill ok">Ready</span>, whose slot is inside the network pool, has no lab, isn't staging files, has the lab's version staged, and serves the lab's configuration (its capacity profile is for that configuration, or it has no profile). The lowest such slot wins unless you pin a router. The number of labs is also capped by <strong>Maximum labs</strong>.</p>
+
+<h2>Lab names</h2>
+<ul>
+  <li>A blank instance ID becomes <code>s</code> plus the slot's two digits: a lab on slot 6 is <code>s06</code>, so its VM names start with <code>s06-</code>. If that ID is taken (someone chose it by hand for another lab), a letter is added: <code>s06b</code>.</li>
+  <li>The lab's DNS domain comes from the <strong>Per-lab DNS domain</strong> template, by default <code>lab{slot}.vcf.lab</code> (<code>lab06.vcf.lab</code>). Each slot hosts one lab at a time, so these names never clash between running labs.</li>
+</ul>
+</section>
+
+<section class="section" id="settings" data-title="Settings" data-group="Platform">
+<header class="sec-head"><div class="eyebrow">Platform</div><h1>Settings</h1><p class="lead">Portal-wide limits, leases, idle labs, networking, Holorouter defaults, certificate, updates and sign-in. Each section has its own Save button and every change is audited.</p></header>
+<h2>General</h2>
+<p><strong>Portal name</strong>: shown in the menu, on the login page and in the browser tab. <strong>Keep the audit log for (days)</strong>: 30–3650, default 365; older entries are deleted by the hourly clean-up.</p>
+
+<h2>Certificate and Updates</h2>
+<p>The portal's TLS certificate (CSR, install, upload, self-signed, roll back) and where portal updates come from: see <a href="HOLODECK_PORTAL_OPERATIONS_GUIDE.html#certificate" data-guide="ops" data-goto="certificate">Certificate</a> and <a href="HOLODECK_PORTAL_OPERATIONS_GUIDE.html#updates" data-guide="ops" data-goto="updates">Updates</a> in the operations guide.</p>
+
+<h2>Jobs waiting for an answer</h2>
+<div class="tablewrap"><table>
+<thead><tr><th>Setting</th><th>Default</th><th>Notes</th></tr></thead>
+<tbody>
+<tr><td>Remind the owner after (hours)</td><td>24</td><td>One notification to the lab's owner (or the job's submitter). 0 = no reminder.</td></tr>
+<tr><td>Cancel the job after (hours)</td><td>72</td><td>Counted from when the question appeared. The job is cancelled like a manual cancel (a deployment leaves the lab Failed, ready to retry) and the owner is notified. 0 = wait forever.</td></tr>
+</tbody></table></div>
+
+<h2>Capacity &amp; quotas</h2>
+<div class="tablewrap"><table>
+<thead><tr><th>Setting</th><th>Default</th><th>Notes</th></tr></thead>
+<tbody>
+<tr><td>Maximum labs across the portal</td><td>1</td><td>1–10. The effective limit is the lower of this and the number of healthy Holorouters.</td></tr>
+<tr><td>Default labs per user</td><td>2</td><td>0–10; overridable per user.</td></tr>
+</tbody></table></div>
+
+<h2>Day-2 host limits</h2>
+<p>What users may request with <strong>Add ESX hosts</strong>, and how many nested hosts a lab may have per site. Holodeck deploys a lab with 4 hosts (12 vCPU, 32 GB, 2 × 450 GB) and every added cluster has 3 hosts; neither can be changed. Each size setting has a minimum, a default (pre-filled in the form) and a maximum, within the hard range below.</p>
+<div class="tablewrap"><table>
+<thead><tr><th>Setting</th><th>Hard range</th><th>Default min / default / max</th></tr></thead>
+<tbody>
+<tr><td>vCPUs per host</td><td>2–64</td><td>2 / 12 / 64</td></tr>
+<tr><td>Memory per host (GB)</td><td>8–1024</td><td>8 / 32 / 1024</td></tr>
+<tr><td>Disks per host</td><td>1–3</td><td>1 / 2 / 3</td></tr>
+<tr><td>Disk size (GB)</td><td>1–16384</td><td>1 / 450 / 16384</td></tr>
+<tr><td>Hosts per lab site</td><td>4–64</td><td>8</td></tr>
+</tbody></table></div>
+<p>The per-site count is the number of ESX hosts in the lab's last snapshot (at least Holodeck's 4), plus hosts that a running day-2 job is adding. At 8 a user can add one cluster and one host; at 4, nothing. When an expansion fails or is cancelled, Holodeck may already have created some of its hosts: they keep counting, the portal starts a refresh to read the real host list, and nobody (administrators included) can add hosts until it has finished. If the refresh can't complete, an administrator can click <span class="ui">Accept the current host count</span> in the expansion dialog (audited). Administrators aren't held to the per-site total, but the size ranges apply to everyone. For a hard ceiling on what labs consume, also set limits on the capacity profile's resource pool in vCenter.</p>
+
+<h2>Leases &amp; warnings</h2>
+<div class="tablewrap"><table>
+<thead><tr><th>Setting</th><th>Default</th><th>Notes</th></tr></thead>
+<tbody>
+<tr><td>Default lease (days)</td><td>14</td><td>1–365; must not exceed the maximum.</td></tr>
+<tr><td>Maximum lease (days)</td><td>365</td><td>Up to 365. Also caps how far users can extend (counted from now).</td></tr>
+<tr><td>Users can extend their own leases</td><td>On</td><td>Expired leases are always admin-only.</td></tr>
+<tr><td>First warning / Second warning</td><td>1 day / 2 hours</td><td>Lead times before expiry, in hours or days.</td></tr>
+</tbody></table></div>
+
+<h2>Idle labs</h2>
+<p>Two independent stages, each with its own switch and number of days without use: <strong>Suspend</strong> (default 7 days) and <strong>Shut down</strong> (default 14 days). Both are off until you enable them. This is the default for every Holorouter; each router can follow it, set its own stages or opt out. See <a href="#leases-admin" data-goto="leases-admin">Leases and idle labs</a>.</p>
+
+<h2>Network pool</h2>
+<p>First octet (10), second octet start and end (1 and 10), VLAN multiplier (100), <strong>Blocked VLANs</strong>, <strong>Blocked networks</strong> and the <strong>Per-lab DNS domain</strong> template (<code>lab{slot}.vcf.lab</code>). See <a href="#network" data-goto="network">Network pool and VLANs</a>. While labs exist, only the pool end, the blocked lists and the DNS template can change, and never in a way that moves a slot a router already uses.</p>
+
+<h2>Holorouters</h2>
+<div class="tablewrap"><table>
+<thead><tr><th>Setting</th><th>Default</th><th>Notes</th></tr></thead>
+<tbody>
+<tr><td>Holorouter OVA URL</td><td>(empty)</td><td>Required to deploy routers, e.g. <code>https://depot.example.com/holorouter/holorouter-9.1.0.0912.ova</code>. The deploy job downloads it into the portal's data folder (keeping the newest one for later deployments), checks it, then deploys it.</td></tr>
+<tr><td>OVA SHA-256</td><td>(empty)</td><td>The digest of the OVA you trust: Broadcom shows it next to the download, or run <code>sha256sum</code> on your original copy. A download that doesn't match fails the job before anything is deployed, and the cached copy is checked again before every deployment. <strong>Required for an <code>http://</code> URL</strong>: without it, new routers can't be deployed (existing routers and labs are not affected). Optional for <code>https://</code>, where the depot's certificate is verified instead and redirects may not leave HTTPS.</td></tr>
+<tr><td>Verify the vCenter sign-in strictly during router deployments (vCenter targets)</td><td>On</td><td>The deploy job signs in to vCenter only if vCenter's certificate chains to the certificate authority saved with the profile's approval and names the host. Turn off to sign in with the approved fingerprint check alone.</td></tr>
+<tr><td>Require the SHA-256 for https:// URLs too</td><td>Off</td><td>Makes the digest mandatory whatever the URL.</td></tr>
+<tr><td>Depot CA certificate</td><td>(empty)</td><td>PEM, for an <code>https://</code> depot whose certificate isn't publicly trusted. Not needed with a SHA-256: the digest then proves the file and the depot certificate isn't checked.</td></tr>
+<tr><td>Webtop gateway</td><td>On (new installations)</td><td>Routers open their webtop through the portal (see <a href="#holorouters" data-goto="holorouters">Webtop gateway</a>). <strong>Mode for routers without their own choice</strong>: <em>Through the portal only</em> by default; also <em>Through the portal</em> or <em>Direct</em>.</td></tr>
+<tr><td>Webtop username / port</td><td>admin / 30000</td><td>Shown to lab owners</td></tr>
+<tr><td>Health check (minutes)</td><td>5</td><td>How often routers are checked over SSH; takes effect after a portal restart</td></tr>
+<tr><td>Webtop password</td><td>(not set)</td><td>Stored encrypted. Every Holorouter uses the same webtop login. Lab owners on <em>Direct</em> routers see it in their credentials; on routers using the webtop gateway the portal signs in for them and nobody sees it. Without it, owners see the link but no password, and the gateway can't sign in.</td></tr>
+</tbody></table></div>
+
+<h2>Sign-in</h2>
+<p><strong>Local accounts</strong>, <strong>OpenID Connect</strong> and <strong>SAML 2.0</strong>: see <a href="#sso" data-goto="sso">Single sign-on</a>.</p>
+</section>
+<section class="section" id="network" data-title="Network pool and VLANs" data-group="Platform">
+<header class="sec-head"><div class="eyebrow">Platform</div><h1>Network pool and VLANs</h1><p class="lead">How the portal turns the pool settings into each slot's networks and VLANs, and what the vSphere network must carry.</p></header>
+<h2>The formula</h2>
+<p>Slot <em>n</em> (starting at 1) reserves two consecutive /20 networks: second octet <code>start + (n−1)×2</code> for site A (deployed) and the next one for site B (reserved for dual-site). Each site's VLAN range starts at second octet × multiplier and uses 32 VLANs. The number of slots is <code>floor((end − start + 1) / 2)</code>.</p>
+<div class="tablewrap"><table>
+<thead><tr><th>Slot</th><th>Site A</th><th>VLANs</th><th>Site B (reserved)</th><th>VLANs</th></tr></thead>
+<tbody>
+<tr><td>1</td><td class="mono">10.1.0.0/20</td><td class="mono">100–131</td><td class="mono">10.2.0.0/20</td><td class="mono">200–231</td></tr>
+<tr><td>2</td><td class="mono">10.3.0.0/20</td><td class="mono">300–331</td><td class="mono">10.4.0.0/20</td><td class="mono">400–431</td></tr>
+<tr><td>3</td><td class="mono">10.5.0.0/20</td><td class="mono">500–531</td><td class="mono">10.6.0.0/20</td><td class="mono">600–631</td></tr>
+<tr><td>4</td><td class="mono">10.7.0.0/20</td><td class="mono">700–731</td><td class="mono">10.8.0.0/20</td><td class="mono">800–831</td></tr>
+<tr><td>5</td><td class="mono">10.9.0.0/20</td><td class="mono">900–931</td><td class="mono">10.10.0.0/20</td><td class="mono">1000–1031</td></tr>
+</tbody></table></div>
+<p>The settings page validates the pool: every VLAN must be ≤ 4094 and the multiplier must be at least 32 so ranges don't overlap. Each Holorouter owns one slot; a slot without a router can't host a lab.</p>
+
+<h2>Blocked VLANs and networks</h2>
+<p>A lab must never use addresses or VLANs that exist elsewhere on your network: Holodeck configures them on the lab's Holorouter, and an overlap with the management network cuts the router off (and could disturb the real network). List what your site uses:</p>
+<ul>
+  <li><strong>Blocked VLANs</strong>: single VLANs or ranges, e.g. <code>1210-1218, 1500</code>. Each lab site uses 32 VLANs from its start (second octet × multiplier), so 10.11 means VLANs 1100–1131.</li>
+  <li><strong>Blocked networks</strong>: networks or addresses, e.g. <code>192.0.2.0/24</code>.</li>
+</ul>
+<p>A pool range (a slot's two /20s) that touches any of them is <strong>skipped</strong>, and slot numbering continues with the next range. With the default pool and <code>1210-1218</code> blocked, slots 1–5 stay on 10.1–10.10 and slot 6 becomes 10.13.0.0/20 (VLANs 1300+), provided the pool end is at least 14. The settings page lists the usable slots and the skipped ranges with the reason.</p>
+<p><strong>Address guard.</strong> The portal also knows the management networks it can see: its own network and every router's management address. A slot overlapping one is shown as a problem until you block it, and the portal won't give such a slot to a new router or deploy a lab into it. A change that would move the networks of a slot a router already uses is refused: detach or forget that router first.</p>
+
+<h2>vSphere requirements</h2>
+<ul>
+  <li>The trunk port group a router's eth1 (site A) uses must carry that slot's site A VLAN range; eth2 (site B) its site B range.</li>
+  <li>Holodeck requires promiscuous mode, MAC address changes and forged transmits on those port groups.</li>
+  <li>The lab's nested ESX hosts use the same site A trunk port group as their router.</li>
+</ul>
+<div class="callout warn"><span class="t">Untagged traffic and DHCP</span>Holodeck serves DHCP on its untagged <code>Untagged-HOL</code> network on eth1. Routers whose eth1 shares one port group share that untagged segment, and every router's trunk sees every VLAN on it. Giving each slot its own trunk port group, carrying only that slot's VLAN range, keeps labs apart.</div>
+
+<h2>Per-lab DNS domain</h2>
+<p>Each lab is deployed with <code>-DNSDomain</code> from the template: <code>{slot}</code> becomes the lab's slot as two digits and <code>{instance}</code> its instance ID. The default <code>lab{slot}.vcf.lab</code> gives <code>lab06.vcf.lab</code> on slot 6. A slot hosts one lab at a time, so slot-based names never clash between running labs, and a router's labs always get the same domain. Other placeholders are refused. Users can't change the domain; administrators can override it per lab on the deploy form. A changed template applies to new labs.</p>
+</section>
+<section class="section" id="profiles" data-title="Capacity profiles" data-group="Platform">
+<header class="sec-head"><div class="eyebrow">Platform</div><h1>Capacity profiles</h1><p class="lead">A capacity profile says where in vCenter, or on which standalone ESXi host, a Holorouter VM goes and where its lab's nested hosts are placed.</p></header>
+<h2>Creating a profile</h2>
+<ol class="steps">
+  <li><span class="ui">Capacity profiles</span> → <span class="ui">New profile</span>. Give it a name.</li>
+  <li>Choose the <strong>vCenter (from configuration)</strong>: the portal connects with that configuration's target credentials.</li>
+  <li>Click <span class="ui">Read inventory</span> (later <span class="ui">Refresh inventory</span>). A short job reads datacenters, clusters, resource pools, VM folders, datastores (with free space) and networks; the result is kept until you refresh it.</li>
+  <li>Pick <strong>Datacenter</strong>, <strong>Cluster</strong>, optional <strong>Resource pool</strong> and <strong>VM folder</strong> (for router VMs), <strong>Datastore</strong>, <strong>Management network</strong> (the router's eth0; needs outbound access), <strong>Trunk port group — site A</strong> (router eth1 and the lab's nested hosts) and <strong>Trunk port group — site B</strong> (router eth2, for dual-site later). Save.</li>
+</ol>
+<p>The site A trunk can't be the management network. Distributed port groups are marked <em>(dvPG)</em>.</p>
+
+<h2>vCenter certificate</h2>
+<p>The profile list shows <strong>Certificate approved</strong> or <strong>Certificate not approved</strong> under the vCenter. Click it to see the certificate vCenter presents now (subject, issuer, expiry, SHA-256). Compare the SHA-256 with the one in the vSphere Client or from your vCenter administrator, then click <span class="ui">Approve this certificate</span>.</p>
+<ul>
+  <li>With an approval, <strong>Deploy new</strong> checks that vCenter still presents that certificate before connecting. If the certificate has changed, the job stops before anything is deployed; review and approve the new certificate if the change is expected (for example a renewal).</li>
+  <li>Without an approval, <strong>Deploy new</strong> is refused for that profile (the deploy dialog says so). Lab deployments are not affected.</li>
+  <li>Approving also saves the certificate authority that signed vCenter's certificate (vCenter publishes it at <code>/certs/download.zip</code>; the portal keeps it only if it really signed the approved certificate). The deploy job then signs in to vCenter, which sends the vCenter credentials, with PowerCLI refusing any certificate that doesn't chain to that authority or doesn't name the host. If no authority could be saved, the dialog offers <span class="ui">Approve again</span>; until then deployments use the fingerprint check alone, with a note in the job log.</li>
+  <li>Changing a profile's vCenter configuration clears its approval.</li>
+</ul>
+<p>Strict sign-in applies to vCenter targets only: standalone ESXi certificates rarely carry the host's name, so ESXi targets keep the approved-fingerprint check. Holodeck's own connections to vCenter (lab deployments, power, removal) use Holodeck's PowerCLI setting, which ignores certificate errors; the portal does not change it.</p>
+
+<h2>Standalone ESXi hosts</h2>
+<p>Holodeck can target a single ESXi host instead of a vCenter, and so can a capacity profile. Choose a configuration whose target is an ESXi host and read its inventory: the host appears in place of a cluster (<em>(standalone host)</em>), with its resource pools, datastores and port groups. There are no VM folders.</p>
+<ul>
+  <li><strong>One host, one profile.</strong> A site with several standalone hosts uses one Holodeck configuration and one capacity profile per host; you choose the host by choosing the profile.</li>
+  <li><strong>Port groups.</strong> Create the trunk port groups yourself on the host's standard switch: VLAN 4095, with promiscuous mode, MAC address changes and forged transmits set to <em>Accept</em>.</li>
+  <li><strong>Certificate.</strong> Approve the host's certificate like a vCenter's. ESXi's default certificate is self-signed and often issued to <code>localhost.localdomain</code>, so deployments check the approved fingerprint; the stricter certificate-authority check is for vCenter only.</li>
+  <li><strong>Licence.</strong> Deploying a router writes through the host's API. Evaluation mode allows that. The free ESXi licence, or an evaluation that has ended, does not: the profile and the deploy dialog say so, and <span class="ui">Deploy new</span> is refused. Deploy the Holorouter OVA on the host yourself (ESXi Host Client), then add it with <span class="ui">Import existing</span>. Labs work either way.</li>
+  <li><strong>Labs.</strong> Holodeck places a lab's nested hosts on the profile's datastore and trunk port group; cluster and resource pool don't apply.</li>
+  <li><strong>Nested ESXi hosts.</strong> If the target ESXi host is itself a VM, the port groups its uplinks use on the outer vSphere need <em>MAC learning</em> (or promiscuous mode) plus <em>forged transmits</em> and <em>MAC address changes</em> set to Accept. Otherwise the outer switch drops the router's traffic: it boots, but its address doesn't answer. Also match the <strong>MTU</strong>: Holorouters use MTU 8000 on eth0, so the nested host's vSwitches (and the outer switches) need at least that, typically 9000. With a 1500 vSwitch, ping works but SSH stalls during its key exchange and the deployment stops with an MTU hint.</li>
+  <li><strong>Router settings.</strong> A standalone host has no vApp settings, so the portal deploys the router powered off, writes its settings (address, hostname, root password) into the VM's <code>guestinfo.ovfEnv</code>, powers it on, and removes them again after onboarding. When you deploy a router by hand on a standalone host (for <span class="ui">Import existing</span>), check that it comes up on the address you entered; if it takes a DHCP address instead, its settings didn't reach it.</li>
+  <li><strong>ESXi hosts managed by a vCenter.</strong> Use the vCenter as the target; vCenter usually blocks deployments made directly on a host it manages.</li>
+</ul>
+
+<h2>Using profiles</h2>
+<ul>
+  <li>A profile belongs to one configuration (its vCenter or ESXi target). A router with the profile takes only that configuration's labs; give each configuration at least one router.</li>
+  <li>Deployed routers always have a profile. An imported router may have none: it then takes any configuration's labs, which use the configuration's own placement.</li>
+  <li>A router's profile can be changed on its page only while it has no lab.</li>
+  <li>A profile used by routers can't be deleted.</li>
+  <li>The trunk port groups must carry the VLANs of every slot whose router uses the profile.</li>
+</ul>
+</section>
+<section class="section" id="holorouters" data-title="Holorouters" data-group="Platform">
+<header class="sec-head"><div class="eyebrow">Platform</div><h1>Holorouters</h1><p class="lead">Each Holorouter owns one network slot and runs one lab. Add routers to add lab capacity.</p></header>
+<h2>The Holorouters page</h2>
+<p>One card per router: name and address, status, slot and network, its lab or <em>Free</em>, profile (or <em>Configuration placement</em> without one), Holodeck version, <strong>Staged versions</strong> (or "None — labs can't be placed here"), and the check results. Notices point out a missing capacity profile or webtop password. The <strong>Portal SSH key</strong> panel shows the public key the portal installs on routers.</p>
+
+<h2>Statuses</h2>
+<div class="tablewrap"><table>
+<thead><tr><th>Status</th><th>Meaning</th></tr></thead>
+<tbody>
+<tr><td><span class="pill ok">Ready</span></td><td>Healthy; counts towards capacity.</td></tr>
+<tr><td><span class="pill warn">Needs attention</span></td><td>Reachable but a check found a blocker. Doesn't take new labs.</td></tr>
+<tr><td><span class="pill info">Onboarding</span></td><td>Being imported or checked; also a router that failed its import checks (so the next check applies them again).</td></tr>
+<tr><td><span class="pill info">Deploying</span></td><td>The OVA is being deployed.</td></tr>
+<tr><td><span class="pill err">Offline</span></td><td>SSH from the portal fails. Administrators are notified.</td></tr>
+<tr><td><span class="pill err">Error</span></td><td>Onboarding or removal failed; the card shows why.</td></tr>
+<tr><td><span class="pill muted">Removing</span></td><td>Being detached or deleted.</td></tr>
+</tbody></table></div>
+
+<h2>Deploy a new Holorouter</h2>
+<p><span class="ui">Deploy new</span> deploys the Holorouter OVA from <strong>Holorouter OVA URL</strong> into the vCenter or ESXi host of a capacity profile.</p>
+<div class="tablewrap"><table>
+<thead><tr><th>Field</th><th>Notes</th></tr></thead>
+<tbody>
+<tr><td>Capacity profile</td><td>Placement for the VM and its lab's hosts; the router then serves the profile's configuration</td></tr>
+<tr><td>Hostname, VM name</td><td>VM name defaults to the hostname; it may contain single spaces and <code>. - _ ( )</code></td></tr>
+<tr><td>Management IP, Prefix length, Gateway, DNS server, DNS domain, NTP server</td><td>eth0 settings</td></tr>
+<tr><td>Root password, Confirm password</td><td>At least 8 characters. Used during onboarding (through vCenter where possible); not stored.</td></tr>
+<tr><td>Enable SSH, Enable the webtop UI</td><td>Always on: the portal runs Holodeck over SSH, and the webtop is the lab's jump host</td></tr>
+<tr><td>Enable GitOps</td><td>Optional (GitLab on the router)</td></tr>
+<tr><td>Stage installation files</td><td>Versions copied from another router once the new one passes its checks</td></tr>
+</tbody></table></div>
+<p>Before anything starts, the portal needs an OVA it can authenticate (see <strong>OVA SHA-256</strong> in <a href="#settings" data-goto="settings">Settings</a>) and an approved certificate on the profile (see <a href="#profiles" data-goto="profiles">Capacity profiles</a>). The job runs in the portal and:</p>
+<ol class="steps">
+  <li>downloads the OVA into the portal's cache (it needs the OVA's size plus 2 GB free) and checks its SHA-256;</li>
+  <li>checks that vCenter presents the approved certificate, signs in (strictly, where enabled) and deploys the VM with PowerCLI, then powers it on. On a standalone ESXi host the VM is deployed powered off, its NICs and settings are written, then it is powered on;</li>
+  <li>waits for first boot (SSH, then the webtop answering, up to 45 minutes);</li>
+  <li><strong>onboards the router</strong>: installs the portal's SSH key and gives the router its own SSH host keys (below), pins the new key and runs the router checks.</li>
+</ol>
+<h3>Onboarding and SSH host keys</h3>
+<p>Every Holorouter OVA ships with the same SSH host keys, so a shipped key can't identify a router: anyone with the OVA has its private key. The portal therefore replaces them during onboarding.</p>
+<ul>
+  <li><strong>Through vCenter (preferred).</strong> The portal asks vCenter, over the approved certificate, to run the onboarding inside the new VM through VMware Tools: it installs the portal's key, generates new host keys and reports the new fingerprint, which the portal pins. The root password goes only to vCenter; it never travels over SSH. The job log says <em>The root password was not sent over SSH</em>.</li>
+  <li><strong>With your confirmation (fallback).</strong> This needs the <em>Guest operations</em> privileges (modify, program execution, queries) for the vCenter account of the Holodeck configuration. They are optional: without them the job pauses with a prompt showing the fingerprint the router offers. Open the VM's console in vCenter, sign in as root, run the command below and answer <strong>yes</strong> if it matches. The portal then installs its key with the root password over SSH, checked against that key, and replaces the host keys straight away.</li>
+</ul>
+<div class="code"><button class="copy" type="button">Copy</button><pre>ssh-keygen -lf /etc/ssh/ssh_host_ed25519_key.pub</pre></div>
+<p>New host keys are prepared in a temporary folder, checked by <code>sshd -t</code> (the old ones come back if that fails) and loaded with a reload, so nothing that is connected is interrupted.</p>
+
+<h2>Import an existing Holorouter</h2>
+<p><span class="ui">Import existing</span>: hostname or IP, root password (used once, not stored), optional display name (defaults to the router's address), <strong>capacity profile</strong> and versions to stage. The profile must match the port groups the router's NICs use; with <em>None</em> the router serves any configuration, and its labs use the configuration's placement (this is how the first router is added). The portal installs its key, then checks the router.</p>
+<ol class="steps">
+  <li>Enter the address and click <span class="ui">Scan host key</span>. The dialog shows the router's SSH host key fingerprint, e.g. <code>ssh-ed25519 SHA256:…</code>.</li>
+  <li>On the router's console, run the command below and compare. Confirm with <strong>This is the fingerprint the router shows</strong>; <span class="ui">Import</span> stays disabled until you do.</li>
+  <li>The import job pins that key before connecting. If the router presents any other key, the job fails before the password is sent.</li>
+  <li>Right after installing its key, the job gives the router its own SSH host keys (see <em>Onboarding and SSH host keys</em> above) and pins the new one.</li>
+</ol>
+<div class="code"><button class="copy" type="button">Copy</button><pre>ssh-keygen -lf /etc/ssh/ssh_host_ed25519_key.pub</pre></div>
+
+<h2>Router checks</h2>
+<p>Each check runs on the router itself (button <span class="ui">Check now</span> on its page) and looks at:</p>
+<div class="tablewrap"><table>
+<thead><tr><th>Blocks the router</th><th>Warns</th></tr></thead>
+<tbody>
+<tr><td>
+<ul>
+<li>Holodeck PowerShell module missing</li>
+<li>Webtop not answering on port 30000</li>
+<li>Kubernetes not reachable</li>
+<li>eth1 (site A trunk) missing</li>
+<li>vCenter not reachable on port 443</li>
+<li>Holodeck instances, or configs bound to instances, that the portal doesn't manage</li>
+<li>Import only: Holodeck has already configured the router's lab networks (startup script, VLAN interfaces or "Configured" status)</li>
+</ul>
+</td><td>
+<ul>
+<li>Holodeck version differs from the one most routers run</li>
+<li>Kubernetes pods not running</li>
+<li>eth2 (site B trunk) missing</li>
+<li>Less than 20 GB free on <span class="path">/holodeck-runtime</span></li>
+</ul>
+</td></tr>
+</tbody></table></div>
+<div class="callout danger"><span class="t">The portal never resets a Holorouter</span>Holodeck's <code>Reset-HoloRouter</code> (and <code>-ResetHoloRouter</code>) uninstall Kubernetes, GitLab, Authentik, Vault, Technitium DNS and FRR, delete their data, restore an old firewall and reboot. The portal refuses to run them. A router that Holodeck has already configured, or that has leftover instances, must be cleaned up outside the portal or replaced with a fresh one.</div>
+
+<h2>The router page</h2>
+<ul>
+  <li><strong>Overview</strong>: slot, site A and B networks, lab, Holodeck version, last seen, the pinned <strong>SSH host key</strong>, size (vCPU, memory, free disk), Kubernetes pods, NICs, blockers and warnings.</li>
+  <li><strong>Placement</strong>: the capacity profile (changeable while the router has no lab), and <strong>Webtop access</strong> while the webtop gateway is on.</li>
+  <li><strong>Idle labs</strong>: follow the default (Settings → Leases), this router's own stages, or never (see <a href="#leases-admin" data-goto="leases-admin">Leases and idle labs</a>). Saving starts a fresh idle period for the router's lab.</li>
+  <li><strong>SSH host key</strong>: if another router presents the same key, the page says so and offers <span class="ui">Renew SSH host key</span>. It runs a short job that gives the router its own keys; labs and open sessions on the router carry on.</li>
+  <li><strong>Installation files</strong>: see <a href="#staging" data-goto="staging">Installation files</a>.</li>
+  <li><strong>Services</strong>: the Holorouter's services (name, FQDN, address) and a link to its Technitium DNS. Holodeck's own DNS cmdlets don't work on 9.1 Holorouters, so manage extra DNS records in Technitium.</li>
+  <li><strong>Holodeck commands</strong>: run <code>Get-HoloDeckBGPConfig</code> or <code>Get-HolorouterServices</code> against a configuration on this router; <code>Reset-HoloDeckState</code> clears Holodeck's deployment state (only when the router has no lab).</li>
+  <li><strong>Configured subnets</strong> for site A and B, and <strong>Holodeck logs</strong> with a viewer.</li>
+  <li>Header buttons: <span class="ui">Webtop</span>, <span class="ui">Check now</span>, and the pencil icon to rename the router.</li>
+</ul>
+
+<h2>Webtop gateway</h2>
+<p>On by default, with routers <em>Through the portal only</em>: users click <span class="ui">Webtop</span> and are signed in, and nobody needs the shared webtop password. Change the default in <a href="#settings" data-goto="settings">Settings → Holorouters</a>, or a router's mode under <strong>Webtop access</strong> on its page. With the gateway off, or a router on <em>Direct</em>, users open <code>http://&lt;router&gt;:30000</code> and type the shared login: simpler for a closed lab network, but every lab owner then knows the login and it travels unencrypted.</p>
+<p>While the default is <em>Through the portal only</em>, administrators see a yellow notice on the dashboard explaining it (and reminding them to set the webtop password if it's missing). <span class="ui">Dismiss</span> hides it until the next sign-in; <span class="ui">Don't show again</span> is remembered on the account.</p>
+<div class="tablewrap"><table>
+<thead><tr><th>Mode</th><th>Users get</th><th>The router</th></tr></thead>
+<tbody>
+<tr><td>Direct</td><td>A link to the router's webtop and the shared login</td><td>Unchanged</td></tr>
+<tr><td>Through the portal</td><td>An HTTPS link on the portal, <code>https://&lt;portal&gt;:&lt;8440 + slot&gt;/</code>. It opens only for the owner of the router's current lab and administrators, and signs in by itself: nobody sees the webtop password.</td><td>Unchanged; its own webtop still answers anyone with the shared login</td></tr>
+<tr><td>Through the portal only</td><td>As above</td><td>The portal closes the router's webtop ports (30000, 30001) and its web services (80, 443) on the management interface, and re-checks this at every health check.</td></tr>
+</tbody></table></div>
+<ul>
+  <li>Each router has its own portal port, so each webtop is a separate site in the browser: one router's desktop can't reach the portal pages or another router's desktop.</li>
+  <li>The portal reaches each router's webtop through a relay over its SSH connection, so the desktop and its login don't cross the management network unencrypted.</li>
+  <li>Access follows the lab: when a lab is transferred or removed, the former owner loses access and open desktop sessions on that router are ended.</li>
+  <li>Switching a router back to <em>Direct</em> removes the firewall rule and the relay; the router's own link works again.</li>
+  <li>Users must be able to reach the portal on ports 8441–8472.</li>
+</ul>
+
+<h2>Removing a router</h2>
+<div class="tablewrap"><table>
+<thead><tr><th>Action</th><th>What happens</th><th>When</th></tr></thead>
+<tbody>
+<tr><td><span class="ui">Detach</span></td><td>Removes the portal's SSH key from the router; the VM keeps running and can be imported again.</td><td>No lab, no job running; type the router's name.</td></tr>
+<tr><td><span class="ui">Detach &amp; delete VM</span></td><td>Also powers off and permanently deletes the VM in vCenter (found by VM name, or by IP for imported routers).</td><td>Same.</td></tr>
+<tr><td><span class="ui">Forget without contacting it</span></td><td>Removes the router from the portal without contacting it; its slot becomes free. The key may remain in its <code>authorized_keys</code>.</td><td>Routers in Error, Offline, Onboarding or Needs attention.</td></tr>
+</tbody></table></div>
+<p>Removed labs and old jobs keep their history.</p>
+</section>
+
+<section class="section" id="staging" data-title="Installation files" data-group="Platform">
+<header class="sec-head"><div class="eyebrow">Platform</div><h1>Installation files</h1><p class="lead">Holodeck needs the ESX installer ISO and the VCF Installer or Cloud Builder OVA for each version. Put them on any one router; the portal copies them to the others.</p></header>
+<h2>Where the files go</h2>
+<p>On a Holorouter, each version has its own folder, for example <span class="path">/holodeck-runtime/bin/9.1.0.0/</span>. Each folder needs two files:</p>
+<ul>
+  <li>the <strong>ESX installer ISO</strong>, and</li>
+  <li>the <strong>VCF Installer OVA</strong> (VCF 9.x) or <strong>Cloud Builder OVA</strong> (VCF 5.x).</li>
+</ul>
+<p>Download them from the Broadcom support portal and copy them to one router. They must have <strong>exactly</strong> the names Holodeck lists in its bill of materials, <span class="path">/holodeck-runtime/templates/bom.json</span>. Holodeck's precheck refuses other file names, including newer patch builds, so don't rename different builds.</p>
+<div class="code"><button class="copy" type="button">Copy</button><pre>jq 'to_entries[] | {version: .key, esx: .value.esx, installer: (.value["vcf-installer"] // .value["cloud-builder"])}' /holodeck-runtime/templates/bom.json</pre></div>
+
+<h2>On a router's page</h2>
+<p><span class="ui">Holorouters</span> → a router → <strong>Installation files</strong> lists each version Holodeck knows, newest first:</p>
+<ul>
+  <li>a staged version shows its files: both accepted files are present on this router;</li>
+  <li>otherwise, the size to copy and the router it would come from, or "No other Holorouter has it" with where to put the files;</li>
+  <li>a partial or different copy is flagged, and files Holodeck's precheck won't accept are listed.</li>
+</ul>
+
+<h2>Staging</h2>
+<ol class="steps">
+  <li>Tick the versions to copy and click <span class="ui">Stage selected</span>.</li>
+  <li>Follow the job: it checks free space (what's needed plus 5 GB), then streams each file from the source router to this one through the portal, with progress lines (percentage, rate, time left), verifies the SHA-256 on both routers, and only then gives the file its real name.</li>
+</ol>
+<p>The source is any healthy router with a complete copy, preferring one with the same Holodeck version (its bill of materials decides the file names), then the lowest slot. You can also choose versions in the <span class="ui">Deploy new</span> and <span class="ui">Import existing</span> dialogs; they are copied once the new router passes its checks.</p>
+<ul>
+  <li>An interrupted copy resumes where it stopped when you stage again.</li>
+  <li>While a router is staging, it doesn't take new labs.</li>
+  <li>Labs are only placed on routers that have their version staged; the deploy form greys out versions no free router has.</li>
+  <li>The delete button next to a staged version removes its files from that router (not while a lab of that version runs there).</li>
+  <li>Files added or removed by hand are picked up at the next health check or when you open the router's page.</li>
+</ul>
+<div class="callout info"><span class="t">Copy speed</span>Copies run over SSH from the source router, through the portal, to the target, so the network between the portal and the routers sets the pace. A VCF version's files add up to tens of GB.</div>
+</section>
+
+<section class="section" id="leases-admin" data-title="Leases and idle labs" data-group="Operations">
+<header class="sec-head"><div class="eyebrow">Operations</div><h1>Leases and idle labs</h1><p class="lead">How leases and the idle policy run, and which notifications users and administrators receive.</p></header>
+<h2>The lease check</h2>
+<p>Every minute the portal looks at every lab that is queued, deploying, ready or failed:</p>
+<ul>
+  <li>When the remaining time passes the first, then the second warning lead time, the owner gets one warning each (a lease that starts inside both windows warns once).</li>
+  <li>At expiry the lab is marked expired, the owner gets an error notification and every other administrator a warning, and once the lab is ready and idle it is shut down (audited as "Lease expired"). Labs still deploying are shut down after they finish. Nothing is deleted.</li>
+  <li>Extending or renewing resets the warnings.</li>
+</ul>
+
+<h2>Idle labs</h2>
+<p>With the idle policy on, a lab nobody uses is suspended after <em>N</em> days and/or shut down after <em>M</em> days. The two stages are independent; set the default under <span class="ui">Settings</span> → <strong>Idle labs</strong>, and per router on its page (follow the default, own stages, or never). Administrators can exempt single labs.</p>
+<div class="tablewrap"><table>
+<thead><tr><th>Counts as use</th><th>Notes</th></tr></thead>
+<tbody>
+<tr><td>The owner opening the lab's page</td><td>Once per visit; an open tab refreshing itself doesn't count</td></tr>
+<tr><td>The owner viewing credentials, running power or day-2 actions</td><td></td></tr>
+<tr><td>Extending the lease; <span class="ui">Keep running</span></td><td>By the owner or an administrator</td></tr>
+<tr><td>Powering the lab on</td><td>By anyone, including the lease renewal</td></tr>
+<tr><td>Webtop sessions through the gateway</td><td>Owner or administrator</td></tr>
+<tr><td>Webtop connections on the router</td><td>Counted at every health check; only connections that carried traffic in the last 15 minutes</td></tr>
+</tbody></table></div>
+<ul>
+  <li>The owner is warned before each stage: a day ahead, or half the stage for stages shorter than two days. The lab page shows "No use seen for … The lab will be suspended / shut down in …" with <span class="ui">Keep running</span>.</li>
+  <li><strong>Suspend</strong> applies to a running lab. <strong>Shut down</strong> applies to a running or suspended lab; a suspended lab is resumed first in the same job, because Holodeck signs in to the nested hosts to shut them down.</li>
+  <li>When the shut-down stage comes no later than the suspend stage, the lab is shut down without being suspended first.</li>
+  <li>Expired labs, labs with a job running, and exempt labs are left alone. Every automatic action is audited (<code>lab.idle.suspend</code>, <code>lab.idle.shutdown</code>) and the owner is told.</li>
+  <li>Changing a router's policy, or ending a lab's exemption, starts a fresh idle period.</li>
+</ul>
+
+<h2>Notifications</h2>
+<div class="tablewrap"><table>
+<thead><tr><th>Event</th><th>Who</th></tr></thead>
+<tbody>
+<tr><td>Lab ready / failed to deploy</td><td>Owner</td></tr>
+<tr><td>Lease warnings; idle warnings and idle actions</td><td>Owner</td></tr>
+<tr><td>Lease expired</td><td>Owner and every other administrator</td></tr>
+<tr><td>Day-2 completed / failed; lab removed / removal failed</td><td>Owner</td></tr>
+<tr><td>A job is waiting for an answer (reminder) or was cancelled for lack of one</td><td>Owner (or the job's submitter)</td></tr>
+<tr><td>Holorouter added, ready or needs attention; staging finished or failed</td><td>The administrator who started it</td></tr>
+<tr><td>Holorouter unreachable</td><td>Every administrator</td></tr>
+<tr><td>Portal certificate expiring (30 and 7 days); portal update available</td><td>Every administrator</td></tr>
+</tbody></table></div>
+<p>Notifications appear in the bell only; there is no email.</p>
+</section>
+
+<section class="section" id="jobs-admin" data-title="Jobs and Holodeck" data-group="Operations">
+<header class="sec-head"><div class="eyebrow">Operations</div><h1>Jobs and Holodeck</h1><p class="lead">How the portal runs Holodeck, and what to look at when a job misbehaves.</p></header>
+<h2>Where jobs run</h2>
+<div class="tablewrap"><table>
+<thead><tr><th>Jobs</th><th>Run</th><th>On a portal restart or update</th></tr></thead>
+<tbody>
+<tr><td>Lab jobs (deploy, power, day-2, refresh, diagnostics, remove), router checks, configuration jobs (new, settings, precheck)</td><td>On a Holorouter, in a systemd unit <code>holoportal-remote-job-&lt;id&gt;</code>, started over SSH</td><td>Keep running; the portal re-attaches and continues mirroring output and forwarding answers</td></tr>
+<tr><td>Reading vCenter inventory; deploying, onboarding, detaching and deleting Holorouters; staging installation files (copies stream through the portal)</td><td>Inside the portal (PowerShell with PowerCLI, SSH)</td><td>Stop with it (staging resumes where it stopped when started again); updates wait until none is running</td></tr>
+</tbody></table></div>
+
+<h2>How a router job runs</h2>
+<ol class="steps">
+  <li>The portal writes a job folder (readable by root only) with the steps and any secrets.</li>
+  <li>Over SSH it copies its runner to <span class="path">/opt/holodeck-portal-agent/ps/</span> on the router, sends the job, and starts the unit. The first step copies the Holodeck configuration to the router.</li>
+  <li>The unit runs PowerShell in a pseudo-terminal, imports Holodeck, deletes the job file and runs each step. Only a fixed list of Holodeck cmdlets and portal helpers is allowed.</li>
+  <li>The portal mirrors the output to the browser and forwards answers to Holodeck's questions.</li>
+  <li>When the job ends, however it ends (finished, failed, cancelled, lost), the portal records the result, updates the lab, and removes the files that can hold secrets (job file, prompt answers, raw result) on both sides. The hourly clean-up removes any that are left over. The output log stays.</li>
+</ol>
+<p>A job waiting for an answer reminds its owner after 24 hours and is cancelled after 72 (see <a href="#settings" data-goto="settings">Settings</a>). If a router can't be reached for 30 minutes, the portal stops waiting (the job may still finish on the router).</p>
+<p>Holodeck keeps one global state per router, so jobs that change it run one at a time per router; read-only jobs (diagnostics, checks, inventory, staging) run alongside. A queued job shows "Waiting for the Holodeck lock…".</p>
+
+<h2>Unattended Holodeck</h2>
+<p>The portal always runs <code>New-HoloDeckInstance</code> and the precheck with <code>-DeveloperMode</code>, giving Holodeck the configuration's depot token, proxy, offline depot and placement through environment variables instead of prompts. Anything else Holodeck asks appears as a prompt in the page.</p>
+
+<h2>What the portal adds to Holodeck</h2>
+<ul>
+  <li>Shut down and power on also handle the VCF Installer / Cloud Builder VM, which Holodeck's own name match misses.</li>
+  <li>Removal deletes VMs Holodeck leaves behind, verifies nothing remains and clears the instance from the configuration.</li>
+  <li>Suspend, force off and power state are read and set directly on vCenter.</li>
+  <li>The portal never edits Holodeck's own files and never runs <code>Reset-HoloRouter</code> or <code>-ResetHoloRouter</code>.</li>
+</ul>
+
+<h2>Where to look</h2>
+<div class="code"><button class="copy" type="button">Copy</button><pre># On the appliance
+docker logs --tail 200 holodeck-portal                        # the portal
+tail -f /data/portal/lib/jobs/&lt;id&gt;/output.log                 # a job's output, as the browser shows it
+# On the job's Holorouter
+systemctl status holoportal-remote-job-&lt;id&gt;                   # the job's unit
+tail -f /var/lib/holodeck-portal-agent/jobs/&lt;id&gt;/output.log   # the job's output there</pre></div>
+</section>
+<section class="section" id="security" data-title="Security" data-group="Operations">
+<header class="sec-head"><div class="eyebrow">Operations</div><h1>Security</h1><p class="lead">How the portal protects accounts, secrets, the routers it controls, and itself.</p></header>
+<div class="tablewrap"><table>
+<thead><tr><th>Area</th><th>Protection</th></tr></thead>
+<tbody>
+<tr><td>Passwords</td><td>Local passwords hashed with scrypt; minimum 10 characters. Sign-in attempts are counted before the password is checked: 10 failures per username and address, and 50 per address, in 15 minutes; at most 4 password checks run at once. nginx also limits the sign-in endpoint to 10 requests a minute per address (bursts of 20).</td></tr>
+<tr><td>Sessions</td><td>Random token in an HttpOnly, SameSite=Lax cookie (Secure over HTTPS); only its hash is stored; 12-hour lifetime. A password change signs out the user's other sessions; users can sign out other sessions from their Account page. A sign-in or password change that was waiting while an administrator reset the password or disabled the account is refused.</td></tr>
+<tr><td>Single sign-on</td><td>OIDC with PKCE, state and nonce. SAML only SP-initiated, each response tied to the browser's request, used once, assertions never replayed. Accounts are bound to the IdP's permanent identifier and the IdP's issuer, not the username; the same identifier from another IdP is refused until an administrator unlinks the account. At most 5,000 SAML sign-ins can be in progress, and nginx limits their start to 30 a minute per address.</td></tr>
+<tr><td>Requests</td><td>State-changing API calls need a custom header the browser can't send cross-site; pages can't be framed; API responses aren't cached.</td></tr>
+<tr><td>Secrets at rest</td><td>Holodeck configurations (with their target credentials), lab passwords, depot tokens and proxy passwords, the OIDC client secret, the webtop password and the update source token are encrypted with AES-256-GCM using the portal's <span class="path">secret.key</span>.</td></tr>
+<tr><td>Never stored</td><td>Holorouter root passwords (used once during onboarding), prompt answers.</td></tr>
+<tr><td>Job secrets</td><td>Job files are root-only and deleted as soon as they're read; passwords are masked in job output; result and answer files are removed when a job ends, on the portal and on the router.</td></tr>
+<tr><td>Routers</td><td>An ed25519 key per portal. Every router gets its own SSH host keys during onboarding (the OVA's shipped keys are the same everywhere); deployed routers are onboarded through vCenter where possible, so their root password never goes over SSH. Host keys are pinned and strictly checked; detaching removes the portal's key.</td></tr>
+<tr><td>Router images</td><td>OVAs from <code>http://</code> need an approved SHA-256; <code>https://</code> downloads are TLS-verified and can't be redirected to HTTP. Router deployments need an approved vCenter certificate and, for vCenter targets, sign in only to a vCenter whose certificate chains to the approved authority.</td></tr>
+<tr><td>Webtop gateway</td><td>Optional: webtops through the portal over HTTPS, one origin per router, only for the lab's owner and administrators, signed in by the portal; portal-only closes the router's own webtop.</td></tr>
+<tr><td>Portal certificate</td><td>Keys for certificate requests are generated on the portal and never sent; installs are checked (key match, validity, name) and can be rolled back.</td></tr>
+<tr><td>Portal updates</td><td>Releases are signed (Ed25519). The portal and, on the appliance, a separate updater outside the portal's container each verify the signature against the release key, refuse older versions, and check the image's digest before installing it; a failed update rolls back by itself.</td></tr>
+<tr><td>Access control</td><td>Users see only their own labs and those labs' jobs (a transferred lab's jobs go with it); credential views are audited.</td></tr>
+<tr><td>Day-2 limits</td><td>Host sizes and the number of nested hosts per lab site are bounded by Settings.</td></tr>
+</tbody></table></div>
+
+<div class="callout danger"><span class="t">Back up secret.key with the database</span>Without <span class="path">secret.key</span> the encrypted values in the database can't be read. Keep both together, and keep backups private (see the operations guide's <a href="HOLODECK_PORTAL_OPERATIONS_GUIDE.html#backup" data-guide="ops" data-goto="backup">Backup</a>).</div>
+
+<h2>Audit log</h2>
+<p><span class="ui">Audit log</span> records sign-ins (including failures), sign-outs and password changes, every lab operation, <strong>credential views</strong>, prompt answers (the question, not the answer), cancels, idle actions and <em>Keep running</em>, user, configuration and settings changes (never secret values), certificate changes, update downloads and installs, and every Holorouter, profile and staging action, with time, user, target, details and IP address. Use the filter box to search.</p>
+
+<h2>Known limits</h2>
+<ul>
+  <li>Every Holorouter's webtop uses one shared login. Holodeck sets it in its webtop deployment, so the portal can't give each router its own. The default gateway mode (<em>Through the portal only</em>) hides it, uses HTTPS and closes the router's own webtop. On <em>Direct</em> routers lab owners see it, and the link is plain HTTP: choose that only where the lab network is trusted.</li>
+  <li>Every Holorouter OVA also ships the same webtop TLS key and machine-id; the portal replaces only the SSH host keys.</li>
+  <li>Holodeck's own connections to vCenter (every lab job) ignore certificate errors (Holodeck's PowerCLI setting) and carry the vCenter credentials; the configuration, with those credentials, is on every router that runs its jobs.</li>
+  <li>The webtop container runs with extended privileges set by Holodeck; treat anyone with webtop access to a router as able to control that router.</li>
+  <li>The portal's certificate is self-signed until you replace it.</li>
+</ul>
+</section>
+
+<section class="section" id="admin-troubleshooting" data-title="Troubleshooting" data-group="Reference">
+<header class="sec-head"><div class="eyebrow">Reference</div><h1>Troubleshooting</h1><p class="lead">Symptoms, causes and fixes for labs, configurations and Holorouters. Problems with the portal itself (reaching it, certificate, updates) are in the operations guide.</p></header>
+<h2>Sign-in</h2>
+<div class="tablewrap"><table>
+<thead><tr><th>Symptom</th><th>Cause</th><th>Fix</th></tr></thead>
+<tbody>
+<tr><td>SSO: "Sign-in session expired"</td><td>Transaction cookie expired or blocked; redirect URI mismatch</td><td>Retry; check the portal name and the IdP's redirect URI</td></tr>
+<tr><td>SSO: "not in a group that is allowed"</td><td>Groups claim/attribute missing or not mapped</td><td>Request the groups scope/claim; adjust admin/user groups</td></tr>
+<tr><td>SSO: "linked to a different … identity"</td><td>The IdP's identifier for this username changed</td><td>If legitimate, <span class="ui">Unlink SSO identity</span> on the user; check the audit log entry <code>auth.sso.identity-conflict</code></td></tr>
+<tr><td>SAML: "not started here" / "belongs to a different browser session"</td><td>IdP-initiated sign-in, a stale tab, or more than 10 minutes at the IdP</td><td>Start from the portal; point IdP tiles at <code>/api/auth/saml/login</code></td></tr>
+<tr><td>Locked out, certificate or TLS errors, "Too many failed sign-in attempts" for a whole site</td><td>—</td><td>See the operations guide's <a href="HOLODECK_PORTAL_OPERATIONS_GUIDE.html#ops-troubleshooting" data-guide="ops" data-goto="ops-troubleshooting">Troubleshooting</a></td></tr>
+</tbody></table></div>
+
+<h2>Configurations and deployments</h2>
+<div class="tablewrap"><table>
+<thead><tr><th>Symptom</th><th>Cause</th><th>Fix</th></tr></thead>
+<tbody>
+<tr><td>"Add a Holorouter first: Holodeck configurations are created and checked on a Holorouter."</td><td>No router is ready</td><td>Import a router (no profile needed for the first one)</td></tr>
+<tr><td>"No Holorouter serves &lt;configuration&gt;…"</td><td>No router has a profile for this configuration, and none is without a profile</td><td>Deploy or import a router with a profile for it</td></tr>
+<tr><td>"Every Holorouter for &lt;configuration&gt; is in use (…)"</td><td>Its routers all have labs, or are busy or unhealthy</td><td>Wait, or add a router for this configuration</td></tr>
+<tr><td>"That Holorouter belongs to another configuration…"</td><td>A pinned router's profile is for a different target</td><td>Pin a router of this configuration, or Automatic</td></tr>
+<tr><td>"VCF x is not staged on any free Holorouter"</td><td>No free router has the version</td><td>Stage it (<a href="#staging" data-goto="staging">Installation files</a>)</td></tr>
+<tr><td>"No Holorouter has the VCF x installation files…"</td><td>Files missing or misnamed everywhere</td><td>Place the BOM-listed files in <span class="path">/holodeck-runtime/bin/&lt;version&gt;</span> on any router</td></tr>
+<tr><td>Precheck fails on binaries</td><td>A file name not in Holodeck's BOM</td><td>Use the exact build Holodeck lists</td></tr>
+<tr><td>A router shows <span class="pill warn">Needs attention</span>: "Holodeck configs are bound to instances the portal doesn't manage"</td><td>A manual Holodeck deployment on that router</td><td>Configuration → <span class="ui">Maintenance</span>: remove the unmanaged instance</td></tr>
+<tr><td>"All lab capacity is in use"</td><td>Maximum labs or healthy routers reached</td><td>Raise the maximum or add routers</td></tr>
+<tr><td>Job waiting for a long time</td><td>A prompt</td><td>Answer it in the lab's Activity tab</td></tr>
+<tr><td>"Job process ended unexpectedly (no exit code recorded)."</td><td>A job inside the portal stopped (portal restarted)</td><td>Run it again; staging resumes where it stopped</td></tr>
+<tr><td>"Lost contact with … for 30 minutes; the job may still be running there."</td><td>Router unreachable</td><td>Check the router; the job may have finished there; Retry</td></tr>
+<tr><td>Removal: "Removal incomplete; VMs still present"</td><td>VMs Holodeck couldn't delete</td><td>Delete them in vCenter, remove again, or <span class="ui">Forget lab</span></td></tr>
+<tr><td>Suspend: "Datastore … has N GB free"</td><td>Not enough room for memory files</td><td>Shut down instead, or free space</td></tr>
+<tr><td>A lab was suspended or shut down by itself</td><td>The idle policy (owner notified first)</td><td>Resume or power it on; exempt the lab or change the router's policy if needed</td></tr>
+</tbody></table></div>
+
+<h2>Holorouters</h2>
+<div class="tablewrap"><table>
+<thead><tr><th>Symptom</th><th>Cause</th><th>Fix</th></tr></thead>
+<tbody>
+<tr><td>Needs attention after import</td><td>A blocker</td><td>Read the router card; fix; <span class="ui">Check now</span></td></tr>
+<tr><td>"…already configured this router's lab networks…"</td><td>Holodeck configured the router before</td><td>Use a fresh router (the portal won't reset it)</td></tr>
+<tr><td>Webtop not answering</td><td>First boot not finished or webtop pod down</td><td>Wait; <code>kubectl get pods -A</code> on the router</td></tr>
+<tr><td>Offline</td><td>SSH fails</td><td>Power/network; if redeployed at the same address, <span class="ui">Forget without contacting it</span> and import again</td></tr>
+<tr><td>Staging: "needs N GB free (with a 5 GB margin)"</td><td>Router disk full</td><td>Unstage an unused version</td></tr>
+<tr><td>Staging: checksum mismatch or interrupted</td><td>Network or disk error</td><td>Stage again; it resumes</td></tr>
+<tr><td>Deploy new fails while deploying the OVA</td><td>Placement, port groups or VM name</td><td>Read the PowerCLI message in the job</td></tr>
+<tr><td>"Set the Holorouter OVA URL in Settings"</td><td>No OVA URL</td><td>Settings → Holorouters</td></tr>
+<tr><td>"The OVA's SHA-256 is …, not the approved …"</td><td>The depot's file isn't the approved one</td><td>Find out why before changing the digest</td></tr>
+<tr><td>"Not enough disk space for the OVA: it is … GB and … GB is free …"</td><td>The portal needs the OVA's size plus 2 GB free</td><td>Free space on the appliance's data disk</td></tr>
+<tr><td>"…failed strict certificate verification, so its credentials were not sent"</td><td>vCenter's certificate no longer chains to the saved authority, or the name differs</td><td>Review the certificate in the capacity profile and approve again; or turn off strict sign-in in Settings → Holorouters</td></tr>
+<tr><td>"The certificate of … has changed"</td><td>vCenter's certificate isn't the approved one</td><td>If expected, approve the new one in the capacity profile</td></tr>
+<tr><td>Import: "does not match the approved fingerprint"</td><td>The address presents a different key than you confirmed</td><td>Check the address and the router's console; don't import if unsure</td></tr>
+<tr><td>Offline after a router was rebuilt at the same address</td><td>Its new host key doesn't match the pinned one</td><td><span class="ui">Forget without contacting it</span>, then import it again (scan and confirm)</td></tr>
+<tr><td>"The OVA URL is plain HTTP, so the OVA must have an approved SHA-256"</td><td>No digest for an <code>http://</code> URL</td><td>Enter the SHA-256 from the Broadcom download page in Settings → Holorouters</td></tr>
+<tr><td>"…doesn't accept deployments through its API (free ESXi licence)" / "(evaluation period has ended)"</td><td>The standalone ESXi host's licence is read-only for the API</td><td>Deploy the OVA on the host yourself and use <span class="ui">Import existing</span>, or license the host and read the inventory again</td></tr>
+<tr><td>"Approve the vCenter certificate of capacity profile … first"</td><td>Deploying into a profile without an approval</td><td>Capacity profiles → the certificate link → compare and approve</td></tr>
+<tr><td>Deploy job waits: "Does the router's console show SHA256:…?"</td><td>vCenter guest operations weren't possible (privileges, or VMware Tools not ready)</td><td>Compare on the VM console (<code>ssh-keygen -lf /etc/ssh/ssh_host_ed25519_key.pub</code>) and answer <strong>yes</strong>; answer anything else if it differs</td></tr>
+<tr><td>Router page: "Other routers present this same key"</td><td>The router still has the OVA's shipped key</td><td><span class="ui">Renew SSH host key</span></td></tr>
+<tr><td>A new router on a nested ESXi host boots but doesn't answer, or SSH stalls</td><td>The outer port groups drop its traffic, or the MTU is too small</td><td>See <a href="#profiles" data-goto="profiles">Standalone ESXi hosts</a>: MAC learning or promiscuous mode, forged transmits, MTU 9000</td></tr>
+<tr><td>Webtop gateway: "502 Bad Gateway"</td><td>The relay can't reach the router (SSH, router offline)</td><td>Check the router is online; the relay restarts by itself</td></tr>
+<tr><td>Webtop gateway: "403 Forbidden"</td><td>Not the owner of the router's lab, the router is on <em>Direct</em>, or no webtop password set</td><td>Check the lab owner and the router's <strong>Webtop access</strong></td></tr>
+<tr><td>DHCP answers from another lab's router</td><td>Shared untagged segment on the trunk</td><td>Separate trunk port groups per slot</td></tr>
+</tbody></table></div>
+</section>
+
+<section class="section" id="reference" data-title="Reference" data-group="Reference">
+<header class="sec-head"><div class="eyebrow">Reference</div><h1>Reference</h1><p class="lead">Router-side paths and ports, and the portal's current limits.</p></header>
+<h2>On the Holorouters</h2>
+<div class="tablewrap"><table>
+<thead><tr><th>Path / port</th><th>Purpose</th></tr></thead>
+<tbody>
+<tr><td class="mono">/holodeck-runtime/bin/&lt;version&gt;/</td><td>Installation files</td></tr>
+<tr><td class="mono">/holodeck-runtime/templates/bom.json</td><td>Accepted installation file names</td></tr>
+<tr><td class="mono">/holodeck-runtime/config/</td><td>Holodeck configuration files (copied from the portal before each job)</td></tr>
+<tr><td class="mono">/opt/holodeck-portal-agent/ps/</td><td>The portal's job runner</td></tr>
+<tr><td class="mono">/var/lib/holodeck-portal-agent/jobs/&lt;id&gt;/</td><td>Remote job folders (the output stays for troubleshooting)</td></tr>
+<tr><td>22</td><td>SSH from the portal (portal key)</td></tr>
+<tr><td>30000 (HTTP), 30001 (HTTPS)</td><td>Webtop; closed on eth0 in portal-only mode</td></tr>
+<tr><td>Outbound 443 to vCenter</td><td>Holodeck</td></tr>
+</tbody></table></div>
+<p>The portal's own paths, ports and commands are in the operations guide's <a href="HOLODECK_PORTAL_OPERATIONS_GUIDE.html#ops-reference" data-guide="ops" data-goto="ops-reference">Reference</a>.</p>
+
+<h2>Current limits</h2>
+<ul>
+  <li><strong>One lab per Holorouter.</strong> <code>Set-HoloRouter</code> configures a router's networks, BGP and DNS for one instance; capacity comes from adding routers.</li>
+  <li><strong>Access is through the lab's webtop.</strong> Lab networks aren't routed to users' networks. Every router's webtop uses the same login; the optional webtop gateway hides it.</li>
+  <li><strong>Nested hosts per lab site</strong> are capped by <strong>Hosts per lab site</strong> (default 8) for users.</li>
+  <li><strong>Untagged lab network.</strong> Routers sharing one trunk port group share Holodeck's untagged segment, including its DHCP.</li>
+  <li><strong>Single-site labs.</strong> Site B networks are reserved for dual-site support.</li>
+  <li><strong>Supervisor and VCF Automation day-2 actions</strong> run on one lab at a time.</li>
+  <li><strong>DNS cmdlets.</strong> Holodeck's <code>Get/Set/Remove-HoloDeckDNSConfig</code> don't work on 9.1 Holorouters; DNS records are managed in Technitium.</li>
+  <li><strong>No email.</strong> Notifications appear in the portal only.</li>
+</ul>
+<p class="meta">Holodeck Portal Administrator Guide · documentation v2.0 · 2026-11-23</p>
+</section>
+
+    </main>
+  </div>
+</div>
+<script>
+(function(){
+  // Master–detail: choosing a section in the left menu shows only that section.
+  var links=[].slice.call(document.querySelectorAll('.navlink'));
+  var secs=[].slice.call(document.querySelectorAll('.section'));
+  var crumb=document.getElementById('crumb-sec');
+  var rail=document.getElementById('rail'), scrim=document.getElementById('scrim'), mt=document.getElementById('menutoggle');
+  function closeRail(){ rail.classList.remove('open'); scrim.classList.remove('show'); }
+  function show(id){
+    if(!document.getElementById(id)) id=secs[0].id;
+    secs.forEach(function(s){ s.classList.toggle('is-active', s.id===id); });
+    links.forEach(function(l){ l.classList.toggle('active', l.dataset.target===id); });
+    var lbl=document.querySelector('.navlink[data-target="'+id+'"]'); if(lbl) crumb.textContent=lbl.textContent.trim();
+    try{ history.replaceState(null,'','#'+id); }catch(e){}
+    window.scrollTo(0,0);
+  }
+  links.forEach(function(l){ l.addEventListener('click',function(){ show(l.dataset.target); closeRail(); }); });
+  // In-text links to other sections: <a href="#id" data-goto="id">. Links into another guide carry data-guide and a
+  // real href (OTHER_GUIDE.html#id), which the browser follows.
+  document.addEventListener('click',function(e){
+    var a=e.target.closest('a[data-goto]'); if(!a || a.hasAttribute('data-guide')) return;
+    e.preventDefault(); show(a.getAttribute('data-goto'));
+  });
+  show((location.hash||'').replace('#','') || secs[0].id);
+  // Copy buttons on code blocks
+  document.addEventListener('click',function(e){
+    var b=e.target.closest('.copy'); if(!b) return;
+    var txt=b.parentNode.querySelector('pre').innerText.trim();
+    var done=function(){ b.textContent='Copied'; b.classList.add('done'); setTimeout(function(){ b.textContent='Copy'; b.classList.remove('done'); },1600); };
+    if(navigator.clipboard){ navigator.clipboard.writeText(txt).then(done,done); } else { done(); }
+  });
+  if(mt){ mt.addEventListener('click',function(){ rail.classList.add('open'); scrim.classList.add('show'); }); }
+  scrim.addEventListener('click',closeRail);
+  // Search: dim sections that don't mention the words; Enter opens the first match
+  var search=document.getElementById('search');
+  function matchIds(q){ return secs.filter(function(s){ return s.textContent.toLowerCase().indexOf(q)>-1; }).map(function(s){ return s.id; }); }
+  search.addEventListener('input',function(){
+    var q=this.value.trim().toLowerCase(); var hits=q?matchIds(q):null;
+    links.forEach(function(l){ l.style.opacity=(hits && hits.indexOf(l.dataset.target)===-1)?'.32':''; });
+  });
+  search.addEventListener('keydown',function(e){ if(e.key!=='Enter') return; var q=this.value.trim().toLowerCase(); if(!q) return; var hits=matchIds(q); if(hits.length){ show(hits[0]); closeRail(); } });
+})();
+</script>
+</body>
+</html>

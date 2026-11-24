@@ -1,0 +1,609 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="hp-doc-guide" content="ops">
+<meta name="hp-doc-version" content="2.0 · 2026-11-23">
+<title>Holodeck Portal — Installation and Operations Guide</title>
+<style id="hp-doc-content">
+/* Holodeck Portal documentation — content styles. Scoped to .hp-doc so the portal can embed them. */
+.hp-doc{
+  --hd-ink-950:#080b13; --hd-ink-900:#0d1220; --hd-ink-850:#111827; --hd-ink-800:#151c2c;
+  --hd-ink-700:#1e2738; --hd-ink-600:#2a3548; --hd-ink-500:#3b475d;
+  --hd-text:#cbd5e1; --hd-strong:#ffffff; --hd-muted:#94a3b8; --hd-dim:#64748b;
+  --hd-accent:#3b82f6; --hd-accent-text:#93c5fd; --hd-accent-weak:rgba(59,130,246,.12);
+  --hd-ok:#34d399; --hd-ok-weak:rgba(16,185,129,.10); --hd-ok-line:rgba(16,185,129,.30);
+  --hd-warn:#fcd34d; --hd-warn-weak:rgba(245,158,11,.10); --hd-warn-line:rgba(245,158,11,.30);
+  --hd-err:#fca5a5; --hd-err-weak:rgba(239,68,68,.10); --hd-err-line:rgba(239,68,68,.35);
+  --hd-info:#7dd3fc; --hd-info-weak:rgba(14,165,233,.10); --hd-info-line:rgba(14,165,233,.30);
+  --hd-violet:#c4b5fd; --hd-violet-weak:rgba(139,92,246,.10); --hd-violet-line:rgba(139,92,246,.30);
+  --hd-font:'Inter',ui-sans-serif,system-ui,-apple-system,'Segoe UI',Roboto,sans-serif;
+  --hd-mono:'JetBrains Mono',ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;
+  color:var(--hd-text); font-family:var(--hd-font); font-size:14.5px; line-height:1.65;
+}
+.hp-doc *{box-sizing:border-box}
+.hp-doc .sec-head{margin:0 0 22px;padding-bottom:18px;border-bottom:1px solid var(--hd-ink-700)}
+.hp-doc .eyebrow{font-size:11px;font-weight:600;letter-spacing:.14em;text-transform:uppercase;color:var(--hd-muted);margin-bottom:6px}
+.hp-doc h1{font-size:26px;line-height:1.25;font-weight:600;letter-spacing:-.01em;color:var(--hd-strong);margin:0 0 6px}
+.hp-doc .lead{font-size:15px;color:var(--hd-muted);margin:0;max-width:78ch}
+.hp-doc h2{font-size:17px;font-weight:600;color:var(--hd-strong);margin:30px 0 8px}
+.hp-doc h3{font-size:14.5px;font-weight:600;color:#e2e8f0;margin:22px 0 6px}
+.hp-doc p{margin:8px 0;max-width:80ch}
+.hp-doc ul,.hp-doc ol{margin:8px 0;padding-left:22px;max-width:80ch}
+.hp-doc ul{list-style:disc}
+.hp-doc ol{list-style:decimal}
+.hp-doc li{margin:4px 0}
+.hp-doc li::marker{color:var(--hd-dim)}
+.hp-doc strong{color:#e2e8f0;font-weight:600}
+.hp-doc a{color:var(--hd-accent-text);text-decoration:none}
+.hp-doc a:hover{text-decoration:underline}
+.hp-doc hr{border:0;border-top:1px solid var(--hd-ink-700);margin:26px 0}
+.hp-doc code{font-family:var(--hd-mono);font-size:12.5px;color:#e2e8f0;background:var(--hd-ink-900);border:1px solid var(--hd-ink-700);border-radius:6px;padding:1px 5px;word-break:break-word}
+.hp-doc kbd{font-family:var(--hd-mono);font-size:12px;color:#e2e8f0;background:var(--hd-ink-800);border:1px solid var(--hd-ink-600);border-bottom-width:2px;border-radius:5px;padding:0 5px}
+/* Names of buttons, tabs and menu items as they appear in the portal */
+.hp-doc .ui{display:inline-block;white-space:nowrap;font-size:13px;font-weight:500;color:#dbeafe;background:var(--hd-accent-weak);border:1px solid rgba(59,130,246,.25);border-radius:6px;padding:0 6px;line-height:1.55}
+.hp-doc .path{font-family:var(--hd-mono);font-size:12.5px;color:#e2e8f0}
+/* Panels and cards */
+.hp-doc .box{border:1px solid var(--hd-ink-700);background:var(--hd-ink-850);border-radius:16px;padding:16px 20px;margin:14px 0;box-shadow:0 1px 0 0 rgba(255,255,255,.03) inset}
+.hp-doc .cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:14px;margin:14px 0}
+.hp-doc .card{border:1px solid var(--hd-ink-700);background:var(--hd-ink-850);border-radius:16px;padding:14px 16px}
+.hp-doc .card h3{margin:0 0 4px;font-size:14px}
+.hp-doc .card p{margin:0;font-size:13.5px;color:var(--hd-muted)}
+.hp-doc .card .ico{display:inline-grid;place-items:center;width:30px;height:30px;border-radius:9px;background:var(--hd-accent-weak);color:var(--hd-accent-text);margin-bottom:8px}
+.hp-doc .card .ico svg{width:16px;height:16px}
+/* Key figures */
+.hp-doc .tiles{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:14px;margin:18px 0}
+.hp-doc .tile{border:1px solid var(--hd-ink-700);background:var(--hd-ink-850);border-radius:16px;padding:14px 16px}
+.hp-doc .tile .k{font-size:11px;font-weight:600;letter-spacing:.14em;text-transform:uppercase;color:var(--hd-muted)}
+.hp-doc .tile .v{font-size:26px;font-weight:700;color:var(--hd-strong);letter-spacing:-.01em;line-height:1.3;margin-top:4px}
+.hp-doc .tile .s{font-size:12.5px;color:var(--hd-dim)}
+/* Callouts */
+.hp-doc .callout{border:1px solid var(--hd-info-line);background:var(--hd-info-weak);color:#e0f2fe;border-radius:10px;padding:10px 14px;margin:14px 0;font-size:14px;max-width:84ch}
+.hp-doc .callout p{margin:4px 0}
+.hp-doc .callout .t{display:block;font-weight:600;margin-bottom:2px}
+.hp-doc .callout.info .t{color:var(--hd-info)}
+.hp-doc .callout.ok{border-color:var(--hd-ok-line);background:var(--hd-ok-weak);color:#d1fae5}
+.hp-doc .callout.ok .t{color:var(--hd-ok)}
+.hp-doc .callout.warn{border-color:var(--hd-warn-line);background:var(--hd-warn-weak);color:#fef3c7}
+.hp-doc .callout.warn .t{color:var(--hd-warn)}
+.hp-doc .callout.danger{border-color:var(--hd-err-line);background:var(--hd-err-weak);color:#fee2e2}
+.hp-doc .callout.danger .t{color:var(--hd-err)}
+.hp-doc .callout code{background:rgba(8,11,19,.5)}
+/* Code */
+.hp-doc .code{position:relative;margin:12px 0;border:1px solid var(--hd-ink-700);background:var(--hd-ink-950);border-radius:12px;max-width:100%}
+.hp-doc .code pre{margin:0;padding:13px 16px;overflow-x:auto;font-family:var(--hd-mono);font-size:12.5px;line-height:1.6;color:#cbd5e1;white-space:pre}
+.hp-doc .code .copy{position:absolute;top:8px;right:8px;font:500 11.5px var(--hd-font);color:var(--hd-muted);background:var(--hd-ink-800);border:1px solid var(--hd-ink-600);border-radius:7px;padding:2px 9px;cursor:pointer}
+.hp-doc .code .copy:hover{color:var(--hd-strong);border-color:var(--hd-ink-500)}
+.hp-doc .code .copy.done{color:var(--hd-ok);border-color:var(--hd-ok-line)}
+.hp-doc .code .c{color:var(--hd-dim)}
+.hp-doc .diagram pre{color:#a5b4c8}
+/* Tables */
+.hp-doc .tablewrap{overflow-x:auto;margin:12px 0;border:1px solid var(--hd-ink-700);border-radius:12px;background:var(--hd-ink-850)}
+.hp-doc table{width:100%;border-collapse:collapse;font-size:13.5px}
+.hp-doc th{text-align:left;font-size:11px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--hd-muted);background:var(--hd-ink-800);border-bottom:1px solid var(--hd-ink-700);padding:8px 12px;white-space:nowrap}
+.hp-doc td{border-bottom:1px solid rgba(30,39,56,.7);padding:8px 12px;vertical-align:top}
+.hp-doc tr:last-child td{border-bottom:0}
+.hp-doc td.mono,.hp-doc .mono{font-family:var(--hd-mono);font-size:12.5px}
+.hp-doc td.nowrap{white-space:nowrap}
+/* Status pills */
+.hp-doc .pill{display:inline-flex;align-items:center;gap:5px;white-space:nowrap;border:1px solid var(--hd-ink-600);border-radius:6px;padding:0 7px;font-size:12px;line-height:1.7;color:#cbd5e1;background:rgba(100,116,139,.10)}
+.hp-doc .pill::before{content:"";width:6px;height:6px;border-radius:50%;background:currentColor;opacity:.9}
+.hp-doc .pill.ok{color:var(--hd-ok);border-color:var(--hd-ok-line);background:var(--hd-ok-weak)}
+.hp-doc .pill.warn{color:var(--hd-warn);border-color:var(--hd-warn-line);background:var(--hd-warn-weak)}
+.hp-doc .pill.err{color:var(--hd-err);border-color:var(--hd-err-line);background:var(--hd-err-weak)}
+.hp-doc .pill.info{color:var(--hd-info);border-color:var(--hd-info-line);background:var(--hd-info-weak)}
+.hp-doc .pill.violet{color:var(--hd-violet);border-color:var(--hd-violet-line);background:var(--hd-violet-weak)}
+.hp-doc .pill.muted{color:var(--hd-muted)}
+/* Numbered procedures */
+.hp-doc ol.steps{list-style:none;counter-reset:step;padding-left:0}
+.hp-doc ol.steps>li{counter-increment:step;position:relative;padding-left:38px;margin:10px 0}
+.hp-doc ol.steps>li::before{content:counter(step);position:absolute;left:0;top:1px;width:24px;height:24px;border-radius:50%;display:grid;place-items:center;font-size:12px;font-weight:600;color:#dbeafe;background:var(--hd-accent-weak);border:1px solid rgba(59,130,246,.35)}
+/* Definition lists */
+.hp-doc dl.kv{display:grid;grid-template-columns:minmax(150px,max-content) 1fr;gap:6px 18px;margin:12px 0}
+.hp-doc dl.kv dt{color:var(--hd-muted)}
+.hp-doc dl.kv dd{margin:0}
+.hp-doc .muted{color:var(--hd-muted)}
+.hp-doc .small{font-size:13px}
+.hp-doc .meta{margin-top:40px;padding-top:14px;border-top:1px solid var(--hd-ink-700);font-size:12.5px;color:var(--hd-dim)}
+</style>
+<style>
+/* Standalone page layout (not used when the portal embeds the guide). */
+*{box-sizing:border-box}
+html,body{margin:0;background:#080b13;color:#cbd5e1;font-family:'Inter',ui-sans-serif,system-ui,-apple-system,'Segoe UI',Roboto,sans-serif;-webkit-font-smoothing:antialiased}
+::selection{background:rgba(59,130,246,.4)}
+*{scrollbar-width:thin;scrollbar-color:#2a3548 transparent}
+.app{display:grid;grid-template-columns:272px minmax(0,1fr);min-height:100vh}
+.rail{position:sticky;top:0;height:100vh;display:flex;flex-direction:column;background:#0d1220;border-right:1px solid #1e2738}
+.brand{display:flex;align-items:center;gap:12px;padding:20px 18px 14px}
+.brand svg{width:34px;height:34px;flex:none}
+.brand .n{font-size:16px;font-weight:700;color:#fff;letter-spacing:-.01em;line-height:1.2}
+.brand .g{font-size:12px;color:#94a3b8}
+.search{padding:4px 14px 8px}
+.search input{width:100%;border:1px solid #2a3548;background:#080b13;color:#f1f5f9;border-radius:8px;padding:7px 10px;font:inherit;font-size:13px;outline:none}
+.search input:focus{border-color:#3b82f6;box-shadow:0 0 0 3px rgba(59,130,246,.25)}
+.rail-scroll{flex:1;overflow-y:auto;padding:0 10px 16px}
+.navgroup-title{font-size:11px;font-weight:600;letter-spacing:.14em;text-transform:uppercase;color:#94a3b8;margin:18px 10px 6px}
+.navgroup ul{list-style:none;margin:0;padding:0}
+.navlink{display:flex;align-items:center;gap:10px;width:100%;border:0;background:none;text-align:left;cursor:pointer;color:#cbd5e1;font:inherit;font-size:13.5px;padding:7px 10px;border-radius:8px;margin:1px 0}
+.navlink svg{width:16px;height:16px;flex:none;color:#94a3b8}
+.navlink:hover{background:#1e2738;color:#fff}
+.navlink.active{background:rgba(29,58,107,.6);color:#93c5fd;box-shadow:inset 0 0 0 1px rgba(59,130,246,.3)}
+.navlink.active svg{color:#93c5fd}
+.rail-foot{border-top:1px solid #1e2738;padding:12px 18px;font-size:12px;color:#64748b}
+.main{min-width:0}
+.topbar{position:sticky;top:0;z-index:20;display:flex;align-items:center;gap:12px;padding:12px 40px;background:rgba(8,11,19,.85);backdrop-filter:blur(8px);border-bottom:1px solid #1e2738;font-size:13px;color:#94a3b8}
+.topbar .sep{color:#3b475d}
+.topbar #crumb-sec{color:#e2e8f0}
+.menutoggle{display:none;border:1px solid #2a3548;background:#151c2c;color:#e2e8f0;border-radius:8px;padding:5px 9px;cursor:pointer;font:inherit}
+.content{max-width:1040px;padding:32px 40px 80px}
+.section{display:none}
+.section.is-active{display:block}
+.scrim{position:fixed;inset:0;background:rgba(0,0,0,.55);display:none;z-index:40}
+.scrim.show{display:block}
+@media (max-width:900px){
+  .app{grid-template-columns:minmax(0,1fr)}
+  .rail{position:fixed;left:0;top:0;width:280px;z-index:50;transform:translateX(-100%);transition:transform .2s}
+  .rail.open{transform:none}
+  .menutoggle{display:inline-flex}
+  .topbar,.content{padding-left:18px;padding-right:18px}
+}
+</style>
+</head>
+<body>
+<div class="app">
+  <aside class="rail" id="rail">
+    <div class="brand"><svg viewBox="0 0 32 32" aria-hidden="true"><defs><linearGradient id="hpg" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#60a5fa"/><stop offset="1" stop-color="#a78bfa"/></linearGradient></defs><rect width="32" height="32" rx="8" fill="#0f172a"/><path d="M8 22V10l8-4 8 4v12l-8 4z" fill="none" stroke="url(#hpg)" stroke-width="2"/><path d="M8 10l8 4 8-4M16 14v12" fill="none" stroke="url(#hpg)" stroke-width="2"/></svg><div><div class="n">Holodeck Portal</div><div class="g">Installation &amp; operations</div></div></div>
+    <div class="search"><input id="search" type="search" placeholder="Search this guide…" aria-label="Search this guide"></div>
+    <nav class="rail-scroll" aria-label="Guide sections">
+<div class="navgroup"><div class="navgroup-title">Getting started</div><ul><li><button class="navlink active" type="button" data-target="ops-overview"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 10.5 12 3l9 7.5V20a1 1 0 0 1-1 1h-5v-6H9v6H4a1 1 0 0 1-1-1z"/></svg>Overview</button></li><li><button class="navlink" type="button" data-target="requirements"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg>Requirements</button></li></ul></div>
+<div class="navgroup"><div class="navgroup-title">Installation</div><ul><li><button class="navlink" type="button" data-target="install-appliance"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><path d="M7 10l5 5 5-5M12 15V3"/></svg>Install the appliance</button></li><li><button class="navlink" type="button" data-target="install-container"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="2" y="3" width="20" height="8" rx="2"/><rect x="2" y="13" width="20" height="8" rx="2"/><path d="M6 7h.01M6 17h.01"/></svg>Install as a container</button></li><li><button class="navlink" type="button" data-target="powercli"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><path d="M7 10l5 5 5-5M12 15V3"/></svg>PowerCLI</button></li></ul></div>
+<div class="navgroup"><div class="navgroup-title">Configuration</div><ul><li><button class="navlink" type="button" data-target="certificate"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="7.5" cy="15.5" r="4.5"/><path d="M10.7 12.3 21 2M16 7l3 3M19 4l2 2"/></svg>Certificate</button></li><li><button class="navlink" type="button" data-target="updates"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><path d="M7 10l5 5 5-5M12 15V3"/></svg>Updates</button></li></ul></div>
+<div class="navgroup"><div class="navgroup-title">Operations</div><ul><li><button class="navlink" type="button" data-target="backup"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><ellipse cx="12" cy="5" rx="9" ry="3"/><path d="M3 5v14c0 1.7 4 3 9 3s9-1.3 9-3V5M3 12c0 1.7 4 3 9 3s9-1.3 9-3"/></svg>Backup and restore</button></li><li><button class="navlink" type="button" data-target="maintenance"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14.7 6.3a4 4 0 0 0-5.4 5.4l-6 6 3 3 6-6a4 4 0 0 0 5.4-5.4l-2.3 2.3-2-2z"/></svg>Maintenance</button></li></ul></div>
+<div class="navgroup"><div class="navgroup-title">Reference</div><ul><li><button class="navlink" type="button" data-target="ops-troubleshooting"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="4"/><path d="M4.9 4.9l4.3 4.3M14.8 14.8l4.3 4.3M14.8 9.2l4.3-4.3M4.9 19.1l4.3-4.3"/></svg>Troubleshooting</button></li><li><button class="navlink" type="button" data-target="ops-reference"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M8 6h13M8 12h13M8 18h13M3 6h.01M3 12h.01M3 18h.01"/></svg>Reference</button></li></ul></div>
+    </nav>
+    <div class="rail-foot">Documentation v2.0 · 2026-11-23</div>
+  </aside>
+  <div class="scrim" id="scrim"></div>
+  <div class="main">
+    <header class="topbar"><button class="menutoggle" id="menutoggle" type="button" aria-label="Open menu">☰</button><span>Installation &amp; operations</span><span class="sep">/</span><span id="crumb-sec"></span></header>
+    <main class="content hp-doc">
+<section class="section is-active" id="ops-overview" data-title="Overview" data-group="Getting started">
+<header class="sec-head"><div class="eyebrow">Getting started</div><h1>Overview</h1><p class="lead">What you install, what it talks to, and where its data lives.</p></header>
+<p>The Holodeck Portal is a web application that drives the Holodeck PowerShell module on one or more Holodeck 9.x <strong>Holorouters</strong>, so users can deploy and manage nested VCF and VVF labs from a browser. The portal runs on its own: an appliance (or a container) next to your Holorouters, not on one of them. It never modifies Holodeck and never resets a Holorouter.</p>
+
+<div class="tiles">
+  <div class="tile"><div class="k">Form factors</div><div class="v">2</div><div class="s">Photon OS appliance (OVA) or container</div></div>
+  <div class="tile"><div class="k">Labs per Holorouter</div><div class="v">1</div><div class="s">Capacity grows by adding routers</div></div>
+  <div class="tile"><div class="k">Updates</div><div class="v">1 click</div><div class="s">Signed releases, automatic rollback</div></div>
+  <div class="tile"><div class="k">Data</div><div class="v">SQLite</div><div class="s">Secrets encrypted (AES-256-GCM)</div></div>
+</div>
+
+<h2>How it fits together</h2>
+<div class="code diagram"><pre>  Users (browser) ──HTTPS 443──► Holodeck Portal (appliance or container)
+                                   nginx ─► portal (Node.js, SQLite) ─► PowerShell + PowerCLI
+                                         │                        │
+                       SSH 22 (portal key, pinned host keys)      HTTPS 443
+                                         ▼                        ▼
+              Holorouter (slot 1)   Holorouter (slot 2)   …   vCenter or ESXi host
+              Holodeck · webtop     Holodeck · webtop         router VMs, nested lab hosts
+              one lab               one lab</pre></div>
+<ul>
+  <li>Every long operation is a <strong>job</strong>. Lab jobs run Holodeck on the lab's Holorouter over SSH; they keep running if the portal restarts, and the portal re-attaches to them.</li>
+  <li>Jobs that only talk to vCenter (reading inventory, deploying a Holorouter) run inside the portal with VMware PowerCLI. PowerCLI isn't shipped with the portal (Broadcom's licence doesn't allow it): the portal downloads it once, on first start (<a href="#powercli" data-goto="powercli">PowerCLI</a>).</li>
+  <li>The portal keeps the master copy of every Holodeck configuration and copies it to a router before each job there.</li>
+</ul>
+
+<h2>This guide and the others</h2>
+<div class="cards">
+  <div class="card"><h3>Installation &amp; operations</h3><p>This guide: install the appliance or container, certificate, updates, backup, health and troubleshooting of the portal itself.</p></div>
+  <div class="card"><h3>Administrator guide</h3><p>Configure and run the portal: configurations, users, sign-in, Holorouters, the network pool, leases.</p></div>
+  <div class="card"><h3>User guide</h3><p>Deploy and use labs.</p></div>
+</div>
+
+<h2>After installing</h2>
+<p>Sign in as <code>admin</code>, then follow the administrator guide's <a href="HOLODECK_PORTAL_ADMIN_GUIDE.html#first-setup" data-guide="admin" data-goto="first-setup">first-time setup</a> checklist: add a Holorouter, register a configuration, stage installation files, and deploy a test lab.</p>
+</section>
+
+<section class="section" id="requirements" data-title="Requirements" data-group="Getting started">
+<header class="sec-head"><div class="eyebrow">Getting started</div><h1>Requirements</h1><p class="lead">What the portal needs from your vSphere, network and Holorouters.</p></header>
+<h2>The portal</h2>
+<div class="tablewrap"><table>
+<thead><tr><th>Item</th><th>Appliance</th><th>Container</th></tr></thead>
+<tbody>
+<tr><td>Platform</td><td>A vCenter to deploy the OVA (vCenter passes the deployment settings to the VM)</td><td>A Linux host (x86-64) with Docker and the compose plugin</td></tr>
+<tr><td>Size</td><td>2 vCPU, 4 GB memory, 16 GB system disk, 60 GB data disk (thin)</td><td>2 vCPU, 4 GB memory, about 20 GB free for images and data</td></tr>
+<tr><td>Name</td><td colspan="2">A DNS name users will open, e.g. <code>holodeck.example.com</code>, pointing at the portal's address</td></tr>
+</tbody></table></div>
+
+<h2>Holorouters and vSphere</h2>
+<ul>
+  <li><strong>Holodeck 9.x Holorouters</strong>, deployed from the Holorouter OVA (the portal can deploy them for you) or existing ones that Holodeck hasn't configured yet. Tested with Holodeck 9.1.0.20. Each router hosts one lab.</li>
+  <li>A <strong>vCenter</strong> (or a standalone ESXi host) for the routers and the labs' nested hosts, with trunk port groups for the lab VLANs. See the administrator guide's <a href="HOLODECK_PORTAL_ADMIN_GUIDE.html#network" data-guide="admin" data-goto="network">Network pool</a>.</li>
+  <li>The <strong>installation files</strong> for each VCF version (ESX ISO and VCF Installer or Cloud Builder OVA), placed on one router; the portal copies them to the others.</li>
+</ul>
+
+<h2>Network access</h2>
+<div class="tablewrap"><table>
+<thead><tr><th>From</th><th>To</th><th>Port</th><th>Why</th></tr></thead>
+<tbody>
+<tr><td>Users</td><td>Portal</td><td>TCP 443 (80 redirects)</td><td>The portal</td></tr>
+<tr><td>Users</td><td>Portal</td><td>TCP 8441–8472</td><td>Optional webtop gateway (one port per network slot)</td></tr>
+<tr><td>Users</td><td>Holorouters</td><td>TCP 30000</td><td>Webtops on routers in <em>Direct</em> mode</td></tr>
+<tr><td>Portal</td><td>Holorouters</td><td>TCP 22</td><td>Jobs, checks, staging, webtop gateway relays</td></tr>
+<tr><td>Portal</td><td>vCenter / ESXi</td><td>TCP 443</td><td>Inventory, router deployment and onboarding</td></tr>
+<tr><td>Portal</td><td>Holorouter OVA depot</td><td>HTTP(S)</td><td>Deploying new routers</td></tr>
+<tr><td>Portal</td><td>PowerShell Gallery (<code>www.powershellgallery.com</code> and its download servers)</td><td>TCP 443</td><td>Once, on first start: downloading VMware PowerCLI (or install it by hand, <a href="#powercli" data-goto="powercli">PowerCLI</a>)</td></tr>
+<tr><td>Portal</td><td>GitHub (or your GitLab)</td><td>TCP 443</td><td>Optional: checking for and downloading portal updates</td></tr>
+<tr><td>Holorouters</td><td>vCenter / ESXi</td><td>TCP 443</td><td>Holodeck</td></tr>
+<tr><td>Administrators</td><td>Appliance</td><td>TCP 22</td><td>Optional SSH (a deployment setting)</td></tr>
+</tbody></table></div>
+<p>The appliance's firewall allows 22, 80, 443, 8441–8472 and ping.</p>
+</section>
+
+<section class="section" id="install-appliance" data-title="Install the appliance" data-group="Installation">
+<header class="sec-head"><div class="eyebrow">Installation</div><h1>Install the appliance</h1><p class="lead">Deploy the OVA with vCenter, fill in its settings, and sign in.</p></header>
+<h2>Download</h2>
+<p>Download <code>holodeck-portal-&lt;version&gt;.ova</code> from the <a href="https://github.com/msteward1/holodeck-portal/releases" target="_blank" rel="noreferrer">Releases page</a>, with its SHA-256 checksum, and compare:</p>
+<div class="code"><button class="copy" type="button">Copy</button><pre>sha256sum holodeck-portal-&lt;version&gt;.ova</pre></div>
+
+<h2>Deploy</h2>
+<ol class="steps">
+  <li>In the vSphere Client: <strong>Deploy OVF Template</strong>, choose the OVA, a name, a folder, a host or cluster and a datastore (thin provisioning is fine). On a standalone ESXi host, use the Host Client instead: <strong>Create / Register VM</strong> → <strong>Deploy a virtual machine from an OVF or OVA file</strong>; its <strong>Additional settings</strong> page holds the same settings.</li>
+  <li>Map <strong>Management Network</strong> to the port group users and the Holorouters reach the portal on.</li>
+  <li>Fill in the settings below and finish. Power the VM on.</li>
+</ol>
+<div class="callout info"><span class="t">Scripted deployment</span>With <code>ovftool</code>, add <code>--X:injectOvfEnv</code> and one <code>--prop:&lt;name&gt;=&lt;value&gt;</code> per setting when deploying straight to an ESXi host; without it the settings don't reach the VM. PowerCLI's <code>Get-OvfConfiguration</code> needs vCenter.</div>
+
+<h2>Deployment settings</h2>
+<div class="tablewrap"><table>
+<thead><tr><th>Setting</th><th>Default</th><th>Notes</th></tr></thead>
+<tbody>
+<tr><td>Hostname</td><td class="mono">holodeck-portal</td><td>Short name of the appliance</td></tr>
+<tr><td>DNS domain</td><td>(empty)</td><td>e.g. <code>example.com</code></td></tr>
+<tr><td>IPv4 address</td><td>(empty)</td><td>Empty uses DHCP</td></tr>
+<tr><td>Prefix length, Gateway</td><td class="mono">24</td><td>For a static address</td></tr>
+<tr><td>DNS servers, NTP servers</td><td>(empty), <code>pool.ntp.org</code></td><td>Comma-separated</td></tr>
+<tr><td>Portal DNS name</td><td>hostname.domain</td><td>The name users open; used for the certificate and the sign-in URLs</td></tr>
+<tr><td>Portal administrator password</td><td>—</td><td>At least 10 characters. Creates the portal account <code>admin</code></td></tr>
+<tr><td>Root password</td><td>—</td><td>At least 8 characters. The appliance's <code>root</code> (console and SSH)</td></tr>
+<tr><td>Enable SSH</td><td>On</td><td>SSH to the appliance as root</td></tr>
+</tbody></table></div>
+
+<h2>First boot</h2>
+<p>The first boot applies the network, hostname, time servers and root password, gives the appliance its own SSH host keys, creates a temporary self-signed certificate for the portal name, starts the portal and creates <code>admin</code> with the password you gave. It takes a few minutes. Then open <code>https://holodeck.example.com/</code> (your portal name), accept the certificate warning once, and sign in as <code>admin</code>.</p>
+<p>Next: <a href="#certificate" data-goto="certificate">replace the certificate</a>, set where updates come from if not GitHub (<a href="#updates" data-goto="updates">Updates</a>), and continue with the administrator guide's <a href="HOLODECK_PORTAL_ADMIN_GUIDE.html#first-setup" data-guide="admin" data-goto="first-setup">first-time setup</a>.</p>
+
+<h2>What's on the appliance</h2>
+<div class="tablewrap"><table>
+<thead><tr><th>Item</th><th>Purpose</th></tr></thead>
+<tbody>
+<tr><td><code>holodeck-portal.service</code></td><td>Runs the portal container (image <code>holodeck-portal:current</code>)</td></tr>
+<tr><td><code>holodeck-updater.path</code> / <code>.service</code></td><td>Installs portal updates (see <a href="#updates" data-goto="updates">Updates</a>)</td></tr>
+<tr><td><span class="path">/data</span></td><td>The data disk: portal data, Docker storage, backups</td></tr>
+<tr><td><span class="path">/etc/holodeck-appliance/portal.env</span></td><td>The portal name (<code>HP_HOSTNAME</code>) and any other <a href="#ops-reference" data-goto="ops-reference">portal variables</a></td></tr>
+</tbody></table></div>
+
+<h2>Changing the portal name later</h2>
+<ol class="steps">
+  <li>Set <code>HP_HOSTNAME</code> in <span class="path">/etc/holodeck-appliance/portal.env</span> and run <code>systemctl restart holodeck-portal</code>.</li>
+  <li>Install a certificate for the new name (<a href="#certificate" data-goto="certificate">Certificate</a>), and update the redirect URLs at your identity provider if you use single sign-on.</li>
+</ol>
+</section>
+
+<section class="section" id="install-container" data-title="Install as a container" data-group="Installation">
+<header class="sec-head"><div class="eyebrow">Installation</div><h1>Install as a container</h1><p class="lead">Run the same portal on a Docker host you manage.</p></header>
+<p>The container includes nginx and PowerShell, and downloads VMware PowerCLI on first start (<a href="#powercli" data-goto="powercli">PowerCLI</a>); nothing else is needed on the host. Updates are not one-click here: the portal shows the commands to run (see <a href="#updates" data-goto="updates">Updates</a>).</p>
+
+<h2>Install</h2>
+<ol class="steps">
+  <li>From the <a href="https://github.com/msteward1/holodeck-portal/releases" target="_blank" rel="noreferrer">Releases page</a>, download <code>holodeck-portal-&lt;version&gt;.hpupdate</code>; from the repository, <code>docker-compose.yml</code> and the <code>release/</code> folder (<code>verify-release.sh</code> and <code>keys/</code>).</li>
+  <li>Verify and load the image: <code>./release/verify-release.sh holodeck-portal-&lt;version&gt;.hpupdate</code> (checks the signature, digest and image ID; needs <code>openssl</code> 3, <code>python3</code>, <code>sha256sum</code>).</li>
+  <li>Next to <code>docker-compose.yml</code>, create <code>.env</code>:
+<div class="code"><button class="copy" type="button">Copy</button><pre>HP_HOSTNAME=holodeck.example.com
+HP_PORTAL_IMAGE=holodeck-portal:&lt;version&gt;</pre></div></li>
+  <li>Start it: <code>docker compose up -d</code>. The portal listens on 80, 443 and 8441–8472 of the host.</li>
+  <li>Create the first administrator (asks for the password twice):
+<div class="code"><button class="copy" type="button">Copy</button><pre>docker exec -it holodeck-portal sh -c 'cd /opt/holodeck-portal/server &amp;&amp; node dist/cli.js create-admin admin'</pre></div></li>
+</ol>
+<p>Data lives in two named volumes: <code>portal-data</code> (<span class="path">/var/lib/holodeck-portal</span>: database, encryption key, SSH key, jobs) and <code>portal-etc</code> (<span class="path">/etc/holodeck-portal</span>: certificate, gateway token). Back them up together (<a href="#backup" data-goto="backup">Backup</a>).</p>
+<p>Building the image yourself from the repository also works: <code>docker compose build</code> (with <code>--build-arg HP_VERSION=&lt;version&gt;</code> to set the version shown in About).</p>
+</section>
+
+<section class="section" id="powercli" data-title="PowerCLI" data-group="Installation">
+<header class="sec-head"><div class="eyebrow">Installation</div><h1>PowerCLI</h1><p class="lead">VMware PowerCLI is downloaded on first start, because its licence doesn't allow shipping it with the portal.</p></header>
+<p>The portal uses VMware PowerCLI for its own vCenter tasks: reading inventory for capacity profiles, and deploying, onboarding and deleting Holorouters. PowerCLI is Broadcom software whose licence doesn't allow redistributing it, so the portal doesn't include it. On first start it downloads the tested version (only the modules it needs, about 400 MB) from the PowerShell Gallery into its data folder, accepting Broadcom's licence on your behalf. It survives updates and is downloaded only once.</p>
+<ul>
+  <li>The download takes a minute or so. Until it has finished, those vCenter tasks are refused with "VMware PowerCLI is still being downloaded"; everything else works, including labs (Holodeck on the Holorouters uses their own PowerCLI).</li>
+  <li>If the download fails, administrators see a yellow notice on the dashboard with the reason, and the portal retries every 10 minutes. About shows PowerCLI's version and state.</li>
+</ul>
+<h2>Without internet access</h2>
+<p>On a machine with PowerShell 7 and internet access, save the modules, then copy them into the portal's data folder and restart the portal:</p>
+<div class="code"><button class="copy" type="button">Copy</button><pre>pwsh -c "Save-Module -Name VMware.VimAutomation.Vds -RequiredVersion 13.5.1.25718932 -Path ./Modules -AcceptLicense"
+# appliance: copy ./Modules/* to /data/portal/lib/powershell/Modules/, then
+systemctl restart holodeck-portal
+# container: copy into the portal-data volume (powershell/Modules/), then docker restart holodeck-portal</pre></div>
+<p>Saving the modules this way also accepts Broadcom's PowerCLI licence. The version must match the one above (shown in About).</p>
+</section>
+
+<section class="section" id="certificate" data-title="Certificate" data-group="Configuration">
+<header class="sec-head"><div class="eyebrow">Configuration</div><h1>Certificate</h1><p class="lead">Replace the temporary self-signed certificate with one your browsers trust.</p></header>
+<p>The portal starts with a self-signed certificate for its name. It is used on port 443 and on the webtop gateway ports. Manage it under <span class="ui">Settings</span> → <strong>Certificate</strong>, which shows the certificate in use (names, issuer, chain, expiry, SHA-256) and warns administrators 30 and 7 days before it expires.</p>
+
+<h2>With a certificate request (recommended)</h2>
+<ol class="steps">
+  <li><span class="ui">Generate CSR</span>: the common name defaults to the portal's name. Add any other names users type (an alias, an IP address), and optionally organisation, unit, city, state, country and the key type (RSA 2048 by default). The private key is created on the portal and never leaves it; the current certificate stays in use.</li>
+  <li><span class="ui">Download CSR</span> (or <span class="ui">Copy</span>) and have your certificate authority sign it as a web server certificate.</li>
+  <li><span class="ui">Install signed certificate</span>: paste the certificate or choose the file (PEM, or DER <code>.cer</code>), including the intermediate certificates in any order.</li>
+</ol>
+<p>The portal checks that the certificate matches the pending key, is valid now and names the portal (a switch allows another name), orders the chain, tests the web server configuration and switches over without a restart. Signed-in users stay signed in. <span class="ui">Discard</span> deletes a pending request and its key.</p>
+
+<h2>Other options</h2>
+<ul>
+  <li><span class="ui">Upload certificate and key</span>: for a certificate issued elsewhere. PEM certificate and key (the key may be encrypted; give its passphrase), or a PFX / PKCS#12 file with its password.</li>
+  <li><span class="ui">Regenerate self-signed</span>: a new key and a certificate for the portal's name (plus extra names), valid 825 days.</li>
+  <li><span class="ui">Roll back to previous</span>: the certificate in use before the last change. The current one becomes the previous, so a roll back can be undone.</li>
+</ul>
+
+<h2>Manually (recovery)</h2>
+<p>If the portal's pages can't be reached, replace the files directly. The certificate file holds the server certificate first, then the intermediates; the key must not be encrypted.</p>
+<div class="tablewrap"><table>
+<thead><tr><th>Form factor</th><th>Certificate</th><th>Key</th></tr></thead>
+<tbody>
+<tr><td>Appliance</td><td class="mono">/data/portal/etc/ssl/portal.crt</td><td class="mono">/data/portal/etc/ssl/portal.key</td></tr>
+<tr><td>Container</td><td colspan="2">In the <code>portal-etc</code> volume: <span class="path">ssl/portal.crt</span> and <span class="path">ssl/portal.key</span> (<span class="path">/etc/holodeck-portal/ssl/</span> inside the container)</td></tr>
+</tbody></table></div>
+<p>On the appliance, as root:</p>
+<div class="code"><button class="copy" type="button">Copy</button><pre>cp fullchain.pem /data/portal/etc/ssl/portal.crt
+cp private.key   /data/portal/etc/ssl/portal.key
+chmod 644 /data/portal/etc/ssl/portal.crt
+chmod 600 /data/portal/etc/ssl/portal.key
+systemctl restart holodeck-portal
+openssl x509 -noout -subject -enddate -in /data/portal/etc/ssl/portal.crt</pre></div>
+<p>For a container, copy the files into the volume (for example <code>docker cp fullchain.pem holodeck-portal:/etc/holodeck-portal/ssl/portal.crt</code>, likewise the key) and run <code>docker restart holodeck-portal</code>. If both files are missing when the portal starts, it creates a new self-signed certificate.</p>
+</section>
+
+<section class="section" id="updates" data-title="Updates" data-group="Configuration">
+<header class="sec-head"><div class="eyebrow">Configuration</div><h1>Updates</h1><p class="lead">Check for new portal versions and install them from the About dialog.</p></header>
+<h2>Where updates come from</h2>
+<p>Releases are published on the project's GitHub repository. Each release is a container image plus a small manifest (version, the image's SHA-256, release notes) <strong>signed</strong> with the project's release key. The portal, the appliance's updater and, for containers, the release verifier all refuse a release that isn't signed by that key or whose image doesn't match the manifest, so a tampered download or a compromised release site can't install anything as long as you update through them.</p>
+<p>Under <span class="ui">Settings</span> → <strong>Updates</strong>:</p>
+<div class="tablewrap"><table>
+<thead><tr><th>Setting</th><th>Default</th><th>Notes</th></tr></thead>
+<tbody>
+<tr><td>Check for updates every day</td><td>On</td><td>Administrators get a notification when a newer version appears. Turn off for sites that want no outbound calls; the portal sends nothing about itself either way.</td></tr>
+<tr><td>Release source</td><td>GitHub</td><td><strong>GitHub</strong>: repository <code>owner/name</code>. <strong>GitLab</strong>: server URL, <code>group/project</code> and an optional read-only access token (scope <code>read_api</code>), stored encrypted and sent only to that server, never through a redirect to another one. For mirrors and private forks.</td></tr>
+<tr><td>Allow plain HTTP</td><td>Off</td><td>For a lab GitLab without TLS. Off, an <code>http://</code> GitLab is refused; on, the token travels unencrypted. Downloads never follow a redirect from HTTPS to HTTP.</td></tr>
+</tbody></table></div>
+
+<h2>Updating the appliance</h2>
+<ol class="steps">
+  <li>Open the user menu → <span class="ui">About</span>. The <strong>Updates</strong> panel shows the installed version and either <em>You're up to date</em> or the new version with its release notes. <span class="ui">Check now</span> asks right away.</li>
+  <li>Click <span class="ui">Update to &lt;version&gt;</span>. The panel shows the download, then each step on the appliance:
+    <em>Verify the release</em>, <em>Load the new version</em>, <em>Back up the portal</em>, <em>Switch to the new version</em>, <em>Check the new version</em>, <em>Clean up</em>.</li>
+  <li>The portal restarts during the switch (usually a few seconds; the page reconnects by itself). When it's done the panel says <em>Updated to &lt;version&gt;</em>: click <span class="ui">Reload</span>.</li>
+</ol>
+<ul>
+  <li>Lab jobs running on Holorouters carry on during an update. An update is refused while a job runs inside the portal itself (such as a Holorouter deployment); try again when it has finished.</li>
+  <li>Before switching, the appliance backs up the database, encryption key, SSH key, trust files and settings to <span class="path">/data/backups/pre-&lt;version&gt;-&lt;time&gt;</span> (the newest five are kept).</li>
+  <li>If the new version isn't healthy within five minutes, the appliance <strong>rolls back by itself</strong>: the previous version and the backed-up database. The About panel then explains what happened.</li>
+  <li>A release can require a minimum installed version; older portals then update in steps.</li>
+</ul>
+
+<h2>Without internet access</h2>
+<p>Download the release's <code>holodeck-portal-&lt;version&gt;.hpupdate</code> file elsewhere, then in About → Updates click <span class="ui">Upload update file</span>. It is checked exactly like a download (signature and image digest) and then offered with the same <span class="ui">Update</span> button.</p>
+
+<h2>Containers</h2>
+<p>A container has no updater beside it, so About shows the new version and these steps instead of a button. Download the release's <code>holodeck-portal-&lt;version&gt;.hpupdate</code>, then on the Docker host, next to <code>docker-compose.yml</code>:</p>
+<div class="code"><button class="copy" type="button">Copy</button><pre>docker cp holodeck-portal:/opt/holodeck-portal/release ./hp-release
+./hp-release/verify-release.sh holodeck-portal-&lt;version&gt;.hpupdate
+HP_PORTAL_IMAGE=holodeck-portal:&lt;version&gt; docker compose up -d</pre></div>
+<p>The verifier and the release key come out of the portal you already run, not from the download. It checks the signature, the image's size and SHA-256, loads it, and confirms Docker's image ID is the signed one (removing it otherwise); it needs <code>openssl</code> 3, <code>python3</code> and <code>sha256sum</code> on the host. Never load a release image without it. Back up the volumes first (<a href="#backup" data-goto="backup">Backup</a>); database changes apply when the new version starts. Set <code>HP_PORTAL_IMAGE</code> in <code>.env</code> to keep the choice.</p>
+
+<h2>Updates and Holodeck</h2>
+<p>Portal updates don't touch your Holorouters or Holodeck. Upgrade Holodeck on the routers separately (<a href="#maintenance" data-goto="maintenance">Maintenance</a>).</p>
+</section>
+
+<section class="section" id="backup" data-title="Backup and restore" data-group="Operations">
+<header class="sec-head"><div class="eyebrow">Operations</div><h1>Backup and restore</h1><p class="lead">What to back up, how, and how to restore.</p></header>
+<h2>What to keep</h2>
+<div class="tablewrap"><table>
+<thead><tr><th>Item</th><th>Appliance</th><th>Why</th></tr></thead>
+<tbody>
+<tr><td>Database</td><td class="mono">/data/portal/lib/portal.db</td><td>Everything the portal knows</td></tr>
+<tr><td>Encryption key</td><td class="mono">/data/portal/lib/secret.key</td><td>Without it the stored secrets (lab and Holodeck configuration passwords, tokens) can't be read</td></tr>
+<tr><td>SSH key and pinned host keys</td><td class="mono">/data/portal/lib/ssh/</td><td>Without it every Holorouter must be imported again</td></tr>
+<tr><td>vCenter trust</td><td class="mono">/data/portal/lib/trust/</td><td>Approved vCenter certificate authorities</td></tr>
+<tr><td>Settings and certificate</td><td class="mono">/data/portal/etc/</td><td>Certificate, gateway token</td></tr>
+</tbody></table></div>
+<p>For a container these are the same files in the <code>portal-data</code> and <code>portal-etc</code> volumes. Every appliance update also makes a backup automatically (<a href="#updates" data-goto="updates">Updates</a>).</p>
+<div class="callout danger"><span class="t">Keep secret.key with the database</span>The two only work together. The backup contains secrets: keep it private.</div>
+
+<h2>Back up (appliance)</h2>
+<p>As root on the appliance; the portal keeps running:</p>
+<div class="code"><button class="copy" type="button">Copy</button><pre>B=/data/backups/manual-$(date +%Y%m%d-%H%M%S); mkdir -p -m 700 $B
+docker exec holodeck-portal node -e "new (require('node:sqlite').DatabaseSync)('/var/lib/holodeck-portal/portal.db').exec(\"VACUUM INTO '/var/lib/holodeck-portal/portal-backup.db'\")"
+mv /data/portal/lib/portal-backup.db $B/portal.db
+cp -a /data/portal/lib/secret.key /data/portal/lib/ssh /data/portal/lib/trust /data/portal/etc $B/
+tar -C /data/backups -czf $B.tgz $(basename $B) &amp;&amp; rm -rf $B &amp;&amp; chmod 600 $B.tgz</pre></div>
+<p>Copy the archive off the appliance. Installation files and the cached router OVA (<span class="path">/data/portal/lib/ova/</span>) don't need backing up.</p>
+
+<h2>Restore (appliance)</h2>
+<div class="code"><button class="copy" type="button">Copy</button><pre>systemctl stop holodeck-portal
+tar -C /data/backups -xzf manual-YYYYMMDD-HHMMSS.tgz
+R=/data/backups/manual-YYYYMMDD-HHMMSS
+rm -f /data/portal/lib/portal.db /data/portal/lib/portal.db-wal /data/portal/lib/portal.db-shm
+cp $R/portal.db $R/secret.key /data/portal/lib/
+cp -a $R/ssh $R/trust /data/portal/lib/
+cp -a $R/etc/. /data/portal/etc/
+systemctl start holodeck-portal</pre></div>
+<p>Restoring an automatic update backup works the same way: its folder holds <code>portal.db</code> (with its <code>-wal</code> file), <code>secret.key</code>, <code>ssh</code>, <code>trust</code> and <code>etc</code>. Labs changed after the backup may be out of date: <span class="ui">Refresh</span> them, or <span class="ui">Forget lab</span> those that no longer exist.</p>
+
+<h2>Moving to a new appliance</h2>
+<p>Deploy the new appliance, back up the old one, stop the old portal, restore the backup on the new one (keeping the new appliance's own certificate if you prefer: skip <code>etc</code>), and point the portal's DNS name at the new address. Sign in with your existing accounts afterwards.</p>
+</section>
+
+<section class="section" id="maintenance" data-title="Maintenance" data-group="Operations">
+<header class="sec-head"><div class="eyebrow">Operations</div><h1>Maintenance</h1><p class="lead">Housekeeping the portal does by itself, routine checks, and Holodeck upgrades.</p></header>
+<h2>Automatic</h2>
+<ul>
+  <li>Hourly: expired sign-in sessions are removed; job folders of jobs finished more than 90 days ago are deleted (the job list keeps them); audit entries older than the retention period (Settings → General, default 365 days) are deleted.</li>
+  <li>Every 5 minutes (Settings → Holorouters → Health check): every router is checked over SSH, its installation files are re-read, and webtop activity is counted for the idle policy.</li>
+  <li>Daily: a check for portal updates (if on); the certificate's expiry is checked hourly.</li>
+</ul>
+
+<h2>Routine</h2>
+<div class="tablewrap"><table>
+<thead><tr><th>When</th><th>Task</th></tr></thead>
+<tbody>
+<tr><td>Daily</td><td>Dashboard: failed labs, prompts waiting, expired leases. Holorouters: all <span class="pill ok">Ready</span>.</td></tr>
+<tr><td>Weekly</td><td>Back up. Check free space on <span class="path">/data</span> (appliance) and <span class="path">/holodeck-runtime</span> on the routers. Review failed sign-ins and credential views in the audit log.</td></tr>
+<tr><td>Monthly</td><td>Install portal updates; clear old remote job folders on the routers; unstage versions nobody uses.</td></tr>
+</tbody></table></div>
+<div class="code"><button class="copy" type="button">Copy</button><pre># On each Holorouter: remote job folders older than 90 days
+find /var/lib/holodeck-portal-agent/jobs -mindepth 1 -maxdepth 1 -mtime +90 -exec rm -rf {} +
+# On the appliance: free space and the certificate
+df -h /data
+openssl x509 -enddate -noout -in /data/portal/etc/ssl/portal.crt</pre></div>
+
+<h2>Health checks (appliance)</h2>
+<div class="code"><button class="copy" type="button">Copy</button><pre>systemctl is-active holodeck-portal holodeck-updater.path docker
+curl -s http://127.0.0.1:3080/api/health        # {"ok":true,"version":"…"}
+docker ps --filter name=holodeck-portal           # Up … (healthy)
+docker logs --tail 100 holodeck-portal            # the portal's log
+journalctl -u holodeck-updater -n 50              # the last update</pre></div>
+
+<h2>Holodeck upgrades</h2>
+<p>Upgrade Holodeck on every router, one router at a time while it has no lab. Router checks warn when a router's Holodeck version differs from the one most routers run. After upgrading, check the router's installation files (a new Holodeck may expect different file names) and run a test deployment.</p>
+</section>
+
+<section class="section" id="ops-troubleshooting" data-title="Troubleshooting" data-group="Reference">
+<header class="sec-head"><div class="eyebrow">Reference</div><h1>Troubleshooting</h1><p class="lead">Problems with the portal itself: reaching it, signing in, certificates and updates.</p></header>
+<div class="tablewrap"><table>
+<thead><tr><th>Symptom</th><th>Cause</th><th>Fix</th></tr></thead>
+<tbody>
+<tr><td>The appliance came up with DHCP, no passwords</td><td>Its settings didn't reach it: deployed by a tool that doesn't pass them (e.g. <code>ovftool</code> to an ESXi host without <code>--X:injectOvfEnv</code>)</td><td>Delete it and deploy again with vCenter, the ESXi Host Client, or <code>ovftool --X:injectOvfEnv</code></td></tr>
+<tr><td>The portal doesn't answer after first boot</td><td>First boot still running, or DNS</td><td>Wait a few minutes; on the console or over SSH: <code>systemctl status holodeck-firstboot holodeck-portal</code>; check the name resolves to the appliance</td></tr>
+<tr><td>Certificate warning</td><td>Self-signed certificate, or a name the certificate doesn't list</td><td><a href="#certificate" data-goto="certificate">Certificate</a>; add aliases as extra names</td></tr>
+<tr><td>Locked out of every administrator account</td><td>—</td><td>As root on the appliance: <code>docker exec -it holodeck-portal sh -c 'cd /opt/holodeck-portal/server &amp;&amp; node dist/cli.js reset-password admin'</code> (or <code>create-admin &lt;name&gt;</code>)</td></tr>
+<tr><td>"Too many failed sign-in attempts" for everyone at one site</td><td>Many users behind one address</td><td>Wait 15 minutes; raise <code>HP_LOGIN_MAX_PER_IP</code> (<a href="#ops-reference" data-goto="ops-reference">variables</a>) if it recurs</td></tr>
+<tr><td>SSO: TLS error reaching the identity provider</td><td>Its certificate is from a private CA</td><td>Put the CA (PEM) in <span class="path">/data/portal/etc/extra-ca.pem</span> and restart the portal</td></tr>
+<tr><td>"VMware PowerCLI is still being downloaded" / dashboard notice "could not be downloaded"</td><td>First start, or no access to the PowerShell Gallery</td><td>Wait a minute; allow HTTPS to the PowerShell Gallery, or install it by hand (<a href="#powercli" data-goto="powercli">PowerCLI</a>)</td></tr>
+<tr><td>About: "The GitLab server uses plain HTTP…"</td><td>An <code>http://</code> GitLab source</td><td>Use <code>https://</code>, or turn on <strong>Allow plain HTTP</strong> in Settings → Updates</td></tr>
+<tr><td>About: "Last check failed: … answered 404"</td><td>Private GitLab project without a token, or a wrong project path</td><td>Settings → Updates: project and read-only token</td></tr>
+<tr><td>About: "signed with a key this portal does not trust"</td><td>The release wasn't signed by the project's release key</td><td>Don't install it; get the release from the official Releases page</td></tr>
+<tr><td>About: "The update to … was rolled back"</td><td>The new version didn't become healthy</td><td>The previous version runs with its database restored. Read <code>journalctl -u holodeck-updater</code> and <code>docker logs holodeck-portal</code>; report the problem with the release</td></tr>
+<tr><td>Update refused: "portal job is running"</td><td>A vCenter task (such as a router deployment) runs inside the portal</td><td>Wait for it to finish</td></tr>
+<tr><td>Upload update file: "not a Holodeck Portal update bundle"</td><td>Wrong file</td><td>Use the release's <code>.hpupdate</code> file</td></tr>
+<tr><td>Settings → Certificate: "None of the certificates matches the private key"</td><td>A new CSR was generated after the certificate was requested</td><td>Request the certificate again with the current CSR, or upload the certificate with its own key</td></tr>
+<tr><td>Settings → Certificate: "does not name …"</td><td>The certificate is for another name</td><td>Get one that lists the portal's name, or allow another name if intended</td></tr>
+<tr><td>Webtop gateway: "502 Bad Gateway"</td><td>The relay to the router is down (router offline, SSH)</td><td>Check the router's status on the Holorouters page; the portal restarts a relay by itself when the router answers again</td></tr>
+</tbody></table></div>
+<p>Labs, Holorouters and deployments: see the administrator guide's <a href="HOLODECK_PORTAL_ADMIN_GUIDE.html#admin-troubleshooting" data-guide="admin" data-goto="admin-troubleshooting">Troubleshooting</a>.</p>
+</section>
+
+<section class="section" id="ops-reference" data-title="Reference" data-group="Reference">
+<header class="sec-head"><div class="eyebrow">Reference</div><h1>Reference</h1><p class="lead">Paths, services, ports and settings of the appliance and the container.</p></header>
+<h2>Appliance paths</h2>
+<div class="tablewrap"><table>
+<thead><tr><th>Path</th><th>Purpose</th></tr></thead>
+<tbody>
+<tr><td class="mono">/data/portal/lib/</td><td>Portal data (<span class="path">/var/lib/holodeck-portal</span> in the container): database, key, SSH, jobs, router OVA cache, PowerCLI (<span class="path">powershell/</span>)</td></tr>
+<tr><td class="mono">/data/portal/etc/</td><td>Portal settings (<span class="path">/etc/holodeck-portal</span>): certificate, gateway token, optional <span class="path">extra-ca.pem</span></td></tr>
+<tr><td class="mono">/data/portal/lib/jobs/&lt;id&gt;/</td><td>Job folders (output.log; pruned after 90 days)</td></tr>
+<tr><td class="mono">/data/portal/lib/updates/</td><td>Downloaded releases and the updater's status</td></tr>
+<tr><td class="mono">/data/backups/</td><td>Automatic update backups and your own</td></tr>
+<tr><td class="mono">/data/docker/</td><td>Docker storage (images)</td></tr>
+<tr><td class="mono">/etc/holodeck-appliance/</td><td><span class="path">portal.env</span> and <span class="path">trusted-keys/</span> (release signing keys the updater accepts)</td></tr>
+<tr><td class="mono">/opt/holodeck-appliance/</td><td>First-boot and updater scripts</td></tr>
+</tbody></table></div>
+
+<h2>On the Holorouters</h2>
+<div class="tablewrap"><table>
+<thead><tr><th>Path</th><th>Purpose</th></tr></thead>
+<tbody>
+<tr><td class="mono">/opt/holodeck-portal-agent/ps/</td><td>The portal's job runner (copied before every job)</td></tr>
+<tr><td class="mono">/var/lib/holodeck-portal-agent/jobs/&lt;id&gt;/</td><td>Remote job folders (the output stays for troubleshooting)</td></tr>
+<tr><td class="mono">/holodeck-runtime/bin/&lt;version&gt;/</td><td>Installation files</td></tr>
+</tbody></table></div>
+
+<h2>Services and ports</h2>
+<div class="tablewrap"><table>
+<thead><tr><th>Service</th><th>Port</th><th>Notes</th></tr></thead>
+<tbody>
+<tr><td>nginx (in the container)</td><td>80, 443</td><td>80 redirects to HTTPS</td></tr>
+<tr><td>nginx, webtop gateway</td><td>8441–8472</td><td>One HTTPS port per network slot (8440 + slot)</td></tr>
+<tr><td>Portal</td><td>127.0.0.1:3080</td><td>Behind nginx; <code>/api/health</code> answers without sign-in</td></tr>
+<tr><td>Gateway relays</td><td>127.0.0.1:31000 + slot</td><td>socat over SSH to each router's webtop, run by the portal</td></tr>
+<tr><td><code>holoportal-remote-job-&lt;id&gt;</code></td><td>—</td><td>A lab job's unit on its Holorouter</td></tr>
+</tbody></table></div>
+
+<h2>Portal variables</h2>
+<p>Set in <span class="path">/etc/holodeck-appliance/portal.env</span> (appliance) or the container's environment, then restart the portal.</p>
+<div class="tablewrap"><table>
+<thead><tr><th>Variable</th><th>Default</th><th>Meaning</th></tr></thead>
+<tbody>
+<tr><td class="mono">HP_HOSTNAME</td><td>(required)</td><td>The portal's DNS name</td></tr>
+<tr><td class="mono">HP_PUBLIC_URL</td><td class="mono">https://&lt;HP_HOSTNAME&gt;</td><td>Address users reach; used for single sign-on URLs and secure cookies</td></tr>
+<tr><td class="mono">HP_SESSION_TTL_HOURS</td><td class="mono">12</td><td>Sign-in session lifetime</td></tr>
+<tr><td class="mono">HP_LOGIN_MAX_PER_ACCOUNT / HP_LOGIN_MAX_PER_IP</td><td class="mono">10 / 50</td><td>Failed sign-ins allowed per username and address, and per address, in 15 minutes</td></tr>
+<tr><td class="mono">HP_LOG_LEVEL</td><td class="mono">info</td><td>Portal log level</td></tr>
+</tbody></table></div>
+
+<h2>Commands (appliance)</h2>
+<div class="code"><button class="copy" type="button">Copy</button><pre>systemctl restart holodeck-portal                 # safe: lab jobs on routers keep running
+docker logs -f holodeck-portal                    # the portal's log
+docker exec -it holodeck-portal sh -c 'cd /opt/holodeck-portal/server &amp;&amp; node dist/cli.js reset-password &lt;user&gt;'
+docker images holodeck-portal                     # current, previous and loaded versions
+journalctl -u holodeck-updater                    # updates</pre></div>
+<p class="meta">Holodeck Portal Installation and Operations Guide · documentation v2.0 · 2026-11-23</p>
+</section>
+
+    </main>
+  </div>
+</div>
+<script>
+(function(){
+  // Master–detail: choosing a section in the left menu shows only that section.
+  var links=[].slice.call(document.querySelectorAll('.navlink'));
+  var secs=[].slice.call(document.querySelectorAll('.section'));
+  var crumb=document.getElementById('crumb-sec');
+  var rail=document.getElementById('rail'), scrim=document.getElementById('scrim'), mt=document.getElementById('menutoggle');
+  function closeRail(){ rail.classList.remove('open'); scrim.classList.remove('show'); }
+  function show(id){
+    if(!document.getElementById(id)) id=secs[0].id;
+    secs.forEach(function(s){ s.classList.toggle('is-active', s.id===id); });
+    links.forEach(function(l){ l.classList.toggle('active', l.dataset.target===id); });
+    var lbl=document.querySelector('.navlink[data-target="'+id+'"]'); if(lbl) crumb.textContent=lbl.textContent.trim();
+    try{ history.replaceState(null,'','#'+id); }catch(e){}
+    window.scrollTo(0,0);
+  }
+  links.forEach(function(l){ l.addEventListener('click',function(){ show(l.dataset.target); closeRail(); }); });
+  // In-text links to other sections: <a href="#id" data-goto="id">. Links into another guide carry data-guide and a
+  // real href (OTHER_GUIDE.html#id), which the browser follows.
+  document.addEventListener('click',function(e){
+    var a=e.target.closest('a[data-goto]'); if(!a || a.hasAttribute('data-guide')) return;
+    e.preventDefault(); show(a.getAttribute('data-goto'));
+  });
+  show((location.hash||'').replace('#','') || secs[0].id);
+  // Copy buttons on code blocks
+  document.addEventListener('click',function(e){
+    var b=e.target.closest('.copy'); if(!b) return;
+    var txt=b.parentNode.querySelector('pre').innerText.trim();
+    var done=function(){ b.textContent='Copied'; b.classList.add('done'); setTimeout(function(){ b.textContent='Copy'; b.classList.remove('done'); },1600); };
+    if(navigator.clipboard){ navigator.clipboard.writeText(txt).then(done,done); } else { done(); }
+  });
+  if(mt){ mt.addEventListener('click',function(){ rail.classList.add('open'); scrim.classList.add('show'); }); }
+  scrim.addEventListener('click',closeRail);
+  // Search: dim sections that don't mention the words; Enter opens the first match
+  var search=document.getElementById('search');
+  function matchIds(q){ return secs.filter(function(s){ return s.textContent.toLowerCase().indexOf(q)>-1; }).map(function(s){ return s.id; }); }
+  search.addEventListener('input',function(){
+    var q=this.value.trim().toLowerCase(); var hits=q?matchIds(q):null;
+    links.forEach(function(l){ l.style.opacity=(hits && hits.indexOf(l.dataset.target)===-1)?'.32':''; });
+  });
+  search.addEventListener('keydown',function(e){ if(e.key!=='Enter') return; var q=this.value.trim().toLowerCase(); if(!q) return; var hits=matchIds(q); if(hits.length){ show(hits[0]); closeRail(); } });
+})();
+</script>
+</body>
+</html>

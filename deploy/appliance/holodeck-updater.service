@@ -1,0 +1,16 @@
+[Unit]
+Description=Holodeck Portal updater (verifies and installs signed portal releases)
+After=docker.service holodeck-portal.service
+Requires=docker.service
+
+[Service]
+Type=oneshot
+ExecStart=/usr/bin/python3 -I /opt/holodeck-appliance/updater.py
+TimeoutStartSec=45min
+# Root on the host by design (it loads images and restarts the portal); nothing else runs with it.
+NoNewPrivileges=yes
+PrivateTmp=yes
+
+[Install]
+# At boot it only tells the portal it is there (host.json).
+WantedBy=multi-user.target

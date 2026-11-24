@@ -1,0 +1,17 @@
+[Unit]
+Description=Holodeck Portal (container)
+Requires=docker.service
+After=docker.service network-online.target holodeck-firstboot.service
+Wants=network-online.target
+
+[Service]
+EnvironmentFile=-/etc/holodeck-appliance/portal.env
+ExecStartPre=-/usr/bin/docker rm -f holodeck-portal
+ExecStart=/usr/bin/docker run --rm --name holodeck-portal --network host --env-file /etc/holodeck-appliance/portal.env -e HP_FORM_FACTOR=appliance \
+  -v /data/portal/lib:/var/lib/holodeck-portal -v /data/portal/etc:/etc/holodeck-portal holodeck-portal:current
+ExecStop=/usr/bin/docker stop -t 60 holodeck-portal
+Restart=always
+RestartSec=5
+
+[Install]
+WantedBy=multi-user.target

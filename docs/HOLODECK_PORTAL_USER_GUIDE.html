@@ -1,0 +1,643 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="hp-doc-guide" content="user">
+<meta name="hp-doc-version" content="2.0 · 2026-11-23">
+<title>Holodeck Portal — User Guide</title>
+<style id="hp-doc-content">
+/* Holodeck Portal documentation — content styles. Scoped to .hp-doc so the portal can embed them. */
+.hp-doc{
+  --hd-ink-950:#080b13; --hd-ink-900:#0d1220; --hd-ink-850:#111827; --hd-ink-800:#151c2c;
+  --hd-ink-700:#1e2738; --hd-ink-600:#2a3548; --hd-ink-500:#3b475d;
+  --hd-text:#cbd5e1; --hd-strong:#ffffff; --hd-muted:#94a3b8; --hd-dim:#64748b;
+  --hd-accent:#3b82f6; --hd-accent-text:#93c5fd; --hd-accent-weak:rgba(59,130,246,.12);
+  --hd-ok:#34d399; --hd-ok-weak:rgba(16,185,129,.10); --hd-ok-line:rgba(16,185,129,.30);
+  --hd-warn:#fcd34d; --hd-warn-weak:rgba(245,158,11,.10); --hd-warn-line:rgba(245,158,11,.30);
+  --hd-err:#fca5a5; --hd-err-weak:rgba(239,68,68,.10); --hd-err-line:rgba(239,68,68,.35);
+  --hd-info:#7dd3fc; --hd-info-weak:rgba(14,165,233,.10); --hd-info-line:rgba(14,165,233,.30);
+  --hd-violet:#c4b5fd; --hd-violet-weak:rgba(139,92,246,.10); --hd-violet-line:rgba(139,92,246,.30);
+  --hd-font:'Inter',ui-sans-serif,system-ui,-apple-system,'Segoe UI',Roboto,sans-serif;
+  --hd-mono:'JetBrains Mono',ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;
+  color:var(--hd-text); font-family:var(--hd-font); font-size:14.5px; line-height:1.65;
+}
+.hp-doc *{box-sizing:border-box}
+.hp-doc .sec-head{margin:0 0 22px;padding-bottom:18px;border-bottom:1px solid var(--hd-ink-700)}
+.hp-doc .eyebrow{font-size:11px;font-weight:600;letter-spacing:.14em;text-transform:uppercase;color:var(--hd-muted);margin-bottom:6px}
+.hp-doc h1{font-size:26px;line-height:1.25;font-weight:600;letter-spacing:-.01em;color:var(--hd-strong);margin:0 0 6px}
+.hp-doc .lead{font-size:15px;color:var(--hd-muted);margin:0;max-width:78ch}
+.hp-doc h2{font-size:17px;font-weight:600;color:var(--hd-strong);margin:30px 0 8px}
+.hp-doc h3{font-size:14.5px;font-weight:600;color:#e2e8f0;margin:22px 0 6px}
+.hp-doc p{margin:8px 0;max-width:80ch}
+.hp-doc ul,.hp-doc ol{margin:8px 0;padding-left:22px;max-width:80ch}
+.hp-doc ul{list-style:disc}
+.hp-doc ol{list-style:decimal}
+.hp-doc li{margin:4px 0}
+.hp-doc li::marker{color:var(--hd-dim)}
+.hp-doc strong{color:#e2e8f0;font-weight:600}
+.hp-doc a{color:var(--hd-accent-text);text-decoration:none}
+.hp-doc a:hover{text-decoration:underline}
+.hp-doc hr{border:0;border-top:1px solid var(--hd-ink-700);margin:26px 0}
+.hp-doc code{font-family:var(--hd-mono);font-size:12.5px;color:#e2e8f0;background:var(--hd-ink-900);border:1px solid var(--hd-ink-700);border-radius:6px;padding:1px 5px;word-break:break-word}
+.hp-doc kbd{font-family:var(--hd-mono);font-size:12px;color:#e2e8f0;background:var(--hd-ink-800);border:1px solid var(--hd-ink-600);border-bottom-width:2px;border-radius:5px;padding:0 5px}
+/* Names of buttons, tabs and menu items as they appear in the portal */
+.hp-doc .ui{display:inline-block;white-space:nowrap;font-size:13px;font-weight:500;color:#dbeafe;background:var(--hd-accent-weak);border:1px solid rgba(59,130,246,.25);border-radius:6px;padding:0 6px;line-height:1.55}
+.hp-doc .path{font-family:var(--hd-mono);font-size:12.5px;color:#e2e8f0}
+/* Panels and cards */
+.hp-doc .box{border:1px solid var(--hd-ink-700);background:var(--hd-ink-850);border-radius:16px;padding:16px 20px;margin:14px 0;box-shadow:0 1px 0 0 rgba(255,255,255,.03) inset}
+.hp-doc .cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:14px;margin:14px 0}
+.hp-doc .card{border:1px solid var(--hd-ink-700);background:var(--hd-ink-850);border-radius:16px;padding:14px 16px}
+.hp-doc .card h3{margin:0 0 4px;font-size:14px}
+.hp-doc .card p{margin:0;font-size:13.5px;color:var(--hd-muted)}
+.hp-doc .card .ico{display:inline-grid;place-items:center;width:30px;height:30px;border-radius:9px;background:var(--hd-accent-weak);color:var(--hd-accent-text);margin-bottom:8px}
+.hp-doc .card .ico svg{width:16px;height:16px}
+/* Key figures */
+.hp-doc .tiles{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:14px;margin:18px 0}
+.hp-doc .tile{border:1px solid var(--hd-ink-700);background:var(--hd-ink-850);border-radius:16px;padding:14px 16px}
+.hp-doc .tile .k{font-size:11px;font-weight:600;letter-spacing:.14em;text-transform:uppercase;color:var(--hd-muted)}
+.hp-doc .tile .v{font-size:26px;font-weight:700;color:var(--hd-strong);letter-spacing:-.01em;line-height:1.3;margin-top:4px}
+.hp-doc .tile .s{font-size:12.5px;color:var(--hd-dim)}
+/* Callouts */
+.hp-doc .callout{border:1px solid var(--hd-info-line);background:var(--hd-info-weak);color:#e0f2fe;border-radius:10px;padding:10px 14px;margin:14px 0;font-size:14px;max-width:84ch}
+.hp-doc .callout p{margin:4px 0}
+.hp-doc .callout .t{display:block;font-weight:600;margin-bottom:2px}
+.hp-doc .callout.info .t{color:var(--hd-info)}
+.hp-doc .callout.ok{border-color:var(--hd-ok-line);background:var(--hd-ok-weak);color:#d1fae5}
+.hp-doc .callout.ok .t{color:var(--hd-ok)}
+.hp-doc .callout.warn{border-color:var(--hd-warn-line);background:var(--hd-warn-weak);color:#fef3c7}
+.hp-doc .callout.warn .t{color:var(--hd-warn)}
+.hp-doc .callout.danger{border-color:var(--hd-err-line);background:var(--hd-err-weak);color:#fee2e2}
+.hp-doc .callout.danger .t{color:var(--hd-err)}
+.hp-doc .callout code{background:rgba(8,11,19,.5)}
+/* Code */
+.hp-doc .code{position:relative;margin:12px 0;border:1px solid var(--hd-ink-700);background:var(--hd-ink-950);border-radius:12px;max-width:100%}
+.hp-doc .code pre{margin:0;padding:13px 16px;overflow-x:auto;font-family:var(--hd-mono);font-size:12.5px;line-height:1.6;color:#cbd5e1;white-space:pre}
+.hp-doc .code .copy{position:absolute;top:8px;right:8px;font:500 11.5px var(--hd-font);color:var(--hd-muted);background:var(--hd-ink-800);border:1px solid var(--hd-ink-600);border-radius:7px;padding:2px 9px;cursor:pointer}
+.hp-doc .code .copy:hover{color:var(--hd-strong);border-color:var(--hd-ink-500)}
+.hp-doc .code .copy.done{color:var(--hd-ok);border-color:var(--hd-ok-line)}
+.hp-doc .code .c{color:var(--hd-dim)}
+.hp-doc .diagram pre{color:#a5b4c8}
+/* Tables */
+.hp-doc .tablewrap{overflow-x:auto;margin:12px 0;border:1px solid var(--hd-ink-700);border-radius:12px;background:var(--hd-ink-850)}
+.hp-doc table{width:100%;border-collapse:collapse;font-size:13.5px}
+.hp-doc th{text-align:left;font-size:11px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--hd-muted);background:var(--hd-ink-800);border-bottom:1px solid var(--hd-ink-700);padding:8px 12px;white-space:nowrap}
+.hp-doc td{border-bottom:1px solid rgba(30,39,56,.7);padding:8px 12px;vertical-align:top}
+.hp-doc tr:last-child td{border-bottom:0}
+.hp-doc td.mono,.hp-doc .mono{font-family:var(--hd-mono);font-size:12.5px}
+.hp-doc td.nowrap{white-space:nowrap}
+/* Status pills */
+.hp-doc .pill{display:inline-flex;align-items:center;gap:5px;white-space:nowrap;border:1px solid var(--hd-ink-600);border-radius:6px;padding:0 7px;font-size:12px;line-height:1.7;color:#cbd5e1;background:rgba(100,116,139,.10)}
+.hp-doc .pill::before{content:"";width:6px;height:6px;border-radius:50%;background:currentColor;opacity:.9}
+.hp-doc .pill.ok{color:var(--hd-ok);border-color:var(--hd-ok-line);background:var(--hd-ok-weak)}
+.hp-doc .pill.warn{color:var(--hd-warn);border-color:var(--hd-warn-line);background:var(--hd-warn-weak)}
+.hp-doc .pill.err{color:var(--hd-err);border-color:var(--hd-err-line);background:var(--hd-err-weak)}
+.hp-doc .pill.info{color:var(--hd-info);border-color:var(--hd-info-line);background:var(--hd-info-weak)}
+.hp-doc .pill.violet{color:var(--hd-violet);border-color:var(--hd-violet-line);background:var(--hd-violet-weak)}
+.hp-doc .pill.muted{color:var(--hd-muted)}
+/* Numbered procedures */
+.hp-doc ol.steps{list-style:none;counter-reset:step;padding-left:0}
+.hp-doc ol.steps>li{counter-increment:step;position:relative;padding-left:38px;margin:10px 0}
+.hp-doc ol.steps>li::before{content:counter(step);position:absolute;left:0;top:1px;width:24px;height:24px;border-radius:50%;display:grid;place-items:center;font-size:12px;font-weight:600;color:#dbeafe;background:var(--hd-accent-weak);border:1px solid rgba(59,130,246,.35)}
+/* Definition lists */
+.hp-doc dl.kv{display:grid;grid-template-columns:minmax(150px,max-content) 1fr;gap:6px 18px;margin:12px 0}
+.hp-doc dl.kv dt{color:var(--hd-muted)}
+.hp-doc dl.kv dd{margin:0}
+.hp-doc .muted{color:var(--hd-muted)}
+.hp-doc .small{font-size:13px}
+.hp-doc .meta{margin-top:40px;padding-top:14px;border-top:1px solid var(--hd-ink-700);font-size:12.5px;color:var(--hd-dim)}
+</style>
+<style>
+/* Standalone page layout (not used when the portal embeds the guide). */
+*{box-sizing:border-box}
+html,body{margin:0;background:#080b13;color:#cbd5e1;font-family:'Inter',ui-sans-serif,system-ui,-apple-system,'Segoe UI',Roboto,sans-serif;-webkit-font-smoothing:antialiased}
+::selection{background:rgba(59,130,246,.4)}
+*{scrollbar-width:thin;scrollbar-color:#2a3548 transparent}
+.app{display:grid;grid-template-columns:272px minmax(0,1fr);min-height:100vh}
+.rail{position:sticky;top:0;height:100vh;display:flex;flex-direction:column;background:#0d1220;border-right:1px solid #1e2738}
+.brand{display:flex;align-items:center;gap:12px;padding:20px 18px 14px}
+.brand svg{width:34px;height:34px;flex:none}
+.brand .n{font-size:16px;font-weight:700;color:#fff;letter-spacing:-.01em;line-height:1.2}
+.brand .g{font-size:12px;color:#94a3b8}
+.search{padding:4px 14px 8px}
+.search input{width:100%;border:1px solid #2a3548;background:#080b13;color:#f1f5f9;border-radius:8px;padding:7px 10px;font:inherit;font-size:13px;outline:none}
+.search input:focus{border-color:#3b82f6;box-shadow:0 0 0 3px rgba(59,130,246,.25)}
+.rail-scroll{flex:1;overflow-y:auto;padding:0 10px 16px}
+.navgroup-title{font-size:11px;font-weight:600;letter-spacing:.14em;text-transform:uppercase;color:#94a3b8;margin:18px 10px 6px}
+.navgroup ul{list-style:none;margin:0;padding:0}
+.navlink{display:flex;align-items:center;gap:10px;width:100%;border:0;background:none;text-align:left;cursor:pointer;color:#cbd5e1;font:inherit;font-size:13.5px;padding:7px 10px;border-radius:8px;margin:1px 0}
+.navlink svg{width:16px;height:16px;flex:none;color:#94a3b8}
+.navlink:hover{background:#1e2738;color:#fff}
+.navlink.active{background:rgba(29,58,107,.6);color:#93c5fd;box-shadow:inset 0 0 0 1px rgba(59,130,246,.3)}
+.navlink.active svg{color:#93c5fd}
+.rail-foot{border-top:1px solid #1e2738;padding:12px 18px;font-size:12px;color:#64748b}
+.main{min-width:0}
+.topbar{position:sticky;top:0;z-index:20;display:flex;align-items:center;gap:12px;padding:12px 40px;background:rgba(8,11,19,.85);backdrop-filter:blur(8px);border-bottom:1px solid #1e2738;font-size:13px;color:#94a3b8}
+.topbar .sep{color:#3b475d}
+.topbar #crumb-sec{color:#e2e8f0}
+.menutoggle{display:none;border:1px solid #2a3548;background:#151c2c;color:#e2e8f0;border-radius:8px;padding:5px 9px;cursor:pointer;font:inherit}
+.content{max-width:1040px;padding:32px 40px 80px}
+.section{display:none}
+.section.is-active{display:block}
+.scrim{position:fixed;inset:0;background:rgba(0,0,0,.55);display:none;z-index:40}
+.scrim.show{display:block}
+@media (max-width:900px){
+  .app{grid-template-columns:minmax(0,1fr)}
+  .rail{position:fixed;left:0;top:0;width:280px;z-index:50;transform:translateX(-100%);transition:transform .2s}
+  .rail.open{transform:none}
+  .menutoggle{display:inline-flex}
+  .topbar,.content{padding-left:18px;padding-right:18px}
+}
+</style>
+</head>
+<body>
+<div class="app">
+  <aside class="rail" id="rail">
+    <div class="brand"><svg viewBox="0 0 32 32" aria-hidden="true"><defs><linearGradient id="hpg" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#60a5fa"/><stop offset="1" stop-color="#a78bfa"/></linearGradient></defs><rect width="32" height="32" rx="8" fill="#0f172a"/><path d="M8 22V10l8-4 8 4v12l-8 4z" fill="none" stroke="url(#hpg)" stroke-width="2"/><path d="M8 10l8 4 8-4M16 14v12" fill="none" stroke="url(#hpg)" stroke-width="2"/></svg><div><div class="n">Holodeck Portal</div><div class="g">User guide</div></div></div>
+    <div class="search"><input id="search" type="search" placeholder="Search this guide…" aria-label="Search this guide"></div>
+    <nav class="rail-scroll" aria-label="Guide sections">
+<div class="navgroup"><div class="navgroup-title">Getting started</div><ul><li><button class="navlink active" type="button" data-target="overview"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 10.5 12 3l9 7.5V20a1 1 0 0 1-1 1h-5v-6H9v6H4a1 1 0 0 1-1-1z"/></svg>Overview</button></li><li><button class="navlink" type="button" data-target="signing-in"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4"/><path d="M10 17l5-5-5-5"/><path d="M15 12H3"/></svg>Signing in</button></li><li><button class="navlink" type="button" data-target="dashboard"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>The dashboard</button></li></ul></div>
+<div class="navgroup"><div class="navgroup-title">Working with labs</div><ul><li><button class="navlink" type="button" data-target="deploying"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4.5 16.5c-1.5 1.3-2 5-2 5s3.7-.5 5-2c.7-.8.7-2.1-.1-2.9a2.2 2.2 0 0 0-2.9-.1z"/><path d="M12 15l-3-3a22 22 0 0 1 2-3.9A12.9 12.9 0 0 1 22 2c0 2.7-.8 7.5-6 11a22 22 0 0 1-4 2z"/><path d="M9 12H4s.6-3 2-4c1.6-1.1 5 0 5 0"/><path d="M12 15v5s3-.6 4-2c1.1-1.6 0-5 0-5"/></svg>Deploying a lab</button></li><li><button class="navlink" type="button" data-target="prompts"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/><path d="M8 9h8M8 13h5"/></svg>Answering prompts</button></li><li><button class="navlink" type="button" data-target="access"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8M12 17v4"/></svg>Accessing your lab</button></li><li><button class="navlink" type="button" data-target="lab-page"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6M8 13h8M8 17h5"/></svg>The lab page</button></li><li><button class="navlink" type="button" data-target="power"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 2v10"/><path d="M18.4 6.6a9 9 0 1 1-12.8 0"/></svg>Power and suspend</button></li><li><button class="navlink" type="button" data-target="leases"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>Leases</button></li><li><button class="navlink" type="button" data-target="day2"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14.7 6.3a4 4 0 0 0-5.4 5.4l-6 6 3 3 6-6a4 4 0 0 0 5.4-5.4l-2.3 2.3-2-2z"/></svg>Day-2 operations</button></li><li><button class="navlink" type="button" data-target="activity"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg>Activity and jobs</button></li><li><button class="navlink" type="button" data-target="network-pool"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="2" width="6" height="6" rx="1"/><rect x="2" y="16" width="6" height="6" rx="1"/><rect x="16" y="16" width="6" height="6" rx="1"/><path d="M12 8v4M5 16v-2h14v2"/></svg>Network pool</button></li><li><button class="navlink" type="button" data-target="removing"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 6h18M8 6V4h8v2M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/></svg>Retry and remove</button></li></ul></div>
+<div class="navgroup"><div class="navgroup-title">Reference</div><ul><li><button class="navlink" type="button" data-target="limits"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10.3 3.9 1.8 18a2 2 0 0 0 1.7 3h17a2 2 0 0 0 1.7-3L13.7 3.9a2 2 0 0 0-3.4 0z"/><path d="M12 9v4M12 17h.01"/></svg>Current limits</button></li><li><button class="navlink" type="button" data-target="troubleshooting"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="4"/><path d="M4.9 4.9l4.3 4.3M14.8 14.8l4.3 4.3M14.8 9.2l4.3-4.3M4.9 19.1l4.3-4.3"/></svg>Troubleshooting</button></li></ul></div>
+    </nav>
+    <div class="rail-foot">Documentation v2.0 · 2026-11-23</div>
+  </aside>
+  <div class="scrim" id="scrim"></div>
+  <div class="main">
+    <header class="topbar"><button class="menutoggle" id="menutoggle" type="button" aria-label="Open menu">☰</button><span>User guide</span><span class="sep">/</span><span id="crumb-sec"></span></header>
+    <main class="content hp-doc">
+<section class="section is-active" id="overview" data-title="Overview" data-group="Getting started">
+<header class="sec-head"><div class="eyebrow">Getting started</div><h1>Overview</h1><p class="lead">The Holodeck Portal lets you deploy, reach and manage your own nested VMware Cloud Foundation (VCF) and vSphere Foundation (VVF) labs from a browser.</p></header>
+<p>Behind the portal is VMware Holodeck, which builds complete nested VCF and VVF environments (ESX hosts, vCenter, NSX, SDDC Manager and more) on a shared vCenter. The portal runs Holodeck for you: you pick a configuration, choose the lab type and options, and the portal handles the networking, the deployment and the clean-up.</p>
+
+<div class="tiles">
+  <div class="tile"><div class="k">Lab types</div><div class="v">3</div><div class="s">VVF, VCF management domain, VCF full stack</div></div>
+  <div class="tile"><div class="k">Versions</div><div class="v">5.2 – 9.1</div><div class="s">Those your administrator has made available</div></div>
+  <div class="tile"><div class="k">Access</div><div class="v">Webtop</div><div class="s">A desktop in your browser, inside the lab</div></div>
+  <div class="tile"><div class="k">Leases</div><div class="v">Timed</div><div class="s">Labs power off when their lease ends</div></div>
+</div>
+
+<h2>What you can do</h2>
+<div class="cards">
+  <div class="card"><div class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 15l-3-3a22 22 0 0 1 2-3.9A12.9 12.9 0 0 1 22 2c0 2.7-.8 7.5-6 11a22 22 0 0 1-4 2z"/><path d="M9 12H4s.6-3 2-4c1.6-1.1 5 0 5 0"/><path d="M12 15v5s3-.6 4-2c1.1-1.6 0-5 0-5"/></svg></div><h3>Deploy</h3><p>Choose a configuration, lab type, version and Holodeck options. Networking is assigned for you.</p></div>
+  <div class="card"><div class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8M12 17v4"/></svg></div><h3>Reach</h3><p>Open the lab's webtop, see every console and DNS record, and read the lab's passwords.</p></div>
+  <div class="card"><div class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2v10"/><path d="M18.4 6.6a9 9 0 1 1-12.8 0"/></svg></div><h3>Control</h3><p>Shut down, power on, suspend and resume your lab; extend its lease; add clusters or hosts.</p></div>
+  <div class="card"><div class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg></div><h3>Follow</h3><p>Watch Holodeck's live output and answer its questions without leaving the page.</p></div>
+</div>
+
+<h2>Quick start</h2>
+<ol class="steps">
+  <li>Sign in at your portal's address (for example <code>https://holodeck.example.com</code>). See <a href="#signing-in" data-goto="signing-in">Signing in</a>.</li>
+  <li>Click <span class="ui">Deploy a lab</span> in the left menu, pick a configuration, give the lab a name and choose a type and version. When the <strong>Checks</strong> panel says <em>Ready to deploy</em>, click <span class="ui">Deploy lab</span>. See <a href="#deploying" data-goto="deploying">Deploying a lab</a>.</li>
+  <li>Watch the deployment on the lab's <span class="ui">Activity</span> tab. A full VCF deployment takes several hours. If the lab card shows <span class="ui">Answer prompt</span>, Holodeck needs input from you: see <a href="#prompts" data-goto="prompts">Answering prompts</a>.</li>
+  <li>When the lab is <span class="pill ok">Ready</span>, click <span class="ui">Webtop</span> on its card, sign in with the login shown under <span class="ui">Credentials</span> (if your administrator uses the webtop gateway, it signs you in by itself), and use Firefox inside the webtop to open the lab's consoles. See <a href="#access" data-goto="access">Accessing your lab</a>.</li>
+  <li>Shut the lab down when you're not using it and remove it when you're finished.</li>
+</ol>
+
+<h2>Key terms</h2>
+<div class="tablewrap"><table>
+<thead><tr><th>Term</th><th>Meaning</th></tr></thead>
+<tbody>
+<tr><td><strong>Lab</strong></td><td>One Holodeck instance: a nested VCF or VVF environment with its own instance ID, networks and passwords.</td></tr>
+<tr><td><strong>Configuration</strong></td><td>A Holodeck configuration your administrator has published. It decides which vCenter, cluster and datastore labs are built on.</td></tr>
+<tr><td><strong>Instance ID</strong></td><td>A short ID (1–8 letters or digits) that prefixes every VM of the lab, for example <code>s03-esx-01a</code>.</td></tr>
+<tr><td><strong>Holorouter</strong></td><td>The appliance that provides a lab's routing, DNS, DHCP and the webtop. Each lab runs behind its own Holorouter.</td></tr>
+<tr><td><strong>Network slot</strong></td><td>The pair of address ranges and VLAN range assigned to a Holorouter and the lab on it. See <a href="#network-pool" data-goto="network-pool">Network pool</a>.</td></tr>
+<tr><td><strong>Webtop</strong></td><td>A Linux desktop in your browser, running on the lab's Holorouter. It's your way into the lab.</td></tr>
+<tr><td><strong>Lease</strong></td><td>How long the lab may run. When it ends, the lab is powered off (not deleted).</td></tr>
+<tr><td><strong>Job</strong></td><td>One Holodeck operation the portal runs for you (deploy, power, refresh, remove…), with its live output.</td></tr>
+<tr><td><strong>Day-2 operation</strong></td><td>A change to a running lab, such as adding a cluster or ESX hosts.</td></tr>
+</tbody></table></div>
+</section>
+
+<section class="section" id="signing-in" data-title="Signing in" data-group="Getting started">
+<header class="sec-head"><div class="eyebrow">Getting started</div><h1>Signing in</h1><p class="lead">Sign in with a portal account or with your organisation's single sign-on, depending on how your administrator has set the portal up.</p></header>
+<h2>Sign-in options</h2>
+<p>The sign-in page shows the options your administrator has enabled:</p>
+<ul>
+  <li><strong>Single sign-on buttons</strong> (OpenID Connect or SAML), for example <span class="ui">Single Sign-On</span>. You sign in at your identity provider and come back to the portal. Your role (user or administrator) comes from your groups there.</li>
+  <li><strong>Username and password</strong> for portal (local) accounts. Your administrator creates these.</li>
+</ul>
+<p>If neither works, ask your administrator to check that your account exists, is enabled, and (for single sign-on) that you are in a group allowed to use the portal.</p>
+
+<div class="callout warn"><span class="t">Too many attempts</span>After 10 failed sign-ins for the same username from the same address within 15 minutes, the portal refuses further attempts for that username from that address for the rest of the period, even with the right password. One address is also allowed 50 failed sign-ins in 15 minutes across all usernames. Successful sign-ins don't count.</div>
+
+<div class="callout info"><span class="t">Single sign-on starts at the portal</span>Use the single sign-on button on the portal's sign-in page (or an identity-provider tile that opens it). Responses that the identity provider sends without the portal having asked are refused. If you see "Sign-in session expired or was not started here", start again from the portal's sign-in page.</div>
+
+<h2>Sessions</h2>
+<p>A sign-in lasts 12 hours by default, after which you're asked to sign in again. Signing out (user menu at the bottom left → <span class="ui">Sign out</span>) ends the session immediately. If an administrator disables your account, you're signed out at once.</p>
+<p>Your <span class="ui">Account</span> page (user menu → <span class="ui">Account</span>) lists every browser where you're signed in, with its address and when it signed in; "This browser" marks the one you're using. <span class="ui">Sign out other sessions</span> ends all the others at once, for example after using a shared computer or if you think someone else has your session.</p>
+
+<h2>Changing your password</h2>
+<p>Portal accounts only: open the user menu (your initials at the bottom of the left menu) → <span class="ui">Account</span>. Enter the current password and the new one twice; it must be at least 10 characters. Changing your password signs out every other browser where you're signed in; the one you're using stays signed in. Single sign-on users change their password at their identity provider.</p>
+</section>
+
+<section class="section" id="dashboard" data-title="The dashboard" data-group="Getting started">
+<header class="sec-head"><div class="eyebrow">Getting started</div><h1>The dashboard</h1><p class="lead">The dashboard is your home page: headline numbers, your lab cards, recent activity and the network pool.</p></header>
+<h2>Left menu</h2>
+<div class="tablewrap"><table>
+<thead><tr><th>Item</th><th>What it opens</th></tr></thead>
+<tbody>
+<tr><td><span class="ui">Dashboard</span></td><td>This page.</td></tr>
+<tr><td><span class="ui">Deploy a lab</span></td><td>The deployment form.</td></tr>
+<tr><td><span class="ui">Activity</span></td><td>Every job you started or that ran against your labs.</td></tr>
+<tr><td><span class="ui">Network pool</span></td><td>The network slots and which are in use.</td></tr>
+<tr><td><span class="ui">Documentation</span></td><td>This guide.</td></tr>
+</tbody></table></div>
+<p>At the top are the portal's logo and the <strong>notifications bell</strong> (with a red counter for unread items). The arrow button collapses the menu to icons. At the bottom are a clock in your browser's time zone and your user menu: <span class="ui">Account</span>, <span class="ui">About</span> (the portal's version, licence and links to this guide) and <span class="ui">Sign out</span>.</p>
+
+<h2>Headline tiles</h2>
+<div class="tablewrap"><table>
+<thead><tr><th>Tile</th><th>Shows</th></tr></thead>
+<tbody>
+<tr><td><strong>My labs</strong></td><td>Your labs, and how many are powered on.</td></tr>
+<tr><td><strong>Capacity</strong></td><td>Labs running across the portal out of the current maximum, and your own quota (for example "Quota 1 of 2 used").</td></tr>
+<tr><td><strong>Leases expiring</strong></td><td>Your labs whose lease ends soon, and how many have expired.</td></tr>
+<tr><td><strong>Jobs running</strong></td><td>Jobs in progress; turns red when one is waiting for your input.</td></tr>
+</tbody></table></div>
+
+<h2>Tabs</h2>
+<p><span class="ui">My Labs</span> shows your lab cards plus a <span class="ui">Deploy a new lab</span> tile. <span class="ui">Activity</span> lists recent jobs and <span class="ui">Network</span> shows the network pool.</p>
+
+<h2>Reading a lab card</h2>
+<div class="tablewrap"><table>
+<thead><tr><th>Part</th><th>Meaning</th></tr></thead>
+<tbody>
+<tr><td>Name and status</td><td>Click the name for the lab's page. Statuses: <span class="pill muted">Queued</span> <span class="pill info">Deploying</span> <span class="pill ok">Ready</span> <span class="pill err">Failed</span> <span class="pill warn">Removing</span> <span class="pill muted">Removed</span></td></tr>
+<tr><td>Gear icon</td><td>The actions menu (see below).</td></tr>
+<tr><td>Type line</td><td>Lab type, version and configuration, for example "VCF · Management only 9.1.0.0 · Lab cluster".</td></tr>
+<tr><td>Lease remaining</td><td>Countdown (for example <code>2d 4h</code>) and a bar that turns amber after the first lease warning and red after the second or when expired.</td></tr>
+<tr><td>Network / Router</td><td>The lab's site A network and first VLAN, and the Holorouter it runs on.</td></tr>
+<tr><td>CURRENT</td><td>What's happening now: a running job, "waiting for your input", the failure message, "Lease expired — powered off", or Idle.</td></tr>
+<tr><td>Footer</td><td>Power state, instance ID, and the most useful button: <span class="ui">Answer prompt</span>, <span class="ui">Webtop</span>, <span class="ui">View log</span> or <span class="ui">Details</span>.</td></tr>
+</tbody></table></div>
+
+<h3>Card actions menu</h3>
+<p>Only actions that make sense right now appear: <span class="ui">Open details</span>, <span class="ui">Credentials</span>, <span class="ui">Extend lease</span> / <span class="ui">Renew lease</span>, <span class="ui">Power on</span> / <span class="ui">Resume</span>, <span class="ui">Suspend</span>, <span class="ui">Shut down</span>, <span class="ui">Refresh status</span>, <span class="ui">Retry deployment</span> and <span class="ui">Remove lab</span>. Power, refresh and removal actions are hidden while a job is running for the lab.</p>
+
+<h2>Power states</h2>
+<p><span class="pill ok">Powered on</span> <span class="pill muted">Powered off</span> <span class="pill warn">Partially on</span> <span class="pill violet">Suspended</span> <span class="pill info">Starting…</span> <span class="pill info">Stopping…</span> <span class="pill info">Suspending…</span> <span class="pill muted">No VMs</span> <span class="pill muted">Power unknown</span></p>
+<p>"Partially on" means some of the lab's VMs are on and others aren't. "Power unknown" usually clears with <span class="ui">Refresh status</span>.</p>
+
+<h2>Notifications</h2>
+<p>The bell collects messages about your labs: deployment finished or failed, lease warnings and expiry, idle warnings, removals, day-2 results. Click one to open its lab; <span class="ui">Mark all read</span> clears the counter. The list refreshes every 30 seconds.</p>
+</section>
+
+<section class="section" id="deploying" data-title="Deploying a lab" data-group="Working with labs">
+<header class="sec-head"><div class="eyebrow">Working with labs</div><h1>Deploying a lab</h1><p class="lead">The Deploy a lab page walks through four steps, checks everything as you go, and shows the exact Holodeck command that will run.</p></header>
+<p>Open <span class="ui">Deploy a lab</span> from the left menu (or the <span class="ui">Deploy a new lab</span> tile on the dashboard). If you see "No configurations available", your administrator hasn't published a configuration to you yet.</p>
+
+<h2>1 · Configuration</h2>
+<p>Pick one of the configurations you may use. Each card shows its target vCenter, cluster and datastore. Some configurations pre-select a lab type, version and options for you; you can still change them. A configuration greyed out with <em>all Holorouters in use</em> has no free Holorouter right now; try again later or ask an administrator.</p>
+
+<h2>2 · Lab details</h2>
+<div class="tablewrap"><table>
+<thead><tr><th>Field</th><th>Notes</th></tr></thead>
+<tbody>
+<tr><td><strong>Name</strong> (required)</td><td>Up to 60 characters, for example "NSX troubleshooting".</td></tr>
+<tr><td><strong>Instance ID</strong></td><td>1–8 letters or digits; prefixes every VM name. Leave blank to use <code>s</code> plus the lab's network slot (the field shows it, e.g. <code>s03</code>). It is stored in lower case and must not be in use by another lab.</td></tr>
+<tr><td><strong>Description</strong></td><td>Optional.</td></tr>
+<tr><td><strong>Lease (days)</strong></td><td>How long the lab may run before it is powered off, in whole days. The help text shows your administrator's default and maximum.</td></tr>
+</tbody></table></div>
+
+<h2>3 · Deployment type and version</h2>
+<div class="tablewrap"><table>
+<thead><tr><th>Type</th><th>What you get</th><th>Holodeck switch</th></tr></thead>
+<tbody>
+<tr><td><strong>VVF</strong></td><td>vSphere Foundation: vCenter, ESX and vSAN.</td><td class="mono">-VVF</td></tr>
+<tr><td><strong>VCF management domain</strong></td><td>VCF with the management domain only.</td><td class="mono">-ManagementOnly</td></tr>
+<tr><td><strong>VCF full stack</strong></td><td>Management domain plus a workload domain.</td><td class="mono">(none)</td></tr>
+</tbody></table></div>
+<p>Choose the <strong>Version</strong> from the list. A version shown as <em>"— not staged on a free Holorouter"</em> can't be deployed right now because no free Holorouter has its installation files; choose another version or ask your administrator.</p>
+
+<h2>4 · Holodeck options</h2>
+<p>Only the options that apply to the chosen type and version are shown. Each maps one-to-one to a <code>New-HoloDeckInstance</code> parameter.</p>
+<div class="tablewrap"><table>
+<thead><tr><th>Option</th><th>Applies to</th><th>Values</th></tr></thead>
+<tbody>
+<tr><td>vSAN mode</td><td>All</td><td>OSA (default) or ESA</td></tr>
+<tr><td>Workload domain SSO</td><td>Full stack</td><td>SharedSSO or IsolatedSSO</td></tr>
+<tr><td>NSX Edge cluster (management domain)</td><td>Management, full stack</td><td>On / off</td></tr>
+<tr><td>NSX Edge cluster (workload domain)</td><td>Full stack</td><td>On / off</td></tr>
+<tr><td>VNA cluster (management domain)</td><td>9.x; management, full stack</td><td>On / off</td></tr>
+<tr><td>VNA cluster (workload domain)</td><td>9.x; full stack</td><td>On / off</td></tr>
+<tr><td>Deploy VCF Automation</td><td>9.x; management, full stack</td><td>On / off</td></tr>
+<tr><td>Supervisor (management domain)</td><td>9.x; management, full stack</td><td>None, Centralized, Distributed</td></tr>
+<tr><td>Supervisor (workload domain)</td><td>9.x; full stack</td><td>None, Centralized, Distributed</td></tr>
+<tr><td>Provision only</td><td>All</td><td>Build the nested hosts and appliances but skip VCF bring-up</td></tr>
+<tr><td>Depot type</td><td>All</td><td>Online (default) or Offline</td></tr>
+<tr><td>Log level</td><td>All</td><td>INFO (default), DEBUG, WARN, ERROR, SUCCESS</td></tr>
+</tbody></table></div>
+
+<h2>The side panel</h2>
+<dl class="kv">
+  <dt>Holorouter &amp; network</dt><dd>The Holorouter and network slot the lab will get, its site A and site B networks with their first VLAN (site B is reserved for future dual-site labs), and the lab's DNS domain, for example <code>lab03.vcf.lab</code>.</dd>
+  <dt>Checks</dt><dd>Either <span class="pill ok">Ready to deploy</span> or the reasons you can't deploy yet. See the table below.</dd>
+  <dt>Command</dt><dd>The exact <code>New-HoloDeckInstance</code> command, including the assigned <code>-CIDR</code> and <code>-VLANRangeStart</code>.</dd>
+</dl>
+
+<div class="tablewrap"><table>
+<thead><tr><th>Check message (excerpt)</th><th>What to do</th></tr></thead>
+<tbody>
+<tr><td>Lab quota reached (n of m)</td><td>Remove one of your labs, or ask for a higher quota.</td></tr>
+<tr><td>All lab capacity is in use</td><td>Every Holorouter has a lab. Wait for one to be removed, or ask an administrator.</td></tr>
+<tr><td>No Holorouter is free for a new lab</td><td>Same as above.</td></tr>
+<tr><td>VCF x is not available on any free Holorouter right now</td><td>Pick another version, or ask an administrator to stage it.</td></tr>
+<tr><td>This configuration is disabled / You are not entitled…</td><td>Pick another configuration or ask an administrator.</td></tr>
+<tr><td>Holodeck config '…' is still bound to instance '…'</td><td>An administrator must clean up the configuration first.</td></tr>
+</tbody></table></div>
+
+<h2>Deploying</h2>
+<p>Click <span class="ui">Deploy lab</span>. The portal reserves the network slot and Holorouter, queues the deployment and opens the lab's <span class="ui">Activity</span> tab with the live output. The lab is <span class="pill muted">Queued</span> until the job starts, then <span class="pill info">Deploying</span>.</p>
+<div class="callout info"><span class="t">How long does it take?</span>From under an hour for a small VVF lab to many hours for a VCF full stack. You can close the browser: the deployment continues and you get a notification when it finishes.</div>
+<div class="callout warn"><span class="t">VCF 9.1 with an online depot</span>Holodeck needs an activation code generated for the VCF Installer's Download Service ID. When the deployment reaches that point, the job asks you for it in the portal. See <a href="#prompts" data-goto="prompts">Answering prompts</a>.</div>
+</section>
+
+<section class="section" id="prompts" data-title="Answering prompts" data-group="Working with labs">
+<header class="sec-head"><div class="eyebrow">Working with labs</div><h1>Answering prompts</h1><p class="lead">Some Holodeck steps ask a question. The portal shows the question in the page and passes your answer to Holodeck.</p></header>
+<h2>How you'll know</h2>
+<ul>
+  <li>The lab card's CURRENT line says <em>"… — waiting for your input"</em> and its footer shows an amber <span class="ui">Answer prompt</span> button.</li>
+  <li>The lab's <span class="ui">Activity</span> tab has an amber dot, and the job's status is <span class="pill warn">Input required</span>.</li>
+  <li>The dashboard's <strong>Jobs running</strong> tile turns red with "1 waiting for input".</li>
+</ul>
+
+<h2>Answering</h2>
+<ol class="steps">
+  <li>Click <span class="ui">Answer prompt</span> (or open the lab's <span class="ui">Activity</span> tab).</li>
+  <li>Read the job output above the amber prompt bar; it usually explains what Holodeck needs (for VCF 9.1, the Download Service ID appears there).</li>
+  <li>Type the answer and click <span class="ui">Send</span>, or use <span class="ui">Yes</span> / <span class="ui">No</span> for yes/no questions.</li>
+</ol>
+<p>Secret answers (when Holodeck asks for a password or code with hidden input) are typed into a masked field. Answers are passed to Holodeck and not stored; the audit log records only that a prompt was answered.</p>
+
+<h2>The VCF 9.1 activation code</h2>
+<p>For VCF 9.1 with an online depot, Holodeck prints the VCF Installer's Download Service ID and waits for an activation code. Generate the code for that ID on the Broadcom support portal, then paste it into the prompt bar.</p>
+
+<div class="callout info"><span class="t">Answered automatically</span>Some questions, such as the confirmation when you remove a lab, are answered by the portal itself. The log then shows "(answered automatically by the portal)".</div>
+
+<h2>If you don't answer</h2>
+<p>A job waiting for an answer keeps its lab busy. By default you get a reminder notification after 24 hours, and the job is cancelled after 72 hours without an answer (your administrator can change both). A cancelled deployment leaves the lab <span class="pill bad">Failed</span>, so you can retry or remove it.</p>
+</section>
+
+<section class="section" id="access" data-title="Accessing your lab" data-group="Working with labs">
+<header class="sec-head"><div class="eyebrow">Working with labs</div><h1>Accessing your lab</h1><p class="lead">You reach a lab through its Holorouter's webtop: a desktop in your browser that sits inside the lab's network.</p></header>
+<p>Lab networks and lab hostnames such as <code>vc-mgmt-a.site-a.lab03.vcf.lab</code> are only reachable from the lab's Holorouter. The webtop gives you a desktop on that Holorouter, with Firefox and the lab's DNS.</p>
+
+<h2>Opening the webtop</h2>
+<ol class="steps">
+  <li>On the lab card click <span class="ui">Webtop</span>, or on the lab's page open the <span class="ui">Access</span> tab and click <span class="ui">Open webtop</span>. It opens in a new browser tab.</li>
+  <li>If the address is the portal's own, like <code>https://holodeck.example.com:8443/</code>, the webtop opens <strong>through the portal</strong>: it signs you in by itself and only you (the lab's owner) and administrators can open it. Otherwise (an address like <code>http://192.0.2.11:30000/</code>) sign in with the webtop login at the top of the lab's <span class="ui">Credentials</span> dialog ("Lab access — webtop on &lt;router&gt;").</li>
+  <li>On the <span class="ui">Access</span> tab, click a console to copy its address, then paste it into Firefox inside the webtop.</li>
+</ol>
+<div class="callout warn"><span class="t">Shared webtop login</span>Every Holorouter's webtop uses the same login behind the scenes. Don't change settings in the webtop that would affect other users. If you hand a lab to someone else or remove it, your webtop session on its router ends.</div>
+
+<h2>Credentials</h2>
+<p>Click <span class="ui">Credentials</span> on the lab card menu or the lab's page. The dialog lists:</p>
+<ul>
+  <li><strong>Lab access</strong>: the webtop address, user and password, with copy buttons. Through the portal no password is shown, because none is needed.</li>
+  <li><strong>Lab passwords</strong> by component and account, for example vCenter <code>administrator@vsphere.local</code>, ESX hosts <code>root</code>, NSX Manager <code>admin</code>, SDDC Manager <code>admin@local</code>, VCF Installer or Cloud Builder accounts.</li>
+</ul>
+<p>Passwords are hidden until you click <span class="ui">Reveal passwords</span>; the copy buttons work either way. Viewing credentials is recorded in the audit log. If the list is empty, run <span class="ui">Refresh</span> on the lab.</p>
+<div class="callout info"><span class="t">Provision-only labs</span>If the lab was deployed with <strong>Provision only</strong>, Holodeck built the hosts and appliances and you finished the installation yourself. The dialog then says so: the passwords you chose during the installation aren't known to Holodeck, so the listed ones match only where you entered the same passwords.</div>
+
+<h2>The Access tab</h2>
+<dl class="kv">
+  <dt>Webtop</dt><dd>The <span class="ui">Open webtop</span> button and a link to the credentials.</dd>
+  <dt>Consoles</dt><dd>Links for the lab type: vCenter (management), SDDC Manager, NSX Manager (management), VCF Installer, VCF Operations, VCF Automation, and for full stack also vCenter (workload) and NSX Manager (workload). Each shows its FQDN and IP. Clicking a console copies its address for Firefox in the webtop; the small open icon opens it directly, for networks where lab traffic is routed to you.</dd>
+  <dt>DNS records</dt><dd>Every name Holodeck registered for the lab, with a filter box and copy buttons.</dd>
+</dl>
+</section>
+
+<section class="section" id="lab-page" data-title="The lab page" data-group="Working with labs">
+<header class="sec-head"><div class="eyebrow">Working with labs</div><h1>The lab page</h1><p class="lead">Click a lab's name to open its page: a header with the main actions and six tabs.</p></header>
+<h2>Header</h2>
+<p>Name, status, power state, type and version, instance ID, network and owner, plus the lease countdown with the exact end time. A failed lab shows its error; an expired lab shows a warning.</p>
+<p>Buttons (only those that apply are shown): <span class="ui">Credentials</span>, <span class="ui">Extend lease</span> or <span class="ui">Renew lease</span>, <span class="ui">Power on</span> or <span class="ui">Resume</span>, <span class="ui">Suspend</span>, <span class="ui">Shut down</span>, <span class="ui">Refresh</span>, and for failed labs <span class="ui">Retry deployment</span> and <span class="ui">Export diagnostics</span>. <span class="ui">Remove</span> is on the right. Buttons are disabled while a job runs for the lab.</p>
+
+<h2>Tabs</h2>
+<div class="tablewrap"><table>
+<thead><tr><th>Tab</th><th>Contents</th></tr></thead>
+<tbody>
+<tr><td><span class="ui">Overview</span></td><td>Deployment details (configuration, Holodeck config ID, type, instance ID, DNS domain, created and deployed times), the Holodeck options used, and the nested VMs with type, IP, power and reachability.</td></tr>
+<tr><td><span class="ui">Access</span></td><td>Webtop, consoles and DNS records. See <a href="#access" data-goto="access">Accessing your lab</a>.</td></tr>
+<tr><td><span class="ui">Network</span></td><td>Site A (deployed) and site B (reserved) networks with VLAN ranges, the BGP AS numbers, and every subnet Holodeck configured (name, VLAN or untagged, subnet, gateway, DHCP range).</td></tr>
+<tr><td><span class="ui">Activity</span></td><td>The live console of the current or selected job, and the lab's job history. Click a row to show that job's output.</td></tr>
+<tr><td><span class="ui">Day-2</span></td><td>Changes to a ready lab. See <a href="#day2" data-goto="day2">Day-2 operations</a>.</td></tr>
+<tr><td><span class="ui">Settings</span></td><td>Rename the lab and edit its description.</td></tr>
+</tbody></table></div>
+
+<h2>Refresh and diagnostics</h2>
+<p><span class="ui">Refresh</span> asks Holodeck to re-read the lab (<code>Sync-HoloDeckInstance</code>), then updates the nested VM list, networks, DNS records, credentials and power state. Use it when something looks out of date.</p>
+<p><span class="ui">Export diagnostics</span> (failed labs) runs Holodeck's <code>Export-ErrorDiagnostics</code> with the full error stack. The output is in the job log, for your administrator.</p>
+</section>
+
+<section class="section" id="power" data-title="Power and suspend" data-group="Working with labs">
+<header class="sec-head"><div class="eyebrow">Working with labs</div><h1>Power and suspend</h1><p class="lead">Shut a lab down when you aren't using it, suspend it to pick up exactly where you left off, and power it on or resume it when you return.</p></header>
+<div class="tablewrap"><table>
+<thead><tr><th>Action</th><th>Available when</th><th>What happens</th></tr></thead>
+<tbody>
+<tr><td><span class="ui">Shut down</span></td><td>The lab isn't already off or suspended</td><td>Holodeck shuts down the workload domain, then the management domain, then powers off the nested ESX hosts. The portal then shuts down the VCF Installer / Cloud Builder VM (forcing it off after 5 minutes if needed). Takes several minutes.</td></tr>
+<tr><td><span class="ui">Power on</span></td><td>The lab isn't fully on</td><td>Holodeck starts the lab, then the portal powers on the installer VM.</td></tr>
+<tr><td><span class="ui">Suspend</span></td><td>The lab is on or partially on</td><td>All of the lab's VMs are suspended together, so everything inside resumes where it left off.</td></tr>
+<tr><td><span class="ui">Resume</span></td><td>The lab is suspended</td><td>The normal power-on, which resumes the suspended VMs.</td></tr>
+</tbody></table></div>
+
+<h2>Before you suspend</h2>
+<div class="callout warn"><span class="t">Suspending needs datastore space</span>vSphere writes each VM's memory to its datastore, roughly the lab's total configured memory (for example around 770 GB for a VCF 9.1 management domain). The job checks there is room first and stops with a message if there isn't; shut the lab down instead in that case.</div>
+<ul>
+  <li>After resuming, expect clock catch-up and a few alarms inside the lab.</li>
+  <li>A suspended lab can't be shut down directly: resume it first.</li>
+</ul>
+
+<h2>Following power jobs</h2>
+<p>While a power job runs, the power state shows <span class="pill info">Stopping…</span>, <span class="pill info">Starting…</span> or <span class="pill info">Suspending…</span>, and the output is on the lab's <span class="ui">Activity</span> tab. When it finishes, the portal reads the real state of the VMs: <span class="pill ok">Powered on</span>, <span class="pill muted">Powered off</span>, <span class="pill violet">Suspended</span> or <span class="pill warn">Partially on</span>.</p>
+
+<div class="callout info"><span class="t">Expired leases</span>When a lease ends, the portal shuts the lab down for you. You can't power it on again until an administrator renews the lease.</div>
+</section>
+
+<section class="section" id="leases" data-title="Leases" data-group="Working with labs">
+<header class="sec-head"><div class="eyebrow">Working with labs</div><h1>Leases</h1><p class="lead">Every lab has a lease. You're warned twice before it ends; when it ends the lab is powered off, never deleted.</p></header>
+<h2>Lease timeline</h2>
+<ol class="steps">
+  <li><strong>Deploy</strong>: the lease starts with the days you chose (your administrator sets the default and the maximum).</li>
+  <li><strong>First warning</strong>: a notification "&lt;lab&gt;: lease ends in …" at the first lead time (by default one day before). The lease bar turns amber.</li>
+  <li><strong>Second warning</strong>: another notification at the second lead time (by default two hours before). The bar turns red.</li>
+  <li><strong>Expiry</strong>: the lab is marked expired and powered off. You and the administrators are notified. The lab and its data stay; an administrator can renew or remove it.</li>
+</ol>
+
+<h2>Extending a lease</h2>
+<p>Click <span class="ui">Extend lease</span> on the card menu or the lab's page. Pick a preset (<span class="ui">+1d</span>, <span class="ui">+3d</span>, <span class="ui">+7d</span>, <span class="ui">+14d</span>, <span class="ui">+30d</span>, depending on the maximum) or type the days to add, then click <span class="ui">Extend</span>. Extending resets the warnings.</p>
+<ul>
+  <li>The new end time can't be more than the maximum lease from now; the dialog shows the limit.</li>
+  <li>If your administrator has turned off lease extensions, the dialog says so; ask an administrator.</li>
+  <li>Once a lease has expired, only an administrator can renew it.</li>
+</ul>
+
+<h2>Idle labs</h2>
+<p>Your administrator may have labs that nobody uses suspended, or shut down, after some days. If so, the lab page shows how long no use has been seen and when the lab will be suspended or shut down, with a <span class="ui">Keep running</span> button, and you get a notification before each step.</p>
+<ul>
+  <li>Use counts: opening the lab's page, viewing its credentials, starting a power or day-2 action, extending the lease, <span class="ui">Keep running</span>, and working in its webtop.</li>
+  <li>A suspended lab comes back with <span class="ui">Resume</span>; a shut-down lab with <span class="ui">Power on</span>. Nothing is deleted.</li>
+</ul>
+</section>
+
+<section class="section" id="day2" data-title="Day-2 operations" data-group="Working with labs">
+<header class="sec-head"><div class="eyebrow">Working with labs</div><h1>Day-2 operations</h1><p class="lead">Change a running lab with Holodeck's Update-HoloDeckInstance: add clusters, hosts, Supervisor or VCF Automation.</p></header>
+<p>Open the lab's <span class="ui">Day-2</span> tab (the lab must be <span class="pill ok">Ready</span>), click <span class="ui">Configure…</span> on an action, fill in the form and click <span class="ui">Run</span>. The job's output appears on the <span class="ui">Activity</span> tab and you get a notification when it completes or fails.</p>
+<div class="tablewrap"><table>
+<thead><tr><th>Action</th><th>Fields</th><th>Versions</th></tr></thead>
+<tbody>
+<tr><td><strong>Add cluster</strong></td><td>Domain (Management or Workload). Holodeck always adds a cluster of 3 hosts.</td><td>All</td></tr>
+<tr><td><strong>Add ESX hosts</strong></td><td>Domain (optional), vCPUs per host (default 12), memory per host in GB (default 32), number of hosts (1), vSAN mode, disk sizes in GB (comma-separated; default <code>450, 450</code>)</td><td>All</td></tr>
+<tr><td><strong>Deploy Supervisor</strong></td><td>Domain, deployment mode (Distributed or Centralized)</td><td>9.x</td></tr>
+<tr><td><strong>Add VCF Automation All-Apps org</strong></td><td>Domain</td><td>9.x</td></tr>
+<tr><td><strong>Deploy VCF Automation</strong></td><td>None</td><td>9.x</td></tr>
+</tbody></table></div>
+<h2>Host limits</h2>
+<p>Your administrator sets what <strong>Add ESX hosts</strong> may request. By default: 2–64 vCPUs and 8–1024 GB of memory per host, and 1–3 disks of 1–16384 GB each. The form shows the allowed range under each field and refuses values outside it.</p>
+<p>A lab's site may also hold only so many nested hosts, 8 by default. A new lab has Holodeck's 4, every added cluster adds 3 and <strong>Add ESX hosts</strong> adds the number you ask for. So with the default limit you can add one cluster and one more host, or four single hosts. The <strong>Add cluster</strong> and <strong>Add ESX hosts</strong> dialogs show how many hosts the site has and how many more are allowed. Ask an administrator if you need more.</p>
+<p>If adding hosts or a cluster fails or is cancelled, some of the new hosts may already exist. They keep counting, the portal refreshes the lab by itself to see which hosts are really there, and you can add hosts again once that refresh has finished.</p>
+
+<div class="callout warn"><span class="t">Supervisor and VCF Automation</span>These actions use Holodeck's shared 10.100.x routed networks, and the portal allows only one lab at a time to use them through day-2 operations. If another lab already uses them, the action is refused with that lab's name.</div>
+</section>
+
+<section class="section" id="activity" data-title="Activity and jobs" data-group="Working with labs">
+<header class="sec-head"><div class="eyebrow">Working with labs</div><h1>Activity and jobs</h1><p class="lead">Every operation is a job with live output. The Activity page lists yours.</p></header>
+<h2>The Activity list</h2>
+<p>Columns: <strong>Operation</strong> (Deploy, Power, Refresh, Day-2, Diagnostics, Remove…), with details such as the power action or version; <strong>Lab / target</strong>; <strong>Status</strong>; <strong>Started</strong>; <strong>Duration</strong>; <strong>By</strong>. Click an operation to open its full-page console.</p>
+<p>Statuses: <span class="pill muted">Queued</span> <span class="pill info">Running</span> <span class="pill warn">Input required</span> <span class="pill ok">Succeeded</span> <span class="pill err">Failed</span> <span class="pill muted">Cancelled</span></p>
+
+<h2>The job console</h2>
+<ul>
+  <li>Shows Holodeck's output with its colours. Each step starts with a <code>==&gt;</code> heading and the command that ran (passwords shown as <code>********</code>).</li>
+  <li><span class="ui">Follow</span> keeps the view at the newest line; scrolling up turns it off.</li>
+  <li>"Waiting for the Holodeck lock…" means the job is queued behind another job on the same Holorouter.</li>
+  <li>A failed job ends with <code>Job failed: &lt;reason&gt;</code>.</li>
+</ul>
+
+<h2>Cancelling a job</h2>
+<p>Click <span class="ui">Cancel</span> in the console and confirm. Holodeck is stopped mid-operation. A cancelled deployment marks the lab <span class="pill err">Failed</span>; you can retry it (Holodeck resumes from where it was) or remove the lab.</p>
+</section>
+
+<section class="section" id="network-pool" data-title="Network pool" data-group="Working with labs">
+<header class="sec-head"><div class="eyebrow">Working with labs</div><h1>Network pool</h1><p class="lead">Each lab gets its own addresses and VLANs automatically, from a pool your administrator defines.</p></header>
+<p>The pool is divided into <strong>slots</strong>. Each slot belongs to one Holorouter and holds one lab. A slot reserves two /20 networks: <strong>site A</strong> is deployed, <strong>site B</strong> is held for future dual-site labs. VLAN ranges start at the network's second octet × 100.</p>
+<div class="tablewrap"><table>
+<thead><tr><th>Slot</th><th>Site A</th><th>Site A VLANs</th><th>Site B (reserved)</th><th>Site B VLANs</th></tr></thead>
+<tbody>
+<tr><td>1</td><td class="mono">10.1.0.0/20</td><td class="mono">100–131</td><td class="mono">10.2.0.0/20</td><td class="mono">200–231</td></tr>
+<tr><td>2</td><td class="mono">10.3.0.0/20</td><td class="mono">300–331</td><td class="mono">10.4.0.0/20</td><td class="mono">400–431</td></tr>
+<tr><td>3</td><td class="mono">10.5.0.0/20</td><td class="mono">500–531</td><td class="mono">10.6.0.0/20</td><td class="mono">600–631</td></tr>
+</tbody></table></div>
+<p class="small muted">Example with the default pool (10.1 – 10.10, five slots). Your portal's pool may differ; the <span class="ui">Network pool</span> page shows the real one.</p>
+<p>On the <span class="ui">Network pool</span> page each slot shows your lab's name if it's yours, <em>In use</em> for someone else's lab, <em>Available</em> when its Holorouter is free, or <em>No Holorouter</em> when the slot has no router yet. Removing a lab returns its slot.</p>
+<p>Each lab also gets its own DNS domain, normally <code>lab</code> plus its two-digit slot: <code>lab03.vcf.lab</code> on slot 3.</p>
+</section>
+
+<section class="section" id="removing" data-title="Retry and remove" data-group="Working with labs">
+<header class="sec-head"><div class="eyebrow">Working with labs</div><h1>Retry and remove</h1><p class="lead">Retry a failed deployment where it stopped, or remove a lab to delete its VMs and free its slot.</p></header>
+<h2>Retrying a failed deployment</h2>
+<p>When a deployment fails, read the end of the log (<span class="ui">View log</span> on the card). If the cause was temporary, or has been fixed, click <span class="ui">Retry deployment</span>. Holodeck resumes from its saved state instead of starting over.</p>
+
+<h2>Removing a lab</h2>
+<ol class="steps">
+  <li>Click <span class="ui">Remove lab</span> (card menu) or <span class="ui">Remove</span> (lab page).</li>
+  <li>Type the lab's instance ID to confirm and click <span class="ui">Remove lab</span>.</li>
+  <li>The portal runs Holodeck's removal, deletes any VMs Holodeck left behind (such as the installer VM), checks that nothing remains, and frees the configuration.</li>
+</ol>
+<p>When it finishes the lab is <span class="pill muted">Removed</span>, its passwords are deleted from the portal, and you get a notification that its network slot is free again. This can't be undone.</p>
+<div class="callout info"><span class="t">If removal fails</span>The lab goes to <span class="pill err">Failed</span> with "Removal failed: …". Read the log; you can run <span class="ui">Remove lab</span> again, or ask an administrator.</div>
+</section>
+
+<section class="section" id="limits" data-title="Current limits" data-group="Reference">
+<header class="sec-head"><div class="eyebrow">Reference</div><h1>Current limits</h1><p class="lead">What the portal doesn't do yet, so you can plan around it.</p></header>
+<ul>
+  <li><strong>One lab per Holorouter.</strong> Holodeck configures a Holorouter's networks, routing and DNS for one lab, so each lab gets its own Holorouter and network slot. Capacity grows as administrators add Holorouters.</li>
+  <li><strong>Access is through the webtop.</strong> Lab networks aren't routed to your VPN or desktop; use the lab's webtop.</li>
+  <li><strong>Every Holorouter's webtop uses the same login</strong>, over plain HTTP, unless your administrator opens webtops through the portal.</li>
+  <li><strong>No email.</strong> Notifications appear in the portal's bell only.</li>
+  <li><strong>Nested hosts per lab site</strong> are limited (8 by default, including the lab's own 4).</li>
+  <li><strong>Single-site labs only.</strong> Each lab's site B networks are reserved for future dual-site support.</li>
+  <li><strong>Supervisor and VCF Automation day-2 actions</strong> run on one lab at a time.</li>
+  <li><strong>Versions</strong> depend on the installation files your administrator has staged; not every version may be available on every Holorouter.</li>
+</ul>
+</section>
+
+<section class="section" id="troubleshooting" data-title="Troubleshooting" data-group="Reference">
+<header class="sec-head"><div class="eyebrow">Reference</div><h1>Troubleshooting</h1><p class="lead">Common problems and what to do about them.</p></header>
+<div class="tablewrap"><table>
+<thead><tr><th>Symptom</th><th>Likely cause</th><th>What to do</th></tr></thead>
+<tbody>
+<tr><td><span class="ui">Deploy lab</span> stays disabled</td><td>A check failed, the name is empty, or the instance ID is invalid</td><td>Read the <strong>Checks</strong> panel; see <a href="#deploying" data-goto="deploying">Deploying a lab</a>.</td></tr>
+<tr><td>Deployment hasn't moved for a long time</td><td>Holodeck is waiting for an answer</td><td>Look for <span class="ui">Answer prompt</span>; see <a href="#prompts" data-goto="prompts">Answering prompts</a>.</td></tr>
+<tr><td>Job says "Waiting for the Holodeck lock…"</td><td>Another job is running on the same Holorouter</td><td>Wait; it starts automatically.</td></tr>
+<tr><td>A configuration is greyed out: "all Holorouters in use"</td><td>Every Holorouter for it has a lab</td><td>Try again later, or ask an administrator for more capacity.</td></tr>
+<tr><td>Your lab was suspended or shut down by itself</td><td>Nobody used it for the days your administrator set (you were notified first)</td><td><span class="ui">Resume</span> or <span class="ui">Power on</span>; use <span class="ui">Keep running</span> when you see the idle notice.</td></tr>
+<tr><td>Deployment failed</td><td>See the last lines of the log</td><td>Fix the cause or ask an administrator, then <span class="ui">Retry deployment</span>.</td></tr>
+<tr><td>Lab hostnames don't resolve or consoles don't open</td><td>Opened from your own browser instead of the webtop</td><td>Use Firefox inside the lab's webtop.</td></tr>
+<tr><td>Webtop asks for a login you don't have</td><td>The webtop password isn't in the credentials</td><td>Ask an administrator to set it.</td></tr>
+<tr><td>Credentials list is empty</td><td>Details not captured yet</td><td>Run <span class="ui">Refresh</span>.</td></tr>
+<tr><td>Power state looks wrong or says "Power unknown"</td><td>State not re-read since a change outside the portal</td><td>Run <span class="ui">Refresh</span>.</td></tr>
+<tr><td>Suspend failed with a datastore message</td><td>Not enough space for the VMs' memory</td><td>Use <span class="ui">Shut down</span> instead.</td></tr>
+<tr><td>"The lab is suspended. Resume it first…"</td><td>Shut down isn't possible while suspended</td><td><span class="ui">Resume</span>, then shut down.</td></tr>
+<tr><td>Can't power on: "This lab's lease has expired"</td><td>Expired leases need an administrator</td><td>Ask an administrator to renew it.</td></tr>
+<tr><td>"Lease extensions are disabled"</td><td>Your administrator turned them off</td><td>Ask an administrator.</td></tr>
+<tr><td>"Lab is busy (…)"</td><td>A job is already running for the lab</td><td>Wait for it, or cancel it in the console.</td></tr>
+<tr><td>Add ESX hosts / Add cluster refused: "… the limit is 8 per site"</td><td>The lab's site already has as many nested hosts as allowed</td><td>Ask an administrator; see <a href="#day2" data-goto="day2">Day-2 operations</a>.</td></tr>
+<tr><td>"… must be a whole number from … to …"</td><td>A host size is outside the allowed range</td><td>Use a value in the range shown under the field.</td></tr>
+<tr><td>A job was cancelled with "no answer within 72 hours"</td><td>A prompt waited too long</td><td>Retry; answer the prompt when it appears.</td></tr>
+<tr><td>Single sign-on says "not started here" or "belongs to a different browser session"</td><td>The sign-in didn't start at the portal, or took too long</td><td>Start again from the portal's sign-in page.</td></tr>
+<tr><td>A lab you gave away no longer shows its jobs</td><td>Jobs follow the lab's current owner</td><td>Expected after a transfer.</td></tr>
+</tbody></table></div>
+<p>When you contact an administrator, include the lab's name and instance ID, and the job's link (open it from the <span class="ui">Activity</span> page; the address ends in the job's ID).</p>
+<p class="meta">Holodeck Portal User Guide · documentation v2.0 · 2026-11-23</p>
+</section>
+
+    </main>
+  </div>
+</div>
+<script>
+(function(){
+  // Master–detail: choosing a section in the left menu shows only that section.
+  var links=[].slice.call(document.querySelectorAll('.navlink'));
+  var secs=[].slice.call(document.querySelectorAll('.section'));
+  var crumb=document.getElementById('crumb-sec');
+  var rail=document.getElementById('rail'), scrim=document.getElementById('scrim'), mt=document.getElementById('menutoggle');
+  function closeRail(){ rail.classList.remove('open'); scrim.classList.remove('show'); }
+  function show(id){
+    if(!document.getElementById(id)) id=secs[0].id;
+    secs.forEach(function(s){ s.classList.toggle('is-active', s.id===id); });
+    links.forEach(function(l){ l.classList.toggle('active', l.dataset.target===id); });
+    var lbl=document.querySelector('.navlink[data-target="'+id+'"]'); if(lbl) crumb.textContent=lbl.textContent.trim();
+    try{ history.replaceState(null,'','#'+id); }catch(e){}
+    window.scrollTo(0,0);
+  }
+  links.forEach(function(l){ l.addEventListener('click',function(){ show(l.dataset.target); closeRail(); }); });
+  // In-text links to other sections: <a href="#id" data-goto="id">. Links into another guide carry data-guide and a
+  // real href (OTHER_GUIDE.html#id), which the browser follows.
+  document.addEventListener('click',function(e){
+    var a=e.target.closest('a[data-goto]'); if(!a || a.hasAttribute('data-guide')) return;
+    e.preventDefault(); show(a.getAttribute('data-goto'));
+  });
+  show((location.hash||'').replace('#','') || secs[0].id);
+  // Copy buttons on code blocks
+  document.addEventListener('click',function(e){
+    var b=e.target.closest('.copy'); if(!b) return;
+    var txt=b.parentNode.querySelector('pre').innerText.trim();
+    var done=function(){ b.textContent='Copied'; b.classList.add('done'); setTimeout(function(){ b.textContent='Copy'; b.classList.remove('done'); },1600); };
+    if(navigator.clipboard){ navigator.clipboard.writeText(txt).then(done,done); } else { done(); }
+  });
+  if(mt){ mt.addEventListener('click',function(){ rail.classList.add('open'); scrim.classList.add('show'); }); }
+  scrim.addEventListener('click',closeRail);
+  // Search: dim sections that don't mention the words; Enter opens the first match
+  var search=document.getElementById('search');
+  function matchIds(q){ return secs.filter(function(s){ return s.textContent.toLowerCase().indexOf(q)>-1; }).map(function(s){ return s.id; }); }
+  search.addEventListener('input',function(){
+    var q=this.value.trim().toLowerCase(); var hits=q?matchIds(q):null;
+    links.forEach(function(l){ l.style.opacity=(hits && hits.indexOf(l.dataset.target)===-1)?'.32':''; });
+  });
+  search.addEventListener('keydown',function(e){ if(e.key!=='Enter') return; var q=this.value.trim().toLowerCase(); if(!q) return; var hits=matchIds(q); if(hits.length){ show(hits[0]); closeRail(); } });
+})();
+</script>
+</body>
+</html>

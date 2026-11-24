@@ -1,0 +1,15 @@
+[Unit]
+Description=Holodeck Portal appliance first-boot configuration (OVF properties)
+After=vmtoolsd.service local-fs.target
+Wants=vmtoolsd.service
+Before=network-online.target sshd.service holodeck-portal.service
+ConditionPathExists=!/etc/holodeck-appliance/.configured
+
+[Service]
+Type=oneshot
+RemainAfterExit=yes
+ExecStart=/usr/bin/python3 /opt/holodeck-appliance/firstboot.py
+StandardOutput=journal+console
+
+[Install]
+WantedBy=multi-user.target
